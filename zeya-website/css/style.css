@@ -1,0 +1,2138 @@
+/* ==========================================================================
+   ZEYA CURTAINS & BLINDS — core stylesheet
+   Dubai, UAE
+
+   1.  Design tokens
+   2.  Base / reset (kept narrow so it cannot leak into WP admin or plugins)
+   3.  Typography helpers
+   4.  Layout primitives
+   5.  Buttons
+   6.  Header / navigation
+   7.  Hero
+   8.  Benefit strips
+   9.  Intro split
+   10. Page headers + breadcrumbs
+   11. About
+   12. Quote banner
+   13. Products
+   14. Process
+   15. Contact
+   16. Footer band / final CTA / footer
+   17. Utilities
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   1. Design tokens
+   ---------------------------------------------------------------------- */
+:root {
+  /* Palette */
+  --zeya-ivory: #f7f4ee;
+  --zeya-cream: #efe9df;
+  --zeya-beige: #d6c4a5;
+  --zeya-gold: #b89458;
+  --zeya-gold-deep: #9c7c45;
+  --zeya-gold-soft: #cbab74;
+  --zeya-espresso: #211b16;
+  --zeya-charcoal: #292622;
+  --zeya-white: #ffffff;
+
+  /* Derived neutrals */
+  --zeya-ink: #2f2820;
+  --zeya-body: #5d5348;
+  --zeya-muted: #8a7f72;
+  --zeya-line: rgba(33, 27, 22, 0.13);
+  --zeya-line-soft: rgba(33, 27, 22, 0.07);
+  --zeya-line-light: rgba(247, 244, 238, 0.16);
+  --zeya-on-dark: rgba(247, 244, 238, 0.74);
+
+  /* Type */
+  --zeya-serif: "Cormorant Garamond", "Playfair Display", Georgia, "Times New Roman", serif;
+  --zeya-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --zeya-fs-display: clamp(2.35rem, 1.05rem + 4.35vw, 4.75rem);   /* 38 → 76px */
+  --zeya-fs-h1: clamp(2.1rem, 1.15rem + 3.2vw, 3.9rem);           /* 34 → 62px */
+  --zeya-fs-h2: clamp(1.85rem, 1.1rem + 2.5vw, 3.25rem);          /* 30 → 52px */
+  --zeya-fs-h3: clamp(1.3rem, 1.05rem + 0.85vw, 1.85rem);         /* 21 → 30px */
+  --zeya-fs-h4: clamp(1.05rem, 0.96rem + 0.32vw, 1.25rem);        /* 17 → 20px */
+  --zeya-fs-body: clamp(0.938rem, 0.9rem + 0.14vw, 1.0rem);       /* 15 → 16px */
+  --zeya-fs-small: 0.813rem;
+  --zeya-fs-label: 0.688rem;
+
+  --zeya-track-label: 0.2em;
+  --zeya-track-logo: 0.34em;
+
+  /* Space */
+  --zeya-container: 1320px;
+  --zeya-container-wide: 1520px;
+  --zeya-gutter: clamp(1.25rem, 0.4rem + 3.4vw, 4rem);            /* 20 → 64px */
+  --zeya-section: clamp(4.5rem, 2rem + 7.2vw, 8.75rem);           /* 72 → 140px */
+  --zeya-section-sm: clamp(3rem, 1.6rem + 4.2vw, 5.5rem);
+  --zeya-nav-h: 84px;
+
+  /* Shape */
+  --zeya-radius-xs: 4px;
+  --zeya-radius-sm: 8px;
+  --zeya-radius: 14px;
+  --zeya-radius-lg: 22px;
+  --zeya-radius-pill: 999px;
+
+  /* Motion */
+  --zeya-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --zeya-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --zeya-dur: 560ms;
+  --zeya-dur-fast: 320ms;
+
+  /* Elevation */
+  --zeya-shadow-sm: 0 2px 10px rgba(33, 27, 22, 0.06);
+  --zeya-shadow: 0 18px 44px -24px rgba(33, 27, 22, 0.35);
+  --zeya-shadow-lg: 0 40px 90px -40px rgba(33, 27, 22, 0.5);
+}
+
+/* -------------------------------------------------------------------------
+   2. Base
+   ---------------------------------------------------------------------- */
+html {
+  box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--zeya-nav-h) + 16px);
+}
+
+/* Scoped so the reset cannot reach WP admin chrome or plugin widgets. */
+body.zeya-body,
+body.zeya-body *,
+body.zeya-body *::before,
+body.zeya-body *::after {
+  box-sizing: inherit;
+}
+
+body.zeya-body {
+  margin: 0;
+  background-color: var(--zeya-ivory);
+  color: var(--zeya-body);
+  font-family: var(--zeya-sans);
+  font-size: var(--zeya-fs-body);
+  font-weight: 400;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* `:where()` keeps these scoped to the theme while contributing zero
+   specificity, so any `.zeya-*` component class always wins over the reset. */
+:where(.zeya-body) img,
+:where(.zeya-body) svg,
+:where(.zeya-body) video {
+  display: block;
+  max-width: 100%;
+}
+
+:where(.zeya-body) img {
+  height: auto;
+}
+
+:where(.zeya-body) :is(h1, h2, h3, h4, blockquote, figure, p, ul, ol, fieldset) {
+  margin: 0;
+}
+
+:where(.zeya-body) :is(ul, ol) {
+  padding: 0;
+  list-style: none;
+}
+
+:where(.zeya-body) a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:where(.zeya-body) button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.zeya-body :focus-visible {
+  outline: 2px solid var(--zeya-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.zeya-body ::selection {
+  background: var(--zeya-beige);
+  color: var(--zeya-espresso);
+}
+
+.zeya-skip {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 200;
+  transform: translate(-50%, -140%);
+  padding: 0.75rem 1.5rem;
+  background: var(--zeya-espresso);
+  color: var(--zeya-ivory);
+  font-size: var(--zeya-fs-small);
+  letter-spacing: 0.08em;
+  border-radius: 0 0 var(--zeya-radius-sm) var(--zeya-radius-sm);
+  transition: transform var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-skip:focus {
+  transform: translate(-50%, 0);
+}
+
+.zeya-sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.zeya-icons-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* -------------------------------------------------------------------------
+   3. Typography helpers
+   ---------------------------------------------------------------------- */
+.zeya-display,
+.zeya-h1,
+.zeya-h2,
+.zeya-h3 {
+  font-family: var(--zeya-serif);
+  font-weight: 300;
+  color: var(--zeya-ink);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.zeya-display {
+  font-size: var(--zeya-fs-display);
+  line-height: 1.07;
+}
+
+.zeya-h1 {
+  font-size: var(--zeya-fs-h1);
+  line-height: 1.08;
+}
+
+.zeya-h2 {
+  font-size: var(--zeya-fs-h2);
+  line-height: 1.14;
+}
+
+.zeya-h3 {
+  font-size: var(--zeya-fs-h3);
+  line-height: 1.24;
+  font-weight: 400;
+}
+
+.zeya-label {
+  display: inline-block;
+  font-family: var(--zeya-sans);
+  font-size: var(--zeya-fs-label);
+  font-weight: 500;
+  letter-spacing: var(--zeya-track-label);
+  text-transform: uppercase;
+  color: var(--zeya-gold);
+}
+
+.zeya-lead {
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.063rem);
+  line-height: 1.8;
+  color: var(--zeya-body);
+}
+
+.zeya-text {
+  color: var(--zeya-body);
+  max-width: 62ch;
+}
+
+.zeya-text + .zeya-text {
+  margin-top: 1.15em;
+}
+
+.zeya-rule {
+  display: block;
+  width: 56px;
+  height: 1px;
+  background: var(--zeya-gold);
+  opacity: 0.9;
+}
+
+.zeya-on-dark {
+  color: var(--zeya-on-dark);
+}
+
+.zeya-on-dark .zeya-display,
+.zeya-on-dark .zeya-h1,
+.zeya-on-dark .zeya-h2,
+.zeya-on-dark .zeya-h3 {
+  color: var(--zeya-ivory);
+}
+
+/* -------------------------------------------------------------------------
+   4. Layout primitives
+   ---------------------------------------------------------------------- */
+.zeya-container {
+  width: 100%;
+  max-width: calc(var(--zeya-container) + var(--zeya-gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--zeya-gutter);
+}
+
+.zeya-container--wide {
+  max-width: calc(var(--zeya-container-wide) + var(--zeya-gutter) * 2);
+}
+
+.zeya-section {
+  padding-block: var(--zeya-section);
+}
+
+.zeya-section--sm {
+  padding-block: var(--zeya-section-sm);
+}
+
+.zeya-section--cream {
+  background: var(--zeya-cream);
+}
+
+.zeya-section--white {
+  background: var(--zeya-white);
+}
+
+.zeya-section--dark {
+  background: var(--zeya-espresso);
+}
+
+.zeya-figure {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--zeya-radius);
+  background: var(--zeya-cream);
+}
+
+.zeya-figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zeya-ratio-4x5 { aspect-ratio: 4 / 5; }
+.zeya-ratio-3x4 { aspect-ratio: 3 / 4; }
+.zeya-ratio-1x1 { aspect-ratio: 1 / 1; }
+.zeya-ratio-4x3 { aspect-ratio: 4 / 3; }
+.zeya-ratio-3x2 { aspect-ratio: 3 / 2; }
+.zeya-ratio-16x9 { aspect-ratio: 16 / 9; }
+
+/* -------------------------------------------------------------------------
+   5. Buttons
+   ---------------------------------------------------------------------- */
+.zeya-btn {
+  --btn-bg: var(--zeya-gold);
+  --btn-fg: var(--zeya-white);
+  --btn-bd: var(--zeya-gold);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  padding: 1.05em 1.9em;
+  border: 1px solid var(--btn-bd);
+  border-radius: var(--zeya-radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--zeya-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--zeya-dur-fast) var(--zeya-ease),
+              color var(--zeya-dur-fast) var(--zeya-ease),
+              border-color var(--zeya-dur-fast) var(--zeya-ease),
+              transform var(--zeya-dur-fast) var(--zeya-ease),
+              box-shadow var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-btn__arrow {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  flex: none;
+  transition: transform var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-btn:hover {
+  --btn-bg: var(--zeya-gold-deep);
+  --btn-bd: var(--zeya-gold-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -18px rgba(33, 27, 22, 0.75);
+}
+
+.zeya-btn:hover .zeya-btn__arrow,
+.zeya-btn:focus-visible .zeya-btn__arrow {
+  transform: translateX(4px);
+}
+
+.zeya-btn:active {
+  transform: translateY(0);
+}
+
+/* The base button is already champagne gold; the modifier exists so intent is
+   explicit in the markup. */
+.zeya-btn--gold {
+  --btn-bg: var(--zeya-gold);
+  --btn-fg: var(--zeya-white);
+  --btn-bd: var(--zeya-gold);
+}
+
+.zeya-btn--ivory {
+  --btn-bg: var(--zeya-ivory);
+  --btn-fg: var(--zeya-espresso);
+  --btn-bd: var(--zeya-ivory);
+}
+
+.zeya-btn--ivory:hover {
+  --btn-bg: var(--zeya-white);
+  --btn-bd: var(--zeya-white);
+}
+
+.zeya-btn--outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--zeya-ink);
+  --btn-bd: var(--zeya-line);
+}
+
+.zeya-btn--outline:hover {
+  --btn-bg: var(--zeya-espresso);
+  --btn-fg: var(--zeya-ivory);
+  --btn-bd: var(--zeya-espresso);
+}
+
+.zeya-btn--outline-light {
+  --btn-bg: transparent;
+  --btn-fg: var(--zeya-ivory);
+  --btn-bd: var(--zeya-line-light);
+}
+
+.zeya-btn--outline-light:hover {
+  --btn-bg: var(--zeya-ivory);
+  --btn-fg: var(--zeya-espresso);
+  --btn-bd: var(--zeya-ivory);
+}
+
+.zeya-btn--sm {
+  padding: 0.85em 1.5em;
+  font-size: 0.688rem;
+}
+
+.zeya-btn--block {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Circular arrow button used on the product cards */
+.zeya-arrow-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--zeya-gold);
+  color: var(--zeya-white);
+  transition: background var(--zeya-dur-fast) var(--zeya-ease),
+              transform var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-arrow-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Text link with sliding underline */
+.zeya-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  color: var(--zeya-gold);
+  font-size: var(--zeya-fs-small);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.zeya-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-link:hover::after,
+.zeya-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* -------------------------------------------------------------------------
+   6. Header / navigation
+   ---------------------------------------------------------------------- */
+.zeya-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  --hdr-fg: var(--zeya-ivory);
+  background: transparent;
+  transition: background var(--zeya-dur) var(--zeya-ease),
+              box-shadow var(--zeya-dur) var(--zeya-ease),
+              backdrop-filter var(--zeya-dur) var(--zeya-ease);
+}
+
+.zeya-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: var(--zeya-line-light);
+  opacity: 0;
+  transition: opacity var(--zeya-dur) var(--zeya-ease);
+}
+
+/* Solid state: applied statically on inner pages, added by JS on scroll. */
+.zeya-header--solid,
+.zeya-header.is-scrolled,
+.zeya-header.is-open {
+  background: rgba(33, 27, 22, 0.94);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  backdrop-filter: saturate(140%) blur(14px);
+  box-shadow: 0 1px 0 rgba(247, 244, 238, 0.07), 0 10px 30px -22px rgba(0, 0, 0, 0.8);
+}
+
+.zeya-header--solid::after,
+.zeya-header.is-scrolled::after {
+  opacity: 1;
+}
+
+.zeya-header.is-hidden {
+  transform: translateY(-100%);
+}
+
+.zeya-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(1rem, 3vw, 3rem);
+  min-height: var(--zeya-nav-h);
+}
+
+/* Logo lockup */
+.zeya-logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  color: var(--hdr-fg, var(--zeya-ivory));
+  line-height: 1;
+}
+
+.zeya-logo__mark {
+  font-family: var(--zeya-serif);
+  font-size: 1.45rem;
+  font-weight: 400;
+  letter-spacing: var(--zeya-track-logo);
+  text-indent: var(--zeya-track-logo);
+}
+
+.zeya-logo__sub {
+  font-family: var(--zeya-sans);
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.zeya-logo--lg .zeya-logo__mark { font-size: clamp(2rem, 1.2rem + 2.6vw, 3.25rem); }
+.zeya-logo--lg .zeya-logo__sub { font-size: 0.688rem; letter-spacing: 0.42em; text-indent: 0.42em; }
+.zeya-logo--center { align-items: center; text-align: center; }
+
+/* Nav */
+.zeya-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.6vw, 2.75rem);
+}
+
+.zeya-nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2.25rem);
+}
+
+.zeya-nav__link {
+  position: relative;
+  display: inline-block;
+  padding: 0.5rem 0;
+  color: var(--hdr-fg, var(--zeya-ivory));
+  font-size: 0.813rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  opacity: 0.82;
+  transition: opacity var(--zeya-dur-fast) var(--zeya-ease),
+              color var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--zeya-gold-soft);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-nav__link:hover,
+.zeya-nav__link:focus-visible {
+  opacity: 1;
+}
+
+.zeya-nav__link:hover::after,
+.zeya-nav__link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.zeya-nav__link.is-active {
+  opacity: 1;
+}
+
+.zeya-nav__link.is-active::after {
+  transform: scaleX(1);
+  background: var(--zeya-gold);
+}
+
+.zeya-nav__cta {
+  padding: 0.85em 1.6em;
+  font-size: 0.688rem;
+}
+
+/* Hamburger */
+.zeya-burger {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  border-radius: 50%;
+  color: var(--hdr-fg, var(--zeya-ivory));
+}
+
+.zeya-burger__bar {
+  position: absolute;
+  left: 50%;
+  width: 22px;
+  height: 1.5px;
+  margin-left: -11px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform var(--zeya-dur-fast) var(--zeya-ease),
+              opacity 180ms var(--zeya-ease);
+}
+
+.zeya-burger__bar:nth-child(1) { top: 16px; }
+.zeya-burger__bar:nth-child(2) { top: 21.5px; }
+.zeya-burger__bar:nth-child(3) { top: 27px; }
+
+.zeya-burger[aria-expanded="true"] .zeya-burger__bar:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.zeya-burger[aria-expanded="true"] .zeya-burger__bar:nth-child(2) { opacity: 0; transform: scaleX(0.4); }
+.zeya-burger[aria-expanded="true"] .zeya-burger__bar:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+/* WordPress admin bar offset */
+body.admin-bar .zeya-header { top: 32px; }
+
+/* -------------------------------------------------------------------------
+   7. Hero
+   ---------------------------------------------------------------------- */
+.zeya-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 640px;
+  min-height: clamp(640px, 100svh, 980px);
+  padding-top: calc(var(--zeya-nav-h) + clamp(2rem, 6vw, 5rem));
+  padding-bottom: clamp(1.75rem, 3.5vw, 3rem);
+  overflow: hidden;
+  background: var(--zeya-espresso);
+  isolation: isolate;
+}
+
+.zeya-hero__media {
+  position: absolute;
+  inset: -6% 0 -6% 0;
+  z-index: -2;
+  will-change: transform;
+}
+
+.zeya-hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% 50%;
+}
+
+.zeya-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(20, 16, 13, 0.82) 0%, rgba(20, 16, 13, 0.55) 36%, rgba(20, 16, 13, 0.12) 68%, rgba(20, 16, 13, 0.35) 100%),
+    linear-gradient(180deg, rgba(20, 16, 13, 0.5) 0%, rgba(20, 16, 13, 0) 28%, rgba(20, 16, 13, 0) 62%, rgba(20, 16, 13, 0.62) 100%);
+}
+
+.zeya-hero__inner {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+}
+
+.zeya-hero__copy {
+  max-width: 43rem;
+}
+
+.zeya-hero__title {
+  color: var(--zeya-ivory);
+  font-family: var(--zeya-serif);
+  font-size: var(--zeya-fs-display);
+  font-weight: 300;
+  line-height: 1.07;
+  letter-spacing: -0.01em;
+}
+
+.zeya-hero__sub {
+  margin-top: clamp(1.5rem, 2.6vw, 2.25rem);
+  color: rgba(247, 244, 238, 0.86);
+  font-size: clamp(0.938rem, 0.88rem + 0.25vw, 1.063rem);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.zeya-hero__actions {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.zeya-hero__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  color: rgba(247, 244, 238, 0.7);
+}
+
+.zeya-hero__slides {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  font-size: 0.688rem;
+  letter-spacing: 0.22em;
+}
+
+.zeya-hero__slide {
+  position: relative;
+  padding-bottom: 7px;
+  opacity: 0.5;
+  transition: opacity var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-hero__slide::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 4px;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--zeya-dur) var(--zeya-ease);
+}
+
+.zeya-hero__slide.is-active {
+  opacity: 1;
+  color: var(--zeya-gold-soft);
+}
+
+.zeya-hero__slide.is-active::after {
+  transform: scaleX(1);
+}
+
+.zeya-hero__tag {
+  font-size: 0.688rem;
+  line-height: 1.75;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+/* -------------------------------------------------------------------------
+   8. Benefit strips
+   ---------------------------------------------------------------------- */
+.zeya-benefits {
+  background: var(--zeya-ivory);
+  border-block: 1px solid var(--zeya-line-soft);
+}
+
+/* 1px gap over a tinted track gives hairline dividers at any column count. */
+.zeya-benefits__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--zeya-line-soft);
+}
+
+.zeya-benefit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  padding: clamp(2rem, 3.4vw, 3.1rem) clamp(0.75rem, 2vw, 1.75rem);
+  background: var(--zeya-ivory);
+  text-align: center;
+}
+
+.zeya-benefit__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  color: var(--zeya-gold);
+  transition: transform var(--zeya-dur) var(--zeya-ease);
+}
+
+.zeya-benefit__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.zeya-benefit:hover .zeya-benefit__icon {
+  transform: translateY(-3px);
+}
+
+.zeya-benefit__title {
+  font-family: var(--zeya-sans);
+  font-size: 0.813rem;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  color: var(--zeya-ink);
+}
+
+/* Dark variant (Products page footer strip) */
+.zeya-benefits--dark {
+  background: var(--zeya-espresso);
+  border-block-color: rgba(247, 244, 238, 0.08);
+}
+
+.zeya-benefits--dark .zeya-benefits__grid {
+  background: rgba(247, 244, 238, 0.1);
+}
+
+.zeya-benefits--dark .zeya-benefit {
+  background: var(--zeya-espresso);
+}
+
+.zeya-benefits--dark .zeya-benefit__title {
+  color: var(--zeya-ivory);
+}
+
+.zeya-benefits--dark .zeya-benefit__icon {
+  color: var(--zeya-gold-soft);
+}
+
+/* -------------------------------------------------------------------------
+   9. Intro split (home)
+   ---------------------------------------------------------------------- */
+.zeya-split__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 6.5rem);
+}
+
+.zeya-split__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 7 / 5;
+  background: var(--zeya-cream);
+}
+
+.zeya-split__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Full-bleed variants.
+   Rather than pulling the image out with negative margins (percentages there
+   resolve against the grid *column*, not the page, which overlaps the copy),
+   the grid drops the container padding so the photograph can reach the
+   viewport edge, and the copy column carries the alignment padding instead. */
+.zeya-split--bleed .zeya-split__grid {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.zeya-split--bleed-left .zeya-split__copy {
+  padding-right: max(var(--zeya-gutter), calc((100vw - var(--zeya-container)) / 2));
+}
+
+.zeya-split--bleed-right .zeya-split__copy {
+  padding-left: max(var(--zeya-gutter), calc((100vw - var(--zeya-container)) / 2));
+}
+
+.zeya-split__media--bleed-left {
+  border-radius: 0 var(--zeya-radius) var(--zeya-radius) 0;
+}
+
+.zeya-split__media--bleed-right {
+  border-radius: var(--zeya-radius) 0 0 var(--zeya-radius);
+}
+
+.zeya-split__copy > * + * {
+  margin-top: 1.5rem;
+}
+
+.zeya-split__copy .zeya-h2 + .zeya-text {
+  margin-top: 1.75rem;
+}
+
+.zeya-split__title em {
+  display: block;
+  font-style: normal;
+}
+
+/* -------------------------------------------------------------------------
+   10. Page headers + breadcrumbs
+   ---------------------------------------------------------------------- */
+.zeya-pagehead {
+  padding-top: calc(var(--zeya-nav-h) + clamp(2.75rem, 6vw, 5.5rem));
+  padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  background: var(--zeya-ivory);
+}
+
+.zeya-pagehead__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1.75rem, 5vw, 5rem);
+  align-items: start;
+}
+
+.zeya-pagehead__title {
+  font-family: var(--zeya-serif);
+  font-size: var(--zeya-fs-h1);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--zeya-ink);
+}
+
+.zeya-pagehead__left .zeya-rule {
+  margin-top: 1.1rem;
+}
+
+.zeya-pagehead__lead {
+  font-family: var(--zeya-serif);
+  font-size: clamp(1.5rem, 1.05rem + 1.6vw, 2.35rem);
+  font-weight: 300;
+  line-height: 1.22;
+  color: var(--zeya-ink);
+}
+
+.zeya-pagehead__text {
+  margin-top: 1.1rem;
+  max-width: 54ch;
+  color: var(--zeya-body);
+  font-size: var(--zeya-fs-small);
+  line-height: 1.85;
+}
+
+.zeya-crumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--zeya-muted);
+}
+
+.zeya-crumbs a {
+  transition: color var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-crumbs a:hover {
+  color: var(--zeya-gold);
+}
+
+.zeya-crumbs__sep {
+  opacity: 0.5;
+}
+
+.zeya-crumbs [aria-current="page"] {
+  color: var(--zeya-ink);
+}
+
+/* -------------------------------------------------------------------------
+   11. About
+   ---------------------------------------------------------------------- */
+.zeya-abouthero {
+  padding-top: var(--zeya-nav-h);
+  background: var(--zeya-ivory);
+}
+
+.zeya-abouthero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: clamp(2rem, 5vw, 5rem);
+  max-width: none;
+  padding-inline: 0;
+}
+
+.zeya-abouthero__media {
+  position: relative;
+  overflow: hidden;
+  min-height: clamp(360px, 52vw, 720px);
+  background: var(--zeya-cream);
+}
+
+.zeya-abouthero__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zeya-abouthero__copy {
+  padding-block: clamp(2.5rem, 5vw, 5rem);
+  padding-right: max(var(--zeya-gutter), calc((100vw - var(--zeya-container-wide)) / 2));
+  max-width: 44rem;
+}
+
+.zeya-abouthero__copy .zeya-h2 {
+  margin-top: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.zeya-abouthero__copy .zeya-text:first-of-type {
+  margin-top: 1.75rem;
+}
+
+/* Value cards */
+.zeya-values {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+
+.zeya-value {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: clamp(1.6rem, 2.6vw, 2.4rem) 1.15rem;
+  text-align: center;
+  background: var(--zeya-cream);
+  border: 1px solid var(--zeya-line-soft);
+  border-radius: var(--zeya-radius-xs);
+  transition: transform var(--zeya-dur) var(--zeya-ease),
+              border-color var(--zeya-dur) var(--zeya-ease),
+              box-shadow var(--zeya-dur) var(--zeya-ease);
+}
+
+.zeya-value:hover {
+  transform: translateY(-4px);
+  border-color: rgba(184, 148, 88, 0.4);
+  box-shadow: var(--zeya-shadow);
+}
+
+.zeya-value__icon {
+  width: 38px;
+  height: 38px;
+  color: var(--zeya-gold);
+}
+
+.zeya-value__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.zeya-value__title {
+  font-size: 0.813rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--zeya-ink);
+}
+
+/* -------------------------------------------------------------------------
+   12. Quote banner
+   ---------------------------------------------------------------------- */
+.zeya-quote {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: clamp(320px, 38vw, 520px);
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+  overflow: hidden;
+  background: var(--zeya-charcoal);
+  isolation: isolate;
+}
+
+.zeya-quote__media {
+  position: absolute;
+  inset: -8% 0;
+  z-index: -2;
+  will-change: transform;
+}
+
+.zeya-quote__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zeya-quote::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(20, 16, 13, 0.72) 0%, rgba(20, 16, 13, 0.42) 55%, rgba(20, 16, 13, 0.6) 100%);
+}
+
+.zeya-quote__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+  align-items: end;
+  gap: clamp(2rem, 5vw, 5rem);
+}
+
+.zeya-quote__text {
+  font-family: var(--zeya-serif);
+  font-size: clamp(1.75rem, 1rem + 2.7vw, 3.35rem);
+  font-weight: 300;
+  line-height: 1.16;
+  color: var(--zeya-ivory);
+  text-wrap: balance;
+}
+
+.zeya-quote__note {
+  color: rgba(247, 244, 238, 0.7);
+  font-size: var(--zeya-fs-small);
+  line-height: 1.85;
+}
+
+.zeya-quote__cite {
+  display: block;
+  margin-top: 1rem;
+  font-size: 0.688rem;
+  font-style: normal;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--zeya-gold-soft);
+}
+
+/* -------------------------------------------------------------------------
+   13. Products
+   ---------------------------------------------------------------------- */
+.zeya-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.9rem, 1.8vw, 1.6rem);
+}
+
+.zeya-card {
+  position: relative;
+  border-radius: var(--zeya-radius);
+  overflow: hidden;
+  background: var(--zeya-charcoal);
+  isolation: isolate;
+}
+
+.zeya-card__link {
+  display: block;
+  position: relative;
+  aspect-ratio: 4 / 5;
+}
+
+.zeya-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--zeya-ease-out);
+  will-change: transform;
+}
+
+.zeya-card__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 16, 13, 0) 38%, rgba(20, 16, 13, 0.32) 60%, rgba(20, 16, 13, 0.82) 100%);
+}
+
+.zeya-card__body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(1.25rem, 2.2vw, 1.85rem);
+}
+
+.zeya-card__title {
+  font-family: var(--zeya-serif);
+  font-size: clamp(1.35rem, 1.05rem + 1vw, 1.9rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--zeya-ivory);
+}
+
+.zeya-card__text {
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(247, 244, 238, 0.72);
+}
+
+.zeya-card__link:hover .zeya-card__img,
+.zeya-card__link:focus-visible .zeya-card__img {
+  transform: scale(1.06);
+}
+
+.zeya-card__link:hover .zeya-arrow-btn,
+.zeya-card__link:focus-visible .zeya-arrow-btn {
+  background: var(--zeya-ivory);
+  color: var(--zeya-espresso);
+  transform: translateX(3px);
+}
+
+/* Type panels */
+.zeya-types {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.9rem, 1.8vw, 1.6rem);
+  align-items: stretch;
+}
+
+.zeya-type {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.4rem, 2.2vw, 2rem);
+  background: var(--zeya-white);
+  border: 1px solid var(--zeya-line-soft);
+  border-radius: var(--zeya-radius-sm);
+}
+
+.zeya-type__title {
+  font-family: var(--zeya-sans);
+  font-size: 0.813rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--zeya-ink);
+}
+
+.zeya-type__title + * {
+  margin-top: 1.25rem;
+}
+
+.zeya-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.zeya-list li {
+  position: relative;
+  padding-left: 1.15rem;
+  font-size: var(--zeya-fs-small);
+  line-height: 1.6;
+  color: var(--zeya-body);
+}
+
+.zeya-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--zeya-gold);
+}
+
+.zeya-type__text {
+  font-size: var(--zeya-fs-small);
+  line-height: 1.8;
+  color: var(--zeya-body);
+}
+
+.zeya-type__media {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  align-self: flex-end;
+  width: min(100%, 15rem);
+}
+
+.zeya-type__media--full {
+  width: 100%;
+}
+
+.zeya-type__media .zeya-figure {
+  border-radius: var(--zeya-radius-xs);
+}
+
+/* -------------------------------------------------------------------------
+   14. Process
+   ---------------------------------------------------------------------- */
+.zeya-process__hero {
+  overflow: hidden;
+  border-radius: var(--zeya-radius);
+  aspect-ratio: 20 / 9;
+  background: var(--zeya-cream);
+}
+
+.zeya-process__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zeya-timeline {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+
+/* Thin gold connector drawn between the circle centres */
+.zeya-timeline::before {
+  content: "";
+  position: absolute;
+  top: 27px;
+  left: calc(100% / 12);
+  right: calc(100% / 12);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(184, 148, 88, 0.15), rgba(184, 148, 88, 0.55));
+  transform: scaleX(var(--zeya-timeline-progress, 1));
+  transform-origin: left;
+}
+
+.zeya-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-right: clamp(0.25rem, 1vw, 1rem);
+}
+
+.zeya-step__icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--zeya-gold);
+  color: var(--zeya-white);
+  box-shadow: 0 0 0 6px var(--zeya-ivory);
+  transition: transform var(--zeya-dur) var(--zeya-ease),
+              background var(--zeya-dur) var(--zeya-ease);
+}
+
+.zeya-step__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.zeya-step:hover .zeya-step__icon {
+  transform: translateY(-3px);
+  background: var(--zeya-gold-deep);
+}
+
+.zeya-step__num {
+  font-size: 0.688rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--zeya-gold);
+}
+
+.zeya-step__title {
+  font-family: var(--zeya-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  color: var(--zeya-ink);
+}
+
+.zeya-step__text {
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: var(--zeya-body);
+}
+
+.zeya-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.9rem, 1.8vw, 1.5rem);
+}
+
+.zeya-gallery .zeya-figure {
+  aspect-ratio: 3 / 2;
+}
+
+.zeya-gallery img {
+  transition: transform 900ms var(--zeya-ease-out);
+}
+
+.zeya-gallery .zeya-figure:hover img {
+  transform: scale(1.05);
+}
+
+.zeya-closing {
+  text-align: center;
+  font-family: var(--zeya-serif);
+  font-size: clamp(1.35rem, 0.95rem + 1.5vw, 2.15rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--zeya-ink);
+  text-wrap: balance;
+}
+
+/* -------------------------------------------------------------------------
+   15. Contact
+   ---------------------------------------------------------------------- */
+.zeya-contact {
+  position: relative;
+  padding-top: var(--zeya-nav-h);
+  background: var(--zeya-ivory);
+}
+
+.zeya-contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: stretch;
+  max-width: none;
+  padding-inline: 0;
+}
+
+.zeya-contact__copy {
+  padding-block: clamp(2.5rem, 5vw, 4.75rem);
+  padding-left: max(var(--zeya-gutter), calc((100vw - var(--zeya-container-wide)) / 2));
+  max-width: min(40rem, 100%);
+}
+
+.zeya-contact__copy .zeya-h2 {
+  margin-top: clamp(1.5rem, 2.6vw, 2.25rem);
+}
+
+.zeya-contact__copy .zeya-text:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.zeya-contact__actions {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+/* Contact method list */
+.zeya-methods {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.zeya-method {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--zeya-line-soft);
+}
+
+.zeya-method__icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  color: var(--zeya-espresso);
+}
+
+.zeya-method__icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.zeya-method__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--zeya-ink);
+}
+
+.zeya-method__value {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--zeya-muted);
+}
+
+a.zeya-method:hover .zeya-method__label {
+  color: var(--zeya-gold);
+}
+
+/* Right-hand image panel with the floating form card */
+.zeya-contact__panel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(1.5rem, 3vw, 3rem) 0;
+  min-height: clamp(520px, 56vw, 760px);
+}
+
+.zeya-contact__panel-media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--zeya-cream);
+}
+
+.zeya-contact__panel-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 16, 13, 0.12), rgba(20, 16, 13, 0.34));
+}
+
+.zeya-contact__panel-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* -------------------------------------------------------------------------
+   Form
+   ---------------------------------------------------------------------- */
+.zeya-formcard {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 25rem);
+  padding: clamp(1.5rem, 2.6vw, 2.25rem);
+  background: var(--zeya-cream);
+  border: 1px solid rgba(247, 244, 238, 0.6);
+  border-radius: var(--zeya-radius-sm);
+  box-shadow: var(--zeya-shadow-lg);
+}
+
+.zeya-formcard__title {
+  font-family: var(--zeya-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--zeya-ink);
+}
+
+.zeya-form {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.4rem;
+}
+
+.zeya-field {
+  display: block;
+}
+
+.zeya-field__label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.688rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--zeya-muted);
+}
+
+.zeya-input,
+.zeya-textarea {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: var(--zeya-white);
+  border: 1px solid var(--zeya-line);
+  border-radius: var(--zeya-radius-xs);
+  color: var(--zeya-ink);
+  font-family: var(--zeya-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: border-color var(--zeya-dur-fast) var(--zeya-ease),
+              box-shadow var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.zeya-input::placeholder,
+.zeya-textarea::placeholder {
+  color: var(--zeya-muted);
+  opacity: 0.75;
+}
+
+.zeya-input:focus,
+.zeya-textarea:focus {
+  outline: none;
+  border-color: var(--zeya-gold);
+  box-shadow: 0 0 0 3px rgba(184, 148, 88, 0.16);
+}
+
+.zeya-input[aria-invalid="true"],
+.zeya-textarea[aria-invalid="true"] {
+  border-color: #a8452f;
+  box-shadow: 0 0 0 3px rgba(168, 69, 47, 0.12);
+}
+
+.zeya-field__error {
+  display: none;
+  margin-top: 0.3rem;
+  font-size: 0.688rem;
+  line-height: 1.5;
+  color: #a8452f;
+}
+
+.zeya-field__error.is-visible {
+  display: block;
+}
+
+.zeya-form__note {
+  margin-top: 0.4rem;
+  font-size: 0.688rem;
+  line-height: 1.6;
+  color: var(--zeya-muted);
+}
+
+.zeya-form__status {
+  display: none;
+  margin-top: 0.9rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--zeya-radius-xs);
+  font-size: 0.75rem;
+  line-height: 1.65;
+}
+
+.zeya-form__status.is-visible {
+  display: block;
+}
+
+.zeya-form__status[data-state="info"] {
+  background: rgba(184, 148, 88, 0.12);
+  border: 1px solid rgba(184, 148, 88, 0.32);
+  color: #6f5730;
+}
+
+.zeya-form__status[data-state="error"] {
+  background: rgba(168, 69, 47, 0.08);
+  border: 1px solid rgba(168, 69, 47, 0.28);
+  color: #8e3b28;
+}
+
+.zeya-form__status[data-state="success"] {
+  background: rgba(96, 122, 82, 0.1);
+  border: 1px solid rgba(96, 122, 82, 0.3);
+  color: #4c6141;
+}
+
+/* Honeypot */
+.zeya-hp {
+  position: absolute !important;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* -------------------------------------------------------------------------
+   16. Footer band / final CTA / footer
+   ---------------------------------------------------------------------- */
+.zeya-footer-band {
+  padding-block: clamp(2.25rem, 4vw, 3.5rem);
+  background: var(--zeya-ivory);
+  border-top: 1px solid var(--zeya-line-soft);
+}
+
+.zeya-footer-band__inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem 2rem;
+  flex-wrap: wrap;
+}
+
+.zeya-footer-band .zeya-logo {
+  color: var(--zeya-ink);
+}
+
+.zeya-footer-band .zeya-logo__mark {
+  font-size: clamp(1.5rem, 1.2rem + 0.9vw, 2rem);
+}
+
+.zeya-footer-band__tag {
+  margin-top: 0.95rem;
+  font-size: 0.688rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--zeya-muted);
+}
+
+.zeya-footer-band__line {
+  font-family: var(--zeya-serif);
+  font-size: clamp(1.25rem, 0.95rem + 1.1vw, 1.85rem);
+  font-weight: 300;
+  line-height: 1.3;
+  text-align: right;
+  color: var(--zeya-ink);
+}
+
+/* Final CTA */
+.zeya-cta {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(420px, 58vw, 660px);
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+  overflow: hidden;
+  background: var(--zeya-espresso);
+  text-align: center;
+  isolation: isolate;
+}
+
+.zeya-cta__media {
+  position: absolute;
+  inset: -8% 0;
+  z-index: -2;
+  will-change: transform;
+}
+
+.zeya-cta__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.zeya-cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(70% 60% at 50% 55%, rgba(20, 16, 13, 0.3) 0%, rgba(20, 16, 13, 0.66) 100%),
+    linear-gradient(180deg, rgba(20, 16, 13, 0.55) 0%, rgba(20, 16, 13, 0.3) 45%, rgba(20, 16, 13, 0.7) 100%);
+}
+
+.zeya-cta__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.zeya-cta .zeya-logo {
+  color: var(--zeya-ivory);
+}
+
+.zeya-cta__tag {
+  margin-top: clamp(1.5rem, 2.6vw, 2.25rem);
+  color: rgba(247, 244, 238, 0.82);
+  font-size: clamp(0.938rem, 0.88rem + 0.3vw, 1.125rem);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+
+.zeya-cta__actions {
+  margin-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+/* Footer */
+.zeya-footer {
+  background: var(--zeya-espresso);
+  color: rgba(247, 244, 238, 0.66);
+  border-top: 1px solid rgba(247, 244, 238, 0.08);
+}
+
+.zeya-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2.5rem;
+  flex-wrap: wrap;
+  padding-block: clamp(1.5rem, 2.6vw, 2.15rem);
+}
+
+.zeya-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.25rem);
+}
+
+.zeya-footer__link {
+  position: relative;
+  font-size: 0.813rem;
+  color: rgba(247, 244, 238, 0.72);
+  transition: color var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-footer__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 1px;
+  background: var(--zeya-gold-soft);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-footer__link:hover {
+  color: var(--zeya-ivory);
+}
+
+.zeya-footer__link:hover::after,
+.zeya-footer__link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.zeya-footer__contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.35rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+.zeya-footer__contact a {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: inherit;
+  transition: color var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-footer__contact a[href]:hover {
+  color: var(--zeya-ivory);
+}
+
+.zeya-footer__contact a[aria-disabled="true"] {
+  cursor: default;
+}
+
+.zeya-footer__contact svg {
+  width: 14px;
+  height: 14px;
+  color: var(--zeya-gold-soft);
+  flex: none;
+}
+
+.zeya-footer__social {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.zeya-social-link {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(247, 244, 238, 0.16);
+  border-radius: 50%;
+  color: rgba(247, 244, 238, 0.7);
+  transition: color var(--zeya-dur-fast) var(--zeya-ease),
+              border-color var(--zeya-dur-fast) var(--zeya-ease),
+              background var(--zeya-dur-fast) var(--zeya-ease),
+              transform var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-social-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.zeya-social-link:hover {
+  color: var(--zeya-espresso);
+  background: var(--zeya-gold-soft);
+  border-color: var(--zeya-gold-soft);
+  transform: translateY(-2px);
+}
+
+.zeya-footer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  flex-wrap: wrap;
+  padding-block: 1.1rem;
+  border-top: 1px solid rgba(247, 244, 238, 0.08);
+  font-size: 0.688rem;
+  letter-spacing: 0.05em;
+  color: rgba(247, 244, 238, 0.45);
+}
+
+/* -------------------------------------------------------------------------
+   17. Utilities
+   ---------------------------------------------------------------------- */
+.zeya-stack-sm > * + * { margin-top: 0.75rem; }
+.zeya-stack > * + * { margin-top: 1.5rem; }
+.zeya-stack-lg > * + * { margin-top: clamp(2rem, 4vw, 3.5rem); }
+
+.zeya-mt-sm { margin-top: clamp(1.25rem, 2.4vw, 2rem); }
+.zeya-mt { margin-top: clamp(2rem, 4vw, 3.5rem); }
+.zeya-mt-lg { margin-top: clamp(3rem, 6vw, 5rem); }
+
+.zeya-center { text-align: center; }
+.zeya-measure { max-width: 62ch; }
+.zeya-measure-sm { max-width: 46ch; }
+.zeya-mx-auto { margin-inline: auto; }
+
+/* -------------------------------------------------------------------------
+   18. WordPress integration
+   Only active once the markup is rendered by WordPress. Everything stays
+   inside `.zeya-*` scopes or WP's own front-end classes, so nothing here can
+   reach the admin bar, the block editor chrome or a plugin's widgets.
+   ---------------------------------------------------------------------- */
+
+/* wp_nav_menu marks the current item on the <li>, not the <a>. */
+.zeya-nav__list .current-menu-item > .zeya-nav__link,
+.zeya-nav__list .current_page_item > .zeya-nav__link,
+.zeya-nav__list .current-menu-ancestor > .zeya-nav__link {
+  opacity: 1;
+}
+
+.zeya-nav__list .current-menu-item > .zeya-nav__link::after,
+.zeya-nav__list .current_page_item > .zeya-nav__link::after,
+.zeya-nav__list .current-menu-ancestor > .zeya-nav__link::after {
+  transform: scaleX(1);
+  background: var(--zeya-gold);
+}
+
+.zeya-footer__nav .current-menu-item > a,
+.zeya-footer__nav .current_page_item > a {
+  color: var(--zeya-ivory);
+}
+
+/* Footer menu items come out of wp_nav_menu as <li><a>. */
+.zeya-footer__nav ul {
+  display: contents;
+}
+
+.zeya-footer__nav li > a {
+  position: relative;
+  font-size: 0.813rem;
+  color: rgba(247, 244, 238, 0.72);
+  transition: color var(--zeya-dur-fast) var(--zeya-ease);
+}
+
+.zeya-footer__nav li > a:hover {
+  color: var(--zeya-ivory);
+}
+
+/* Custom logo, when one is uploaded in the Customizer. */
+.zeya-header .custom-logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.zeya-header .custom-logo {
+  width: auto;
+  max-height: 46px;
+}
+
+/* Editor content rendered by the_content() inside `.zeya-text`. */
+.zeya-text > p + p,
+.zeya-text > ul,
+.zeya-text > ol,
+.zeya-text > h2,
+.zeya-text > h3 {
+  margin-top: 1.15em;
+}
+
+.zeya-text > h2,
+.zeya-text > h3 {
+  font-family: var(--zeya-serif);
+  font-weight: 300;
+  color: var(--zeya-ink);
+  line-height: 1.2;
+}
+
+.zeya-text > h2 { font-size: var(--zeya-fs-h3); }
+.zeya-text > h3 { font-size: var(--zeya-fs-h4); }
+
+.zeya-text a:not(.zeya-btn) {
+  color: var(--zeya-gold);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.zeya-text > ul {
+  list-style: none;
+}
+
+.zeya-text > ul > li,
+.zeya-text > ol > li {
+  position: relative;
+  padding-left: 1.15rem;
+  margin-top: 0.5rem;
+}
+
+.zeya-text > ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--zeya-gold);
+}
+
+.zeya-text > ol {
+  list-style: decimal;
+  padding-left: 1.15rem;
+}
+
+.zeya-text > ol > li {
+  padding-left: 0.25rem;
+}
+
+.zeya-text figure,
+.zeya-text img {
+  border-radius: var(--zeya-radius-sm);
+}
+
+.zeya-text figcaption {
+  margin-top: 0.6rem;
+  font-size: var(--zeya-fs-small);
+  color: var(--zeya-muted);
+}
+
+.zeya-text blockquote {
+  margin-top: 1.5em;
+  padding-left: 1.25rem;
+  border-left: 1px solid var(--zeya-gold);
+  font-family: var(--zeya-serif);
+  font-size: var(--zeya-fs-h4);
+  font-weight: 300;
+  color: var(--zeya-ink);
+}
+
+/* WordPress core output classes. */
+.zeya-body .screen-reader-text {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.zeya-body .alignwide,
+.zeya-body .alignfull {
+  max-width: none;
+}
+
+.zeya-body .aligncenter {
+  margin-inline: auto;
+}
+
+/* Contact Form 7 / WPForms: adopt the ZEYA field styling. */
+.zeya-formcard .wpcf7-form-control:not(.wpcf7-submit),
+.zeya-formcard .wpforms-field input:not([type="submit"]),
+.zeya-formcard .wpforms-field textarea {
+  display: block;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: var(--zeya-white);
+  border: 1px solid var(--zeya-line);
+  border-radius: var(--zeya-radius-xs);
+  color: var(--zeya-ink);
+  font-family: var(--zeya-sans);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.zeya-formcard .wpcf7-submit,
+.zeya-formcard .wpforms-submit {
+  --btn-bg: var(--zeya-gold);
+  --btn-fg: var(--zeya-white);
+  --btn-bd: var(--zeya-gold);
+  width: 100%;
+  padding: 1.05em 1.9em;
+  border: 1px solid var(--btn-bd);
+  border-radius: var(--zeya-radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--zeya-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.zeya-formcard .wpcf7-not-valid-tip,
+.zeya-formcard .wpforms-error {
+  margin-top: 0.3rem;
+  font-size: 0.688rem;
+  color: #a8452f;
+}

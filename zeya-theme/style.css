@@ -1,0 +1,26 @@
+/*
+Theme Name: ZEYA Curtains & Blinds
+Theme URI: https://example.com/zeya
+Author: ZEYA
+Description: A premium, editorial theme for ZEYA Curtains & Blinds, Dubai — custom curtains, blinds and motorized window solutions. Built with semantic HTML5, CSS custom properties and vanilla JavaScript; no front-end framework dependencies.
+Version: 1.0.0
+Requires at least: 6.3
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: zeya
+Tags: business, custom-logo, custom-menu, editor-style, featured-images, full-width-template, translation-ready
+*/
+
+/*
+ * The design system lives in assets/css/ and is enqueued from functions.php:
+ *
+ *   assets/css/style.css        tokens, base, components, sections
+ *   assets/css/animations.css   scroll reveals, parallax, reduced-motion
+ *   assets/css/responsive.css   breakpoints (loaded last)
+ *
+ * This file is enqueued after them, so it is the right place for
+ * site-specific overrides and for anything a child theme should be able to
+ * win against. Keep custom selectors prefixed with `zeya-`.
+ */

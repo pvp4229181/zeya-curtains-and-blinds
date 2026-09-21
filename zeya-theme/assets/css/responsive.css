@@ -1,0 +1,526 @@
+/* ==========================================================================
+   ZEYA CURTAINS & BLINDS — responsive behaviour
+   Loaded last so it can refine both layout and motion.
+
+   Breakpoints: 1280 · 1140 · 1024 · 960 (nav) · 860 · 768 · 560 · 400
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   Large desktop — keep the editorial spacing, just ease the extremes
+   ---------------------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .zeya-hero__copy {
+    max-width: 38rem;
+  }
+}
+
+@media (max-width: 1140px) {
+  :root {
+    --zeya-nav-h: 78px;
+  }
+
+  .zeya-nav__list {
+    gap: 1.25rem;
+  }
+
+  .zeya-step__text {
+    font-size: 0.719rem;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Tablet landscape — split layouts collapse, grids narrow
+   ---------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .zeya-split__grid,
+  .zeya-abouthero__grid,
+  .zeya-contact__grid,
+  .zeya-quote__grid,
+  .zeya-pagehead__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zeya-split__grid {
+    gap: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  /* Once the columns stack the photograph spans the full width and the copy
+     takes the gutter back. */
+  .zeya-split--bleed .zeya-split__copy {
+    padding-inline: var(--zeya-gutter);
+  }
+
+  .zeya-split__media--bleed-left,
+  .zeya-split__media--bleed-right {
+    border-radius: 0;
+  }
+
+  .zeya-abouthero__media {
+    min-height: clamp(300px, 56vw, 460px);
+  }
+
+  .zeya-abouthero__copy {
+    padding-inline: var(--zeya-gutter);
+    max-width: none;
+  }
+
+  .zeya-quote__grid {
+    align-items: start;
+    gap: 1.75rem;
+  }
+
+  .zeya-contact__copy {
+    padding-inline: var(--zeya-gutter);
+    max-width: none;
+  }
+
+  .zeya-contact__panel {
+    padding-inline: var(--zeya-gutter);
+  }
+
+  .zeya-contact__panel {
+    min-height: clamp(460px, 74vw, 620px);
+  }
+
+  /* Types: the motorized panel takes the full width under the two lists */
+  .zeya-types {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zeya-type--wide {
+    grid-column: 1 / -1;
+  }
+
+  .zeya-type--wide .zeya-type__media {
+    width: min(100%, 22rem);
+  }
+
+  /* Timeline: two rows of three, connector hidden */
+  .zeya-timeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .zeya-timeline::before {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Mobile navigation
+   ---------------------------------------------------------------------- */
+@media (max-width: 960px) {
+  .zeya-burger {
+    display: block;
+  }
+
+  .zeya-nav {
+    position: fixed;
+    top: var(--zeya-nav-h);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    max-height: calc(100vh - var(--zeya-nav-h));
+    max-height: calc(100svh - var(--zeya-nav-h));
+    padding: 1.25rem var(--zeya-gutter) 2.5rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: rgba(28, 23, 19, 0.985);
+    -webkit-backdrop-filter: saturate(140%) blur(18px);
+    backdrop-filter: saturate(140%) blur(18px);
+    border-top: 1px solid rgba(247, 244, 238, 0.08);
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+    visibility: hidden;
+    transition: clip-path 560ms var(--zeya-ease-out),
+                opacity 280ms var(--zeya-ease),
+                visibility 0s linear 560ms;
+  }
+
+  .zeya-nav.is-open {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+    visibility: visible;
+    transition: clip-path 560ms var(--zeya-ease-out),
+                opacity 280ms var(--zeya-ease),
+                visibility 0s linear 0s;
+  }
+
+  body.admin-bar .zeya-nav {
+    top: calc(var(--zeya-nav-h) + 32px);
+  }
+
+  .zeya-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .zeya-nav__list li {
+    border-bottom: 1px solid rgba(247, 244, 238, 0.09);
+  }
+
+  .zeya-nav__link {
+    display: block;
+    padding: 1.05rem 0;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    opacity: 0.9;
+  }
+
+  .zeya-nav__link::after {
+    display: none;
+  }
+
+  .zeya-nav__link.is-active {
+    color: var(--zeya-gold-soft);
+  }
+
+  .zeya-nav__cta {
+    margin-top: 1.6rem;
+    width: 100%;
+    justify-content: center;
+    padding: 1.15em 1.6em;
+    font-size: 0.75rem;
+  }
+
+  /* Staggered entrance for the menu rows */
+  .zeya-js .zeya-nav.is-open .zeya-nav__list li,
+  .zeya-js .zeya-nav.is-open .zeya-nav__cta {
+    animation: zeya-menu-item 520ms var(--zeya-ease-out) both;
+  }
+
+  .zeya-js .zeya-nav.is-open .zeya-nav__list li:nth-child(1) { animation-delay: 120ms; }
+  .zeya-js .zeya-nav.is-open .zeya-nav__list li:nth-child(2) { animation-delay: 175ms; }
+  .zeya-js .zeya-nav.is-open .zeya-nav__list li:nth-child(3) { animation-delay: 230ms; }
+  .zeya-js .zeya-nav.is-open .zeya-nav__list li:nth-child(4) { animation-delay: 285ms; }
+  .zeya-js .zeya-nav.is-open .zeya-nav__list li:nth-child(5) { animation-delay: 340ms; }
+  .zeya-js .zeya-nav.is-open .zeya-nav__cta { animation-delay: 400ms; }
+
+  body.zeya-no-scroll {
+    overflow: hidden;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Tablet portrait
+   ---------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .zeya-values {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zeya-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zeya-card--wide {
+    grid-column: 1 / -1;
+  }
+
+  .zeya-card--wide .zeya-card__link {
+    aspect-ratio: 16 / 9;
+  }
+
+  .zeya-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zeya-gallery > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .zeya-quote {
+    min-height: 0;
+  }
+
+  /* Timeline goes vertical */
+  .zeya-timeline {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .zeya-timeline::before {
+    display: block;
+    top: 12px;
+    bottom: 48px;
+    left: 26px;
+    right: auto;
+    width: 1px;
+    height: auto;
+    background: linear-gradient(180deg, rgba(184, 148, 88, 0.55), rgba(184, 148, 88, 0.15));
+  }
+
+  .zeya-js .zeya-timeline::before {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1100ms var(--zeya-ease-out) 180ms;
+  }
+
+  .zeya-js .zeya-timeline.is-in::before {
+    transform: scaleY(1);
+  }
+
+  .zeya-step {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    column-gap: 1.15rem;
+    row-gap: 0.2rem;
+    padding: 0 0 clamp(1.6rem, 4vw, 2.25rem);
+  }
+
+  .zeya-step:last-child {
+    padding-bottom: 0;
+  }
+
+  .zeya-step__icon {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+
+  .zeya-step__num,
+  .zeya-step__title,
+  .zeya-step__text {
+    grid-column: 2;
+  }
+
+  .zeya-step__num {
+    align-self: center;
+  }
+
+  .zeya-step__text {
+    font-size: 0.75rem;
+    max-width: 48ch;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Small tablet / large phone
+   ---------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --zeya-nav-h: 68px;
+  }
+
+  .zeya-benefits__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .zeya-types {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zeya-type__media,
+  .zeya-type--wide .zeya-type__media {
+    width: min(100%, 18rem);
+  }
+
+  .zeya-hero {
+    min-height: clamp(560px, 92svh, 760px);
+  }
+
+  .zeya-hero__foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+
+  .zeya-hero__tag {
+    text-align: left;
+  }
+
+  .zeya-footer-band__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .zeya-footer-band__line {
+    text-align: left;
+  }
+
+  .zeya-footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .zeya-process__hero {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Phone
+   ---------------------------------------------------------------------- */
+@media (max-width: 560px) {
+  .zeya-cards,
+  .zeya-gallery {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zeya-gallery > :first-child {
+    grid-column: auto;
+  }
+
+  .zeya-card__link,
+  .zeya-card--wide .zeya-card__link {
+    aspect-ratio: 16 / 11;
+  }
+
+  .zeya-card__body {
+    flex-wrap: wrap;
+  }
+
+  .zeya-values {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zeya-benefits__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .zeya-benefit {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+    padding: 1.1rem var(--zeya-gutter);
+  }
+
+  .zeya-benefit__icon {
+    flex: none;
+  }
+
+  .zeya-value {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.1rem;
+    text-align: left;
+    padding: 1.15rem 1.25rem;
+  }
+
+  .zeya-value__icon {
+    flex: none;
+    width: 30px;
+    height: 30px;
+  }
+
+  .zeya-hero__slides {
+    gap: 0.9rem;
+  }
+
+  .zeya-formcard {
+    width: 100%;
+  }
+
+  .zeya-contact__panel {
+    min-height: 0;
+    padding: clamp(2rem, 8vw, 3rem) var(--zeya-gutter);
+  }
+
+  .zeya-footer__bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+  }
+
+  /* Comfortable tap targets */
+  .zeya-btn {
+    padding: 1.15em 1.75em;
+  }
+
+  .zeya-method {
+    padding: 0.85rem 0;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Small phone (390 / 360)
+   ---------------------------------------------------------------------- */
+@media (max-width: 400px) {
+  .zeya-logo__mark {
+    font-size: 1.25rem;
+  }
+
+  .zeya-logo__sub {
+    font-size: 0.438rem;
+  }
+
+  .zeya-btn {
+    font-size: 0.688rem;
+    letter-spacing: 0.1em;
+  }
+
+  .zeya-step {
+    grid-template-columns: 46px minmax(0, 1fr);
+    column-gap: 0.9rem;
+  }
+
+  .zeya-step__icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .zeya-step__icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .zeya-timeline::before {
+    left: 22px;
+  }
+}
+
+/* -------------------------------------------------------------------------
+   Print
+   ---------------------------------------------------------------------- */
+@media print {
+  .zeya-header,
+  .zeya-burger,
+  .zeya-cta,
+  .zeya-hero__foot {
+    display: none !important;
+  }
+
+  .zeya-body {
+    background: #fff;
+    color: #000;
+  }
+}
+
+/* Product collections and individual product pages. */
+.zeya-catalog-head { padding-top:150px; padding-bottom:48px; text-align:center; }
+.zeya-catalog-head .zeya-crumbs { justify-content:center; margin-bottom:36px; }
+.zeya-catalog-head h1 { font-size:clamp(44px,6vw,80px); line-height:1.05; margin:12px 0 22px; }
+.zeya-catalog-head>p:last-child { max-width:650px; margin:auto; }
+.zeya-collection-nav { display:flex; justify-content:center; flex-wrap:wrap; gap:12px 32px; padding-bottom:40px; }
+.zeya-collection-nav a,.zeya-back-link { display:inline-block; padding:12px 0; text-decoration:underline; text-underline-offset:5px; }
+.zeya-catalog-section { padding-top:40px; padding-bottom:64px; }
+.zeya-catalog-label { display:flex; justify-content:space-between; align-items:center; gap:28px; border-top:1px solid var(--zeya-beige); padding:32px 0; }
+.zeya-catalog-label h2,.zeya-catalog-section>h2 { font-size:clamp(34px,4vw,52px); margin-bottom:12px; }
+.zeya-catalog-label p { max-width:640px; }
+.zeya-catalog-label .zeya-btn { flex-shrink:0; }
+.zeya-catalog-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; }
+.zeya-product { display:flex; flex-direction:column; background:#fff; border:1px solid var(--zeya-cream); color:var(--zeya-espresso); text-decoration:none; transition:box-shadow .2s; }
+.zeya-product:hover { box-shadow:0 8px 24px #211b1618; }
+.zeya-product>img { width:100%; height:280px; object-fit:cover; }
+.zeya-product__copy { padding:22px; flex:1; display:flex; flex-direction:column; }
+.zeya-product h3 { font-size:29px; line-height:1.12; margin-bottom:12px; }
+.zeya-product p { font-size:15px; line-height:1.6; margin-bottom:22px; }
+.zeya-product span { margin-top:auto; font-size:14px; color:#765725; }
+.zeya-product-detail { display:grid; grid-template-columns:1fr 1fr; gap:64px; padding-bottom:70px; align-items:center; }
+.zeya-product-detail img { width:100%; max-height:620px; object-fit:cover; }
+.zeya-product-detail h2 { font-size:48px; line-height:1.1; margin:16px 0 24px; }
+.zeya-product-detail p,.zeya-product-detail ul { margin-bottom:24px; }
+.zeya-product-detail .zeya-back-link { display:block; margin-top:15px; }
+.zeya-nav-products { display:flex; align-items:center; position:relative; }
+.zeya-product-menu summary { cursor:pointer; padding:12px; min-height:44px; min-width:44px; list-style:none; }
+.zeya-product-menu>div { position:absolute; top:100%; left:0; min-width:260px; padding:12px; background:var(--zeya-ivory); color:var(--zeya-espresso); box-shadow:0 8px 28px #0002; }
+.zeya-product-menu a { display:block; padding:12px; font-size:14px; }
+.zeya-product-menu a:hover { background:var(--zeya-cream); }
+@media(max-width:1000px){ .zeya-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))} .zeya-catalog-label{align-items:flex-start;flex-direction:column} .zeya-product-detail{gap:28px} }
+@media(max-width:600px){ .zeya-catalog-head{padding-top:120px} .zeya-catalog-grid,.zeya-product-detail{grid-template-columns:1fr} .zeya-product>img{height:340px} .zeya-product-detail h2{font-size:38px} .zeya-nav-products{flex-wrap:wrap;justify-content:center} .zeya-product-menu>div{position:static;min-width:0} }
+.zeya-catalog-head h1,.zeya-catalog-label h2,.zeya-product h3,.zeya-product-detail h2,.zeya-catalog-section>h2 { font-family:var(--zeya-font-display, 'Cormorant Garamond', Georgia, serif); font-weight:400; color:var(--zeya-espresso); }
