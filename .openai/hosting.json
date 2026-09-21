@@ -1,6 +1,6 @@
-﻿{
+{
   "project_id": "appgprj_6ab12b018a1481918c62251f9c64f47d",
   "static": {
-    "directory": "zeya-website"
+    "directory": "dist"
   }
 }
