@@ -21,7 +21,7 @@ const CHROME = [
 
 const SITE = path.resolve(__dirname, "..", "zeya-website");
 const OUT = path.join(process.env.TEMP || os.tmpdir(), "zeya_shots");
-const PORT = 9333;
+const PORT = Number(process.env.ZEYA_SCREENSHOT_PORT || 9333);
 
 const width = parseInt(process.argv[2] || "1440", 10);
 const tag = process.argv[3] || "desktop";
@@ -116,8 +116,27 @@ class CDP {
     // Settle every scroll-reveal, as nothing scrolls during a capture.
     await cdp.send("Runtime.evaluate", {
       expression: `
-        document.querySelectorAll('.zeya-reveal,.zeya-reveal-mask,.zeya-lines,.zeya-timeline')
-          .forEach(function (el) { el.classList.add('is-in'); });
+        document.querySelectorAll('.zeya-reveal,.zeya-stagger')
+          .forEach(function (el) { el.classList.add('is-revealed'); });
+        // Flatten the settled 3D transforms. captureBeyondViewport cannot
+        // rasterize composited 3D layers that sit below the fold, so leaving
+        // them in place photographs them as empty boxes.
+        document.querySelectorAll(
+          '.zeya-reveal,.zeya-stagger,.zeya-stagger > *,.zeya-tilt,' +
+          '.zeya-product__image,.zeya-collection__image,.zeya-product__copy,' +
+          '.zeya-collection__title,.zeya-split__media img,' +
+          '.zeya-product-detail__media img,.zeya-contact__aside img,' +
+          '.zeya-footer-cta__media img'
+        ).forEach(function (el) {
+          el.style.transform = 'none';
+          el.style.opacity = '1';
+          el.style.willChange = 'auto';
+          el.style.transformStyle = 'flat';
+          el.style.perspective = 'none';
+        });
+        // Freeze the marquee at its start, or every capture differs.
+        document.querySelectorAll('.zeya-marquee__track')
+          .forEach(function (el) { el.style.animation = 'none'; });
         document.querySelectorAll('img[loading="lazy"]')
           .forEach(function (img) { img.loading = 'eager'; });
       `,

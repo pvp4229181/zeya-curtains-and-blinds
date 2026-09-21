@@ -119,7 +119,7 @@ function zeya_enqueue_assets() {
 	// Fonts. Cormorant Garamond for display, Inter for UI.
 	wp_enqueue_style(
 		'zeya-fonts',
-		'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap',
+		$uri . '/assets/fonts/fonts.css',
 		array(),
 		null
 	);
@@ -147,7 +147,6 @@ function zeya_enqueue_assets() {
 
 	$scripts = array(
 		'zeya-main'          => 'assets/js/main.js',
-		'zeya-animations-js' => 'assets/js/animations.js',
 	);
 
 	foreach ( $scripts as $handle => $path ) {
@@ -176,15 +175,15 @@ function zeya_preload_hero() {
 	$uri = get_template_directory_uri() . '/assets/images/';
 	printf(
 		'<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s" imagesizes="100vw" fetchpriority="high">' . "\n",
-		esc_url( $uri . 'hero-luxury-curtains-1600.webp' ),
+		esc_url( $uri . 'ai-hero.webp' ),
 		esc_attr(
-			esc_url( $uri . 'hero-luxury-curtains-1024.webp' ) . ' 1024w, ' .
-			esc_url( $uri . 'hero-luxury-curtains-1600.webp' ) . ' 1600w, ' .
-			esc_url( $uri . 'hero-luxury-curtains.webp' ) . ' 2400w'
+			esc_url( $uri . 'ai-hero-1024.webp' ) . ' 1024w, ' .
+			esc_url( $uri . 'ai-hero.webp' ) . ' 1536w, ' .
+			esc_url( $uri . 'ai-hero.webp' ) . ' 1536w'
 		)
 	);
 }
-add_action( 'wp_head', 'zeya_preload_hero', 2 );
+
 
 /**
  * ---------------------------------------------------------------------------
@@ -295,6 +294,21 @@ add_filter( 'nav_menu_link_attributes', 'zeya_nav_link_attributes', 10, 2 );
 /**
  * Fallback primary navigation, used until a menu is assigned in the admin.
  */
+function zeya_collections() {
+	return apply_filters( 'zeya_collections', array(
+		'curtains' => __( 'Curtains', 'zeya' ),
+		'blinds' => __( 'Blinds', 'zeya' ),
+		'motorized' => __( 'Motorized Window Solutions', 'zeya' ),
+		'curtain-accessories' => __( 'Curtain Accessories', 'zeya' ),
+	) );
+}
+
+/**
+ * Fallback primary navigation.
+ *
+ * Mirrors the static site: the Products item carries a <details> submenu
+ * listing every collection, so the theme matches even with no menu assigned.
+ */
 function zeya_primary_nav_fallback() {
 	$items = array(
 		'home'     => __( 'Home', 'zeya' ),
@@ -306,12 +320,30 @@ function zeya_primary_nav_fallback() {
 
 	echo '<ul class="zeya-nav__list">';
 	foreach ( $items as $slug => $label ) {
-		printf(
-			'<li><a class="zeya-nav__link" data-zeya-nav-item="%1$s" href="%2$s">%3$s</a></li>',
+		$link = sprintf(
+			'<a class="zeya-nav__link" data-zeya-nav-item="%1$s" href="%2$s">%3$s</a>',
 			esc_attr( $slug ),
 			esc_url( zeya_link( $slug ) ),
 			esc_html( $label )
 		);
+
+		if ( 'products' !== $slug ) {
+			echo '<li>' . $link . '</li>'; // phpcs:ignore WordPress.Security.EscapeOutput
+			continue;
+		}
+
+		echo '<li class="zeya-nav-products">' . $link; // phpcs:ignore WordPress.Security.EscapeOutput
+		echo '<details class="zeya-product-menu"><summary aria-label="' .
+			esc_attr__( 'Product categories', 'zeya' ) .
+			'"><svg aria-hidden="true" focusable="false"><use href="#zeya-i-arrow-right"></use></svg></summary><div>';
+		foreach ( zeya_collections() as $collection => $name ) {
+			printf(
+				'<a href="%1$s">%2$s</a>',
+				esc_url( zeya_link( $collection ) ),
+				esc_html( $name )
+			);
+		}
+		echo '</div></details></li>';
 	}
 	echo '</ul>';
 }

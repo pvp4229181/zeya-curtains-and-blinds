@@ -1,4 +1,4 @@
-﻿"""Product copy transcribed from the supplied ZEYA chart; static page rendering."""
+"""Product copy transcribed from the supplied ZEYA chart; static page rendering."""
 from html import escape
 import re
 
@@ -37,32 +37,123 @@ MOTORIZED=[
 ('Motorized Outdoor / Zip Screens','Powered exterior screens for patios, terraces and balconies.'),
 ('Motorized Curtain Tracks','Discreet powered tracks for smooth and silent movement.'),
 ('Smart Window Automation','Convenient control of multiple curtains and blinds.')]
+# Not on the supplied chart, so these carry no crop box; extract_assets skips
+# them and asset_map points each one at an existing generated visual.
+ACCESSORIES=[
+('Curtain Rods & Poles','Finished metal and wooden poles sized and fitted to your window.'),
+('Curtain Tracks','Slim, quiet tracks for straight runs, bay windows and ceiling fixing.'),
+('Tiebacks & Holdbacks','Fabric ties, tassels and metal holdbacks that shape the drape.'),
+('Curtain Rings & Hooks','The fittings behind a clean heading and a smooth glide.'),
+('Finials & End Caps','The finishing detail at each end of the pole, in matching finishes.'),
+('Pelmets & Valances','A tailored top treatment that conceals the track and frames the window.'),
+('Curtain Linings','Blackout, thermal and dim-out linings that change how a curtain performs.'),
+('Motorized Accessories','Remotes, wall switches, chargers and brackets for powered systems.')]
 GROUPS={
 'curtains':[(n,d,(218+i*123.3,132,331+i*123.3,343)) for i,(n,d) in enumerate(CURTAINS)],
 'blinds':[(n,d,(218+i*82.3,491,292+i*82.3,682)) for i,(n,d) in enumerate(BLINDS)],
-'motorized':[(n,d,(218+(i%6)*165,817+(i//6)*225,377+(i%6)*165,953+(i//6)*225)) for i,(n,d) in enumerate(MOTORIZED)]}
+'motorized':[(n,d,(218+(i%6)*165,817+(i//6)*225,377+(i%6)*165,953+(i//6)*225)) for i,(n,d) in enumerate(MOTORIZED)],
+'curtain-accessories':[(n,d,None) for n,d in ACCESSORIES]}
 # The chart repeats Motorized Blinds; use its phone-control image.
 GROUPS['blinds'][9]=(*BLINDS[9],(1125,491,1199,682))
-LABELS={'curtains':'Curtains','blinds':'Blinds','motorized':'Motorized Window Solutions'}
-INTROS={'curtains':'Elegant fabrics for every space. Explore custom-made curtains in a range of textures, styles and finishes.', 'blinds':'Modern, versatile options. Find the balance of light, privacy and style for your home or workplace.', 'motorized':'Smart living. Made simple. Explore powered curtains and blinds for effortless everyday comfort.'}
+LABELS={'curtains':'Curtains','blinds':'Blinds','motorized':'Motorized Window Solutions','curtain-accessories':'Curtain Accessories'}
+INTROS={'curtains':'Elegant fabrics for every space. Explore custom-made curtains in a range of textures, styles and finishes.', 'blinds':'Modern, versatile options. Find the balance of light, privacy and style for your home or workplace.', 'motorized':'Smart living. Made simple. Explore powered curtains and blinds for effortless everyday comfort.', 'curtain-accessories':'The details that finish the window. Poles, tracks, linings and fittings chosen to match your curtains.'}
+# The hero photograph that opens each collection page.
+COVERS={'curtains':'curtains-category','blinds':'blinds-category','motorized':'motorized-solutions','curtain-accessories':'accessories-category'}
 
-def cards(h,group):
-    return '<div class="zeya-catalog-grid">'+''.join(f'<a class="zeya-product" href="product-{slug(n)}.html">{h.img("product-"+slug(n),n+" window treatment",sizes="(max-width:600px) 100vw, (max-width:1000px) 50vw, 25vw")}<div class="zeya-product__copy"><h3>{escape(n)}</h3><p>{escape(d)}</p><span>View details &rarr;</span></div></a>' for n,d,b in GROUPS[group])+'</div>'
 
-def heading(title,desc,group=None):
-    crumb='<a href="products.html">Products</a>'
-    if group: crumb+=f' / <a href="{group}.html">{LABELS[group]}</a>'
-    return f'<section class="zeya-catalog-head zeya-container"><nav class="zeya-crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / {crumb}</nav><p class="zeya-eyebrow">ZEYA CURTAINS &amp; BLINDS</p><h1>{escape(title)}</h1><p>{escape(desc)}</p></section>'
+def cards(h,group,exclude=None,limit=None):
+    """The product grid. Each card is a full-bleed image with the name and the
+    one-line description sitting over it, so a row of cards reads as a set of
+    photographs rather than a table of boxes."""
+    products=[p for p in GROUPS[group] if p[0]!=exclude]
+    if limit: products=products[:limit]
+    return '<div class="zeya-catalog-grid">'+''.join(
+        '<a class="zeya-product" href="product-{slug}.html">'
+        '<div class="zeya-product__image">{image}'
+        '<span class="zeya-product__veil" aria-hidden="true"></span></div>'
+        '<div class="zeya-product__copy"><h3>{name}</h3><p>{desc}</p>'
+        '<span class="zeya-product__action">Discover the details'
+        '<span aria-hidden="true">&#8594;</span></span></div></a>'.format(
+            slug=slug(n), name=escape(n), desc=escape(d),
+            image=h.img("product-"+slug(n),"Interior inspiration: "+n,
+                        sizes="(max-width:600px) 100vw, (max-width:1000px) 50vw, 33vw"))
+        for n,d,b in products)+'</div>'
+
+
+def crumbs(title,group=None):
+    links='<a href="index.html">Home</a><span aria-hidden="true">/</span><a href="products.html">Products</a>'
+    if group: links+=f'<span aria-hidden="true">/</span><a href="{group}.html">{LABELS[group]}</a>'
+    return f'<nav class="zeya-crumbs" aria-label="Breadcrumb">{links}<span aria-hidden="true">/</span><span aria-current="page">{escape(title)}</span></nav>'
+
 
 def render(h):
-    pages={}
-    sections=[]
+    pages={}; sections=[]
     for g,label in LABELS.items():
-        section=f'<section class="zeya-container zeya-catalog-section" id="{g}"><div class="zeya-catalog-label"><div><p class="zeya-eyebrow">MADE FOR YOUR SPACE</p><h2>{label}</h2><p>{INTROS[g]}</p></div>{h.btn("Explore "+label,g+".html","gold")}</div>{cards(h,g)}</section>'
+        section=(f'<section class="zeya-section zeya-container zeya-catalog-section" id="{g}">'
+                 f'<div class="zeya-section-heading">'
+                 f'<p class="zeya-eyebrow">{len(GROUPS[g]):02d} ways to make it yours</p>'
+                 f'<div><div class="zeya-section-heading__row"><h2>{label}</h2>'
+                 f'{h.btn("Explore collection",g+".html","outline")}</div>'
+                 f'<p>{INTROS[g]}</p></div></div>'
+                 f'{cards(h,g,limit=3)}</section>')
         sections.append(section)
-        pages[g]=heading(label,INTROS[g])+f'<section class="zeya-container zeya-catalog-section"><h2 class="zeya-sr-only">Explore {label}</h2>{cards(h,g)}</section>'
+
+        # ---- the collection page -----------------------------------------
+        pages[g]=(h.hero(COVERS[g],label+' in a considered Dubai interior',escape(label),
+                         eyebrow='The ZEYA collection',sub=INTROS[g],
+                         crumbs=crumbs(label))
+                  +f'<section class="zeya-section zeya-container zeya-catalog-section">'
+                   f'<div class="zeya-catalog-toolbar"><h2>Explore the collection</h2>'
+                   f'<span>{len(GROUPS[g])} options &middot; Made to measure</span></div>'
+                   f'{cards(h,g)}</section>')
+
+        # ---- one detail page per product ---------------------------------
         for n,d,b in GROUPS[g]:
             key='product-'+slug(n)
-            pages[key]=heading(n,d,g)+f'<section class="zeya-container zeya-product-detail"><div>{h.img(key,n+" interior detail",eager=True)}</div><div><p class="zeya-eyebrow">MEASURED. DESIGNED. INSTALLED.</p><h2>Made to suit your space</h2><p>{escape(d)}</p><p>Choose your finish and discuss light, privacy and fitting requirements with ZEYA. We will confirm the right specification for your windows during your consultation.</p><ul class="zeya-list"><li>Made to your window measurements</li><li>Guidance on fabrics, colours and finishes</li><li>Professional installation</li></ul>{h.btn("Enquire about this product","contact.html?product="+slug(n),"gold")}<a class="zeya-back-link" href="{g}.html">&larr; Browse {label}</a></div></section><section class="zeya-container zeya-catalog-section"><h2>Explore the collection</h2>{cards(h,g)}</section>'
-    pages['products']=heading('Our Products','Premium window solutions for every space.')+'<nav class="zeya-collection-nav zeya-container" aria-label="Product categories">'+''.join(f'<a href="{g}.html">{l} &rarr;</a>' for g,l in LABELS.items())+'</nav>'+''.join(sections)
+            operation='Motorized operation' if g=='motorized' or n.startswith('Motorized') else 'Discuss manual or motorized options'
+            pages[key]=(
+                h.hero(key,'Interior inspiration: '+n,escape(n),
+                       eyebrow=escape(label)+' &middot; Made to measure',
+                       sub=escape(d),
+                       actions=h.btn('Enquire about this product',
+                                     'contact.html?product='+slug(n),'gold'),
+                       crumbs=crumbs(n,g),variant='product')
+                +f'<section class="zeya-section zeya-container zeya-product-detail">'
+                 f'<figure class="zeya-product-detail__media">'
+                 f'{h.img(key,"Interior inspiration: "+n,sizes="(max-width:700px) 100vw, 50vw")}'
+                 f'<figcaption>Interior inspiration &middot; AI-generated visual</figcaption></figure>'
+                 f'<div class="zeya-detail-copy"><p class="zeya-eyebrow">About this product</p>'
+                 f'<h2>{escape(n)}</h2><p class="zeya-detail-lead">{escape(d)}</p>'
+                 f'<p>Thoughtfully selected for your windows. We’ll help you choose the '
+                 f'right finish, proportion and fitting for your space.</p>'
+                 f'<dl class="zeya-specs">'
+                 f'<div><dt>Made for</dt><dd>Your window measurements</dd></div>'
+                 f'<div><dt>Finish</dt><dd>Selected during consultation</dd></div>'
+                 f'<div><dt>Control</dt><dd>{operation}</dd></div>'
+                 f'<div><dt>Service</dt><dd>Measured, designed &amp; installed</dd></div></dl>'
+                 f'{h.btn("Enquire about this product","contact.html?product="+slug(n),"gold")}'
+                 f'<a class="zeya-back-link" href="{g}.html">Browse all {label.lower()} &rarr;</a>'
+                 f'<details class="zeya-product-faq"><summary>How do I choose the right specification?</summary>'
+                 f'<p>We review your window dimensions, privacy needs and natural light with you. '
+                 f'Fabric, controls, power requirements and fitting details are confirmed before '
+                 f'quotation.</p></details>'
+                 f'<details class="zeya-product-faq"><summary>What happens after my enquiry?</summary>'
+                 f'<p>We discuss your requirements, arrange the next steps and guide you through '
+                 f'suitable samples, measurement and installation.</p></details>'
+                 f'</div></section>'
+                 f'<section class="zeya-section zeya-section--chocolate">'
+                 f'<div class="zeya-container zeya-catalog-section">'
+                 f'<div class="zeya-catalog-toolbar"><h2>You may also like</h2>'
+                 f'<a class="zeya-back-link" href="{g}.html">View collection &rarr;</a></div>'
+                 f'{cards(h,g,exclude=n,limit=3)}</div></section>')
+
+    pages['products']=(
+        h.hero('hero-luxury-curtains','Curtains and blinds in a sunlit Dubai interior',
+               'Find your kind of light.',eyebrow='The ZEYA collection',
+               sub='Curtains, blinds, motorized solutions and the accessories that finish them. '
+                   'Four collections, made around you.',
+               crumbs=crumbs('Products'))
+        +'<nav class="zeya-collection-nav zeya-container" aria-label="Product categories">'
+        +''.join(f'<a href="#{g}">{l}<span aria-hidden="true">&#8595;</span></a>' for g,l in LABELS.items())
+        +'</nav>'+''.join(sections))
     return pages

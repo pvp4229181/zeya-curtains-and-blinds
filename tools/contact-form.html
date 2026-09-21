@@ -1,0 +1,40 @@
+<form class="zeya-form" data-zeya-form action="" method="post" novalidate>
+          <p class="zeya-hp" aria-hidden="true">
+            <label>Leave this field empty<input type="text" name="zeya-website-url" tabindex="-1"
+                   autocomplete="off" data-zeya-hp></label>
+          </p>
+
+          <div class="zeya-field">
+            <label class="zeya-field__label" for="zeya-name">Your Name</label>
+            <input class="zeya-input" id="zeya-name" name="your-name" type="text"
+                   autocomplete="name" placeholder="Your Name" required>
+            <p class="zeya-field__error" id="zeya-name-error" role="alert"></p>
+          </div>
+
+          <div class="zeya-field">
+            <label class="zeya-field__label" for="zeya-email">Your Email</label>
+            <input class="zeya-input" id="zeya-email" name="your-email" type="email"
+                   autocomplete="email" placeholder="Your Email" required>
+            <p class="zeya-field__error" id="zeya-email-error" role="alert"></p>
+          </div>
+
+          <div class="zeya-field">
+            <label class="zeya-field__label" for="zeya-phone">Your Phone</label>
+            <input class="zeya-input" id="zeya-phone" name="your-phone" type="tel"
+                   autocomplete="tel" placeholder="Your Phone" required>
+            <p class="zeya-field__error" id="zeya-phone-error" role="alert"></p>
+          </div>
+
+          <div class="zeya-field">
+            <label class="zeya-field__label" for="zeya-message">Your Message</label>
+            <textarea class="zeya-textarea" id="zeya-message" name="your-message" rows="4"
+                      placeholder="Tell us about your space" required></textarea>
+            <p class="zeya-field__error" id="zeya-message-error" role="alert"></p>
+          </div>
+
+          <button class="zeya-btn zeya-btn--gold zeya-btn--block" type="submit">
+            Send Message <svg class="zeya-btn__arrow" aria-hidden="true" focusable="false"><use href="#zeya-i-arrow-right"></use></svg>
+          </button>
+
+          <p class="zeya-form__status" data-zeya-form-status data-state="info" role="status" aria-live="polite"></p>
+        </form>

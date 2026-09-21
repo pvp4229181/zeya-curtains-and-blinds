@@ -1,208 +1,187 @@
-/* ==========================================================================
-   ZEYA CURTAINS & BLINDS — motion
-   Restrained, editorial movement. Every transition sits in the 400–900ms band
-   and every non-essential effect is switched off under prefers-reduced-motion.
-   ========================================================================== */
+/* ============================================================================
+   ZEYA — motion.
 
-/* -------------------------------------------------------------------------
-   Scroll reveals
-   `.zeya-reveal` starts hidden only once JS has confirmed it can observe it
-   (`.zeya-js` on <html>), so the page stays readable without JavaScript.
-   ---------------------------------------------------------------------- */
-.zeya-js .zeya-reveal {
-  opacity: 0;
-  transform: translate3d(0, 28px, 0);
-  transition: opacity 720ms var(--zeya-ease-out), transform 720ms var(--zeya-ease-out);
-  transition-delay: var(--zeya-delay, 0ms);
-  will-change: opacity, transform;
+   Four systems, all transform/opacity only so nothing triggers layout:
+
+     1. 3D scroll reveals      IntersectionObserver adds .is-revealed
+     2. Pointer tilt on cards  JS writes --zeya-rx / --zeya-ry / --zeya-mx
+     3. Scroll parallax        JS writes --zeya-p / --zeya-shift
+     4. Scroll progress        JS writes --zeya-progress on the header
+
+   Nothing here listens to scroll itself; main.js owns one rAF loop and this
+   file only reacts to the custom properties it sets. Every element composes
+   its transform from variables so two systems can drive the same node without
+   overwriting each other.
+
+   Everything is switched off under prefers-reduced-motion at the foot.
+   ========================================================================= */
+
+/* ------------------------------------------------- 1. 3D scroll reveals --- */
+/* Elements only start hidden when JS is present to reveal them again, so the
+   page stays fully readable with scripting off. */
+.zeya-js .zeya-reveal{opacity:0;
+  transform:perspective(1400px) translate3d(0,34px,0) rotateX(-7deg) scale(.972);
+  transform-origin:50% 100%;
+  transition:opacity .85s var(--zeya-ease),transform .85s var(--zeya-ease)}
+.zeya-js .zeya-reveal.is-revealed{opacity:1;
+  transform:perspective(1400px) translate3d(0,0,0) rotateX(0deg) scale(1)}
+
+/* Media reveals come from further back, so the image feels like it settles
+   into the page rather than sliding up it. */
+.zeya-js .zeya-reveal--depth{
+  transform:perspective(1400px) translate3d(0,44px,-90px) rotateX(-10deg) scale(.96)}
+
+/* Children of a staggered container arrive one after another, each with its
+   own slight rotation so the row reads as depth rather than a flat wipe. */
+.zeya-js .zeya-stagger{perspective:1600px}
+.zeya-js .zeya-stagger>*{opacity:0;
+  transform:translate3d(0,40px,-60px) rotateX(-8deg) scale(.97);
+  transition:opacity .75s var(--zeya-ease),transform .75s var(--zeya-ease)}
+.zeya-js .zeya-stagger.is-revealed>*{opacity:1;
+  transform:translate3d(0,0,0) rotateX(0deg) scale(1)}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(2){transition-delay:.09s}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(3){transition-delay:.18s}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(4){transition-delay:.27s}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(5){transition-delay:.36s}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(6){transition-delay:.45s}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(7){transition-delay:.50s}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(8){transition-delay:.55s}
+.zeya-js .zeya-stagger.is-revealed>*:nth-child(n+9){transition-delay:.60s}
+
+/* ---------------------------------------------------- 2. Pointer tilt --- */
+/* The lift that style.css gives these cards on hover is folded into the same
+   transform here, so tilt and lift cannot clobber one another. */
+.zeya-js .zeya-tilt{transform-style:preserve-3d;
+  transform:perspective(1100px) translate3d(0,var(--zeya-lift,0px),0)
+    rotateX(var(--zeya-rx,0deg)) rotateY(var(--zeya-ry,0deg));
+  transition:transform .65s var(--zeya-ease),box-shadow .65s var(--zeya-ease),
+    border-color .5s var(--zeya-ease)}
+.zeya-js .zeya-tilt:hover{--zeya-lift:-8px}
+/* While the pointer is actually moving, track it almost immediately. */
+.zeya-js .zeya-tilt.is-tilting{
+  transition:transform .12s linear,box-shadow .65s var(--zeya-ease),
+    border-color .5s var(--zeya-ease)}
+
+/* The copy lifts off the card face while the pointer is over it, so the
+   parallax between the layers is what sells the depth. Only on hover: at
+   rest the card is flat, so a translated layer can never push past the
+   card's own edges. */
+.zeya-js .zeya-tilt :is(.zeya-product__copy,.zeya-collection__title){
+  transform:translateZ(0);transition:transform .5s var(--zeya-ease)}
+.zeya-js .zeya-tilt:hover :is(.zeya-product__copy,.zeya-collection__title){
+  transform:translateZ(30px)}
+
+/* A soft gold specular that follows the pointer across the image. */
+.zeya-js .zeya-tilt :is(.zeya-product__image,.zeya-collection__image)::after{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
+  transition:opacity .5s var(--zeya-ease);
+  background:radial-gradient(460px circle at var(--zeya-mx,50%) var(--zeya-my,50%),
+    rgba(201,169,106,.30),rgba(201,169,106,0) 62%)}
+.zeya-js .zeya-tilt:hover :is(.zeya-product__image,.zeya-collection__image)::after{
+  opacity:1}
+
+/* ------------------------------------------------- 3. Scroll parallax --- */
+/* The hero: the photograph sinks and grows as the page moves past it while
+   the type lifts the other way and fades out. --zeya-p runs 0 → 1 across the
+   hero's own height. */
+.zeya-js .zeya-hero__media{will-change:transform;
+  transform:translate3d(0,calc(var(--zeya-p,0) * 12%),0)
+    scale(calc(1 + var(--zeya-p,0) * .14))}
+.zeya-js .zeya-hero__inner{will-change:transform,opacity;
+  transform:translate3d(0,calc(var(--zeya-p,0) * -70px),0);
+  opacity:calc(1 - var(--zeya-p,0) * .9)}
+
+/* The entry drift stays on the <img> itself, one layer inside the parallax
+   wrapper, so the two never share a transform. */
+.zeya-hero__media img{animation:zeya-drift 16s var(--zeya-ease) both}
+
+.zeya-js .zeya-hero__inner>*{animation:zeya-rise .9s var(--zeya-ease) both}
+.zeya-js .zeya-hero__inner>*:nth-child(1){animation-delay:.05s}
+.zeya-js .zeya-hero__inner>*:nth-child(2){animation-delay:.16s}
+.zeya-js .zeya-hero__inner>*:nth-child(3){animation-delay:.27s}
+.zeya-js .zeya-hero__inner>*:nth-child(4){animation-delay:.38s}
+
+/* Editorial images drift against the scroll inside their own frame.
+   --zeya-shift runs roughly -1 → 1 as the frame crosses the viewport, and the
+   hover zoom rides in the same transform so neither cancels the other. */
+.zeya-js :is(.zeya-split__media,.zeya-product-detail__media,.zeya-contact__aside,.zeya-footer-cta__media) img{
+  transform:scale(var(--zeya-zoom,1.06))
+    translate3d(0,calc(var(--zeya-shift,0) * 3.2%),0);
+  transition:transform .9s var(--zeya-ease)}
+.zeya-js .zeya-split__media:hover img{--zeya-zoom:1.12}
+/* Tracking scroll should be immediate, not eased. */
+.zeya-js .is-parallaxing img{transition:none}
+
+/* ------------------------------------------------- 3b. Service marquee --- */
+/* The track holds four identical runs and travels exactly half its own
+   width, so run 3 lands where run 1 started and the loop never seams.
+   Duration is tied to the distance, not to the viewport, so the speed reads
+   the same on a phone as on a desktop. */
+.zeya-marquee__track{animation:zeya-marquee 44s linear infinite}
+.zeya-marquee:hover .zeya-marquee__track,
+.zeya-marquee:focus-within .zeya-marquee__track{animation-play-state:paused}
+
+@keyframes zeya-marquee{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-50%,0,0)}
 }
 
-.zeya-js .zeya-reveal--left { transform: translate3d(-32px, 0, 0); }
-.zeya-js .zeya-reveal--right { transform: translate3d(32px, 0, 0); }
-.zeya-js .zeya-reveal--fade { transform: none; }
-.zeya-js .zeya-reveal--scale { transform: scale(0.965); }
+/* -------------------------------------------------- 4. Scroll progress --- */
+/* A gold rule along the bottom edge of the bar, injected by main.js so the
+   WordPress header gets it without a template change. */
+.zeya-header__progress{position:absolute;left:0;bottom:0;height:2px;width:100%;
+  background:var(--zeya-gold);transform:scaleX(var(--zeya-progress,0));
+  transform-origin:0 50%;opacity:0;transition:opacity .4s var(--zeya-ease);
+  pointer-events:none}
+.zeya-header.is-scrolled .zeya-header__progress{opacity:1}
 
-.zeya-js .zeya-reveal.is-in {
-  opacity: 1;
-  transform: none;
+/* ------------------------------------------------------------ keyframes --- */
+@keyframes zeya-drift{
+  from{transform:scale(1.12)}
+  to{transform:scale(1)}
+}
+@keyframes zeya-rise{
+  from{opacity:0;transform:translate3d(0,24px,0) rotateX(-6deg)}
+  to{opacity:1;transform:translate3d(0,0,0) rotateX(0deg)}
 }
 
-/* Image-mask reveal: the photograph is uncovered from the bottom up while the
-   image itself settles back from a slight scale. */
-.zeya-js .zeya-reveal-mask {
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 900ms var(--zeya-ease-out);
-  transition-delay: var(--zeya-delay, 0ms);
-}
-
-.zeya-js .zeya-reveal-mask > img,
-.zeya-js .zeya-reveal-mask .zeya-mask-target {
-  transform: scale(1.1);
-  transition: transform 1100ms var(--zeya-ease-out);
-  transition-delay: var(--zeya-delay, 0ms);
-}
-
-.zeya-js .zeya-reveal-mask.is-in {
-  clip-path: inset(0 0 0 0);
-}
-
-.zeya-js .zeya-reveal-mask.is-in > img,
-.zeya-js .zeya-reveal-mask.is-in .zeya-mask-target {
-  transform: scale(1);
-}
-
-/* Staggered groups — JS writes --zeya-delay onto each child. */
-.zeya-stagger > * {
-  --zeya-delay: calc(var(--zeya-index, 0) * 95ms);
-}
-
-/* -------------------------------------------------------------------------
-   Line-by-line text reveal
-   ---------------------------------------------------------------------- */
-.zeya-lines {
-  display: block;
-}
-
-.zeya-line {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
-}
-
-.zeya-line__inner {
-  display: block;
-}
-
-.zeya-js .zeya-line__inner {
-  transform: translate3d(0, 108%, 0);
-  opacity: 0;
-  transition: transform 860ms var(--zeya-ease-out), opacity 640ms var(--zeya-ease-out);
-  transition-delay: calc(var(--zeya-delay, 0ms) + var(--zeya-index, 0) * 110ms);
-  will-change: transform;
-}
-
-.zeya-js .is-in > .zeya-line > .zeya-line__inner,
-.zeya-js .zeya-line.is-in > .zeya-line__inner {
-  transform: translate3d(0, 0, 0);
-  opacity: 1;
-}
-
-/* -------------------------------------------------------------------------
-   Hero
-   ---------------------------------------------------------------------- */
-@keyframes zeya-kenburns {
-  from { transform: scale(1.09); }
-  to   { transform: scale(1); }
-}
-
-.zeya-js .zeya-hero__media img {
-  animation: zeya-kenburns 12s var(--zeya-ease-out) both;
-}
-
-@keyframes zeya-fade-up {
-  from { opacity: 0; transform: translate3d(0, 24px, 0); }
-  to   { opacity: 1; transform: none; }
-}
-
-.zeya-js .zeya-hero__sub,
-.zeya-js .zeya-hero__actions,
-.zeya-js .zeya-hero__foot {
-  animation: zeya-fade-up 760ms var(--zeya-ease-out) both;
-}
-
-.zeya-js .zeya-hero__sub { animation-delay: 420ms; }
-.zeya-js .zeya-hero__actions { animation-delay: 560ms; }
-.zeya-js .zeya-hero__foot { animation-delay: 700ms; }
-
-/* Slow drift on the decorative slide indicator underline */
-@keyframes zeya-indicator {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-/* -------------------------------------------------------------------------
-   Header + mobile menu
-   ---------------------------------------------------------------------- */
-@keyframes zeya-menu-item {
-  from { opacity: 0; transform: translate3d(0, 14px, 0); }
-  to   { opacity: 1; transform: none; }
-}
-
-/* -------------------------------------------------------------------------
-   Timeline
-   The gold connector draws itself in as the timeline enters the viewport.
-   ---------------------------------------------------------------------- */
-.zeya-js .zeya-timeline::before {
-  transform: scaleX(0);
-  transition: transform 1100ms var(--zeya-ease-out) 180ms;
-}
-
-.zeya-js .zeya-timeline.is-in::before {
-  transform: scaleX(1);
-}
-
-/* -------------------------------------------------------------------------
-   Parallax layers — JS writes --zeya-shift, CSS applies it.
-   ---------------------------------------------------------------------- */
-.zeya-parallax {
-  transform: translate3d(0, var(--zeya-shift, 0px), 0);
-}
-
-/* -------------------------------------------------------------------------
-   Reduced motion
-   ---------------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .zeya-body *,
-  .zeya-body *::before,
-  .zeya-body *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* --------------------------------------------------------- reduced motion --- */
+/* Everything above is decorative. Under `reduce` the page renders in its
+   settled state with no parallax, no tilt and no drift. */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
 
   .zeya-js .zeya-reveal,
-  .zeya-js .zeya-reveal--left,
-  .zeya-js .zeya-reveal--right,
-  .zeya-js .zeya-reveal--scale {
-    opacity: 1;
-    transform: none;
-  }
+  .zeya-js .zeya-reveal--depth,
+  .zeya-js .zeya-stagger>*{opacity:1;transform:none;transition:none}
 
-  .zeya-js .zeya-reveal-mask {
-    clip-path: none;
-  }
+  .zeya-js .zeya-tilt,
+  .zeya-js .zeya-tilt:hover,
+  .zeya-js .zeya-tilt :is(.zeya-product__copy,.zeya-collection__title),
+  .zeya-js .zeya-tilt:hover :is(.zeya-product__copy,.zeya-collection__title),
+  .zeya-js .zeya-hero__media,
+  .zeya-js .zeya-hero__inner,
+  .zeya-js :is(.zeya-split__media,.zeya-product-detail__media,.zeya-contact__aside,.zeya-footer-cta__media) img{
+    transform:none}
 
-  .zeya-js .zeya-reveal-mask > img,
-  .zeya-js .zeya-reveal-mask .zeya-mask-target {
-    transform: none;
-  }
+  .zeya-js .zeya-tilt :is(.zeya-product__image,.zeya-collection__image)::after{
+    display:none}
+  .zeya-js .zeya-hero__inner{opacity:1}
+  .zeya-header__progress{display:none}
 
-  .zeya-js .zeya-line__inner {
-    opacity: 1;
-    transform: none;
-  }
+  /* Standing still, one run is all that should be on screen — laid out
+     across the width the way the static service line used to be. */
+  .zeya-marquee__track{animation:none;width:100%;
+    padding-inline:var(--zeya-gutter)}
+  .zeya-marquee__run{flex:1 1 auto;justify-content:space-between;
+    padding-right:0;flex-wrap:wrap;white-space:normal}
+  .zeya-marquee__run+.zeya-marquee__run{display:none}
 
-  .zeya-js .zeya-hero__media img {
-    animation: none;
-  }
+  .zeya-hero__media img,
+  .zeya-js .zeya-hero__inner>*{animation:none}
 
-  .zeya-js .zeya-timeline::before {
-    transform: scaleX(1);
-  }
-
-  .zeya-parallax {
-    transform: none !important;
-  }
-
-  .zeya-btn:hover,
-  .zeya-value:hover,
-  .zeya-social-link:hover {
-    transform: none;
-  }
+  body.zeya-body *,
+  body.zeya-body *::before,
+  body.zeya-body *::after{transition-duration:.01ms!important;
+    animation-duration:.01ms!important;animation-iteration-count:1!important}
 }

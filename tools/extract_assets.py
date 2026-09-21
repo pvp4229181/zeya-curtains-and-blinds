@@ -29,7 +29,9 @@ def extract(pdf,chart):
     from catalog import GROUPS
     chart=Image.open(chart)
     for group,products in GROUPS.items():
-        for name,desc,box in products: save(chart.crop(box),'product-'+slug(name))
+        # Products with no box (curtain accessories) are aliased in asset_map.
+        for name,desc,box in products:
+            if box: save(chart.crop(box),'product-'+slug(name))
     # Use the larger, unobstructed reference chart interiors for broad hero areas.
     for name,box in {'hero-luxury-curtains':(218,817,378,953),'cta-dubai-interior':(1043,817,1198,953),'contact-interior':(957,132,1073,343)}.items(): save(chart.crop(box),name)
 def slug(s):

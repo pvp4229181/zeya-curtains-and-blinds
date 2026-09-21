@@ -142,7 +142,7 @@ DESCRIPTIONS = {
 
 def contact_form_wrapper(body):
     """Let Contact Form 7 / WPForms take over the form when one is configured."""
-    start = body.index('<!-- Field names follow')
+    start = body.index('<form class=')
     end = body.index("</form>") + len("</form>")
     static_form = body[start:end]
 
@@ -207,6 +207,9 @@ def main():
     print("\nTemplates")
     build_templates()
     print("\nTheme chrome")
+    from pathlib import Path
+    footer = "<?php\nif (!defined('ABSPATH')) { exit; }\n$zeya_images = zeya_asset('images/');\n?>\n</main>\n" + to_php(build_pages.footer()) + "\n<?php wp_footer(); ?>\n</body>\n</html>"
+    Path(THEME, 'footer.php').write_text(footer, encoding='utf8')
     write_screenshot()
     print("\nBuilt -> zeya-theme/")
 

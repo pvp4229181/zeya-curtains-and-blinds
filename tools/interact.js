@@ -92,8 +92,14 @@ function check(label, actual, expected) {
 
   check("menu starts closed", await cdp.eval(
     `document.querySelector('[data-zeya-nav]').classList.contains('is-open')`), false);
+  // What matters is that it is rendered and hittable, not which display value
+  // the bars happen to need.
   check("burger is exposed", await cdp.eval(
-    `getComputedStyle(document.querySelector('[data-zeya-burger]')).display`), "block");
+    `(function () {
+       var b = document.querySelector('[data-zeya-burger]');
+       var r = b.getBoundingClientRect();
+       return getComputedStyle(b).display !== 'none' && r.width >= 44 && r.height >= 44;
+     }())`), true);
 
   await cdp.eval(`document.querySelector('[data-zeya-burger]').click()`);
   await sleep(750);
@@ -123,16 +129,24 @@ function check(label, actual, expected) {
   // -------------------------------------------------------------- header ---
   console.log("\nHeader scroll state (1440px)");
   await go("index", 1440);
-  check("transparent at top", await cdp.eval(
+  check("header starts at top", await cdp.eval(
     `document.querySelector('[data-zeya-header]').classList.contains('is-scrolled')`), false);
   await cdp.eval(`window.scrollTo(0, 900)`);
   await sleep(700);
   check("solid after scrolling", await cdp.eval(
     `document.querySelector('[data-zeya-header]').classList.contains('is-scrolled')`), true);
 
+  // Every page now opens on a full-bleed hero, so the bar rides transparent
+  // over it and only turns solid once the hero has scrolled away.
   await go("about", 1440);
-  check("inner page starts solid", await cdp.eval(
-    `document.querySelector('[data-zeya-header]').classList.contains('zeya-header--solid')`), true);
+  check("inner page starts transparent", await cdp.eval(
+    `document.querySelector('[data-zeya-header]').classList.contains('is-scrolled')`), false);
+  await cdp.eval(`window.scrollTo(0, 900)`);
+  await sleep(700);
+  check("inner page goes solid on scroll", await cdp.eval(
+    `document.querySelector('[data-zeya-header]').classList.contains('is-scrolled')`), true);
+  await cdp.eval(`window.scrollTo(0, 0)`);
+  await sleep(400);
   check("active link marked", await cdp.eval(
     `document.querySelector('[data-zeya-nav-item="about"]').getAttribute('aria-current')`), "page");
 
@@ -173,7 +187,154 @@ function check(label, actual, expected) {
   check("does not claim to have sent", await cdp.eval(
     `/not connected to a mail handler/i.test(document.querySelector('[data-zeya-form-status]').textContent)`), true);
 
-  // ----------------------------------------------------- reduced motion ----
+  console.log("\nProduct navigation");
+  await go("products", 390);
+  await cdp.eval(`document.querySelector('[data-zeya-burger]').click(); document.querySelector('.zeya-product-menu summary').click()`);
+  check("category submenu opens", await cdp.eval(`document.querySelector('.zeya-product-menu').open`), true);
+  // No literal count: the submenu has to offer exactly the collections the
+  // page itself links to, so adding a collection cannot leave this behind.
+  check("submenu lists every collection", await cdp.eval(
+    `(function () {
+       var nav = Array.from(document.querySelectorAll('.zeya-collection-nav a'))
+         .map(function (a) { return a.getAttribute('href').replace('#', ''); }).sort();
+       var menu = Array.from(document.querySelectorAll('.zeya-product-menu a'))
+         .map(function (a) { return a.getAttribute('href').replace('.html', ''); }).sort();
+       return nav.length > 0 && JSON.stringify(nav) === JSON.stringify(menu);
+     }())`), true);
+  await go("product-sheer-curtains", 1440);
+  await cdp.eval(`document.querySelector('.zeya-detail-copy .zeya-btn').click()`);
+  await sleep(1200);
+  check("enquiry retains selected product", await cdp.eval(`document.querySelector('[name="your-message"]').value.includes('sheer curtains')`), true);
+  await go("product-sheer-curtains", 390);
+  await cdp.eval(`document.querySelector('.zeya-product-faq summary').click()`);
+  check("product FAQ opens", await cdp.eval(`document.querySelector('.zeya-product-faq').open`), true);
+
+  // --------------------------------------------------------------- motion ---
+  // The 3D/scroll system is driven by custom properties, so it can be read
+  // back directly rather than inferred from a screenshot.
+  console.log("\nMotion (1440px)");
+  await cdp.send("Emulation.setEmulatedMedia", {
+    features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
+  });
+  await go("index", 1440);
+
+  const readVar = (sel, name) =>
+    cdp.eval(`getComputedStyle(document.querySelector('${sel}')).getPropertyValue('${name}').trim()`);
+
+  check("hero parallax idles at 0", await readVar(".zeya-hero", "--zeya-p"), "0.0000");
+
+  await cdp.eval(`window.scrollTo(0, 400)`);
+  await sleep(500);
+  check("hero parallax tracks scroll", await cdp.eval(
+    `parseFloat(getComputedStyle(document.querySelector('.zeya-hero'))
+       .getPropertyValue('--zeya-p')) > 0.1`), true);
+  check("hero media is transformed", await cdp.eval(
+    `getComputedStyle(document.querySelector('.zeya-hero__media')).transform !== 'none'`), true);
+
+  check("scroll progress advances", await cdp.eval(
+    `parseFloat(getComputedStyle(document.querySelector('.zeya-header__progress'))
+       .getPropertyValue('--zeya-progress')) > 0`), true);
+
+  // Drive an editorial frame into view and confirm it is being written to.
+  check("image drift tracks scroll", await cdp.eval(
+    `(function () {
+       var el = document.querySelector('.zeya-split__media');
+       el.scrollIntoView({ block: 'center' });
+       return true;
+     }())`), true);
+  await sleep(600);
+  check("drifting frame is tagged", await cdp.eval(
+    `document.querySelector('.zeya-split__media').classList.contains('is-parallaxing')`), true);
+  check("drift value is in range", await cdp.eval(
+    `(function () {
+       var v = parseFloat(getComputedStyle(document.querySelector('.zeya-split__media'))
+         .getPropertyValue('--zeya-shift'));
+       return v >= -1 && v <= 1;
+     }())`), true);
+
+  // Reveals must actually settle, not stay stuck at opacity 0. The class is
+  // the state; the opacity confirms the transition ran to completion.
+  await cdp.eval(`document.querySelector('.zeya-split__copy').scrollIntoView({ block: 'center' })`);
+  await sleep(1400);
+  check("reveal is marked revealed", await cdp.eval(
+    `document.querySelector('.zeya-split__copy').classList.contains('is-revealed')`), true);
+  check("reveal settles to opaque", await cdp.eval(
+    `getComputedStyle(document.querySelector('.zeya-split__copy')).opacity === '1'`), true);
+
+  // The marquee has to actually be moving, and has to loop seamlessly —
+  // which means the track must be an exact multiple of its runs.
+  check("marquee is animating", await cdp.eval(
+    `getComputedStyle(document.querySelector('.zeya-marquee__track')).animationName`),
+    "zeya-marquee");
+  check("marquee track advances", await cdp.eval(
+    `(function () {
+       var t = document.querySelector('.zeya-marquee__track');
+       var first = getComputedStyle(t).transform;
+       return new Promise(function (done) {
+         setTimeout(function () {
+           done(getComputedStyle(t).transform !== first);
+         }, 400);
+       });
+     }())`, true), true);
+  check("marquee loops seamlessly", await cdp.eval(
+    `(function () {
+       var runs = document.querySelectorAll('.zeya-marquee__run');
+       if (runs.length < 2 || runs.length % 2 !== 0) { return false; }
+       // Half the track must line up exactly with a run boundary.
+       var total = document.querySelector('.zeya-marquee__track').scrollWidth;
+       var half = 0;
+       for (var i = 0; i < runs.length / 2; i++) { half += runs[i].offsetWidth; }
+       return Math.abs(half - total / 2) < 1.5;
+     }())`), true);
+  check("marquee repeats are hidden from AT", await cdp.eval(
+    `(function () {
+       var runs = Array.from(document.querySelectorAll('.zeya-marquee__run'));
+       return runs.slice(1).every(function (r) { return r.getAttribute('aria-hidden') === 'true'; })
+         && !runs[0].hasAttribute('aria-hidden');
+     }())`), true);
+  check("marquee does not widen the page", await cdp.eval(
+    `document.documentElement.scrollWidth <= window.innerWidth`), true);
+
+  // ------------------------------------------------------------ card tilt ---
+  await go("products", 1440);
+  check("cards are tilt-enabled", await cdp.eval(
+    `document.querySelector('.zeya-product').classList.contains('zeya-tilt')`), true);
+
+  // scroll-behavior is smooth, so the rect has to be read after the scroll has
+  // actually finished or the pointer lands somewhere else entirely.
+  await cdp.eval(`document.querySelector('.zeya-product').scrollIntoView({ block: 'center' })`);
+  await sleep(900);
+  const box = await cdp.eval(
+    `(function () {
+       var r = document.querySelector('.zeya-product').getBoundingClientRect();
+       return JSON.stringify({ x: r.left + r.width * 0.25, y: r.top + r.height * 0.25 });
+     }())`);
+  const at = JSON.parse(box);
+  // Two moves: the first carries the pointer over the card, the second gives
+  // pointermove something to track.
+  for (const point of [{ x: at.x + 6, y: at.y + 6 }, at]) {
+    await cdp.send("Input.dispatchMouseEvent", {
+      type: "mouseMoved", x: point.x, y: point.y, buttons: 0,
+    });
+    await sleep(150);
+  }
+  await sleep(350);
+  check("pointer tilts the card", await cdp.eval(
+    `(function () {
+       var c = document.querySelector('.zeya-product');
+       var rx = parseFloat(getComputedStyle(c).getPropertyValue('--zeya-rx'));
+       var ry = parseFloat(getComputedStyle(c).getPropertyValue('--zeya-ry'));
+       return Math.abs(rx) > 0.5 && Math.abs(ry) > 0.5;
+     }())`), true);
+  check("tilt stays within 6 degrees", await cdp.eval(
+    `(function () {
+       var c = document.querySelector('.zeya-product');
+       var rx = Math.abs(parseFloat(getComputedStyle(c).getPropertyValue('--zeya-rx')));
+       var ry = Math.abs(parseFloat(getComputedStyle(c).getPropertyValue('--zeya-ry')));
+       return rx <= 6 && ry <= 6;
+     }())`), true);
+
+  // --------------------------------------------------- motion, reduced ---
   console.log("\nReduced motion");
   await cdp.send("Emulation.setEmulatedMedia", {
     features: [{ name: "prefers-reduced-motion", value: "reduce" }],
@@ -183,8 +344,21 @@ function check(label, actual, expected) {
     `Array.from(document.querySelectorAll('.zeya-reveal')).every(function (el) {
        return getComputedStyle(el).opacity === '1';
      })`), true);
-  check("hero zoom disabled", await cdp.eval(
+  check("hero remains still", await cdp.eval(
     `getComputedStyle(document.querySelector('.zeya-hero__media img')).animationName`), "none");
+  check("no hero parallax", await cdp.eval(
+    `getComputedStyle(document.querySelector('.zeya-hero__media')).transform`), "none");
+  check("no progress rule injected", await cdp.eval(
+    `document.querySelector('.zeya-header__progress') === null`), true);
+  await go("products", 1440);
+  check("no tilt applied", await cdp.eval(
+    `document.querySelector('.zeya-product').classList.contains('zeya-tilt')`), false);
+  await go("index", 1440);
+  check("marquee stands still", await cdp.eval(
+    `getComputedStyle(document.querySelector('.zeya-marquee__track')).animationName`), "none");
+  check("only one marquee run shows", await cdp.eval(
+    `Array.from(document.querySelectorAll('.zeya-marquee__run'))
+       .filter(function (r) { return getComputedStyle(r).display !== 'none'; }).length`), 1);
 
   console.log(failures ? `\n${failures} check(s) failed.` : "\nAll interaction checks passed.");
   ws.close(); chrome.kill(); process.exit(failures ? 1 : 0);

@@ -7,11 +7,12 @@
      1. Helpers
      2. Header scroll state
      3. Mobile navigation
-     4. Active page indicator
-     5. Contact detail hydration
-     6. Hero slide indicators
-     7. Contact form
-     8. Footer year
+     4. Product dropdown
+     5. Active page indicator
+     6. Contact detail hydration
+     7. Hero slide indicators
+     8. Contact form
+     9. Footer year
    ========================================================================== */
 (function () {
   "use strict";
@@ -109,7 +110,7 @@
 
       if (open) {
         var first = nav.querySelector(FOCUSABLE);
-        if (first) { first.focus(); }
+        if (first) { requestAnimationFrame(function () { if (isOpen) { first.focus(); } }); }
       }
     }
 
@@ -163,7 +164,74 @@
   }());
 
   /* ---------------------------------------------------------------------
-     4. Active page indicator
+     4. Product dropdown
+     On pointer devices the category panel opens on hover; the <details>
+     element keeps working as a click/keyboard toggle everywhere else, so
+     touch and no-JS visitors lose nothing.
+  --------------------------------------------------------------------- */
+  (function productMenu() {
+    var wrap = $(".zeya-nav-products");
+    var menu = wrap && $(".zeya-product-menu", wrap);
+    if (!menu) { return; }
+
+    var mq = window.matchMedia("(min-width: 901px) and (hover: hover)");
+    var closeTimer = null;
+
+    function hoverable() {
+      return mq.matches;
+    }
+
+    function open(state) {
+      window.clearTimeout(closeTimer);
+      menu.open = state;
+    }
+
+    wrap.addEventListener("mouseenter", function () {
+      if (hoverable()) { open(true); }
+    });
+
+    // A short grace period keeps the menu up while the pointer crosses the
+    // gap between the link and the panel.
+    wrap.addEventListener("mouseleave", function () {
+      if (!hoverable()) { return; }
+      window.clearTimeout(closeTimer);
+      closeTimer = window.setTimeout(function () { menu.open = false; }, 120);
+    });
+
+    wrap.addEventListener("focusin", function () {
+      if (hoverable()) { open(true); }
+    });
+
+    wrap.addEventListener("focusout", function (event) {
+      if (hoverable() && !wrap.contains(event.relatedTarget)) { open(false); }
+    });
+
+    doc.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && menu.open) {
+        open(false);
+        // The summary is hidden on desktop, so hand focus back to whichever
+        // of the two toggles is actually on screen.
+        var toggle = $(".zeya-nav__link", wrap) || $("summary", menu);
+        if (toggle && wrap.contains(doc.activeElement)) { toggle.focus(); }
+      }
+    });
+
+    doc.addEventListener("click", function (event) {
+      if (menu.open && !wrap.contains(event.target)) { open(false); }
+    });
+
+    // Leaving the hover range (or the mobile panel closing) must not strand
+    // the menu open.
+    var onChange = function () { open(false); };
+    if (mq.addEventListener) {
+      mq.addEventListener("change", onChange);
+    } else if (mq.addListener) {
+      mq.addListener(onChange);
+    }
+  }());
+
+  /* ---------------------------------------------------------------------
+     5. Active page indicator
      Driven by `data-zeya-page` on <body> so it also works once WordPress is
      generating the menu.
   --------------------------------------------------------------------- */
@@ -172,7 +240,7 @@
     if (!page) { return; }
 
     $$("[data-zeya-nav-item]").forEach(function (link) {
-      var match = link.getAttribute("data-zeya-nav-item") === (['curtains', 'blinds', 'motorized'].indexOf(page) !== -1 || page.indexOf('product-') === 0 ? 'products' : page);
+      var match = link.getAttribute("data-zeya-nav-item") === (['curtains', 'blinds', 'motorized', 'curtain-accessories'].indexOf(page) !== -1 || page.indexOf('product-') === 0 ? 'products' : page);
       link.classList.toggle("is-active", match);
       if (match) {
         link.setAttribute("aria-current", "page");
@@ -183,7 +251,7 @@
   }());
 
   /* ---------------------------------------------------------------------
-     5. Contact detail hydration
+     6. Contact detail hydration
      Placeholders stay as plain, unlinked labels until a real value exists.
   --------------------------------------------------------------------- */
   (function contactDetails() {
@@ -247,7 +315,7 @@
   }());
 
   /* ---------------------------------------------------------------------
-     6. Hero slide indicators
+     7. Hero slide indicators
      The indicators only become interactive when more than one slide exists,
      so a single-image hero shows them as the quiet decorative marks in the
      design rather than pretending to be a carousel.
@@ -298,7 +366,7 @@
   }());
 
   /* ---------------------------------------------------------------------
-     7. Contact form
+     8. Contact form
      Client-side validation only. The markup mirrors Contact Form 7 / WPForms
      field naming so it can be swapped for a plugin-rendered form, and it will
      not claim to have sent anything unless a real endpoint is configured.
@@ -421,11 +489,216 @@
   }());
 
   /* ---------------------------------------------------------------------
-     8. Footer year
+     9. Footer year
   --------------------------------------------------------------------- */
   $$("[data-zeya-year]").forEach(function (node) {
     node.textContent = String(new Date().getFullYear());
   });
+}());
+
+/* -----------------------------------------------------------------------
+   Motion
+   Three systems share one rAF loop and one reduced-motion check:
+
+     reveals()   3D entrance, driven by IntersectionObserver
+     tilt()      pointer-driven rotation on cards
+     scroll()    hero parallax, editorial image drift, header progress
+
+   The elements that animate are tagged from here rather than in the markup,
+   so the generators stay free of presentation classes and the WordPress
+   theme picks all of this up without a template change.
+
+   Everything bails out under prefers-reduced-motion, and the scroll loop
+   only does work on frames where the page has actually moved.
+----------------------------------------------------------------------- */
+(function motion() {
+  var doc = document;
+  var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  function each(sel, fn, ctx) {
+    Array.prototype.forEach.call((ctx || doc).querySelectorAll(sel), fn);
+  }
+  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+
+  /* --------------------------------------------------------- reveals --- */
+  (function reveals() {
+    var SINGLE = [
+      ".zeya-section-heading", ".zeya-split__copy", ".zeya-process__step",
+      ".zeya-catalog-toolbar", ".zeya-detail-copy", ".zeya-formcard",
+      ".zeya-footer-cta__inner"
+    ];
+    // Media settles in from further back than text does.
+    var DEPTH = [".zeya-split__media", ".zeya-product-detail__media",
+                 ".zeya-contact__aside"];
+    var GROUP = [".zeya-collections", ".zeya-steps", ".zeya-catalog-grid",
+                 ".zeya-collection-nav"];
+
+    var nodes = [];
+    function tag(list, classes) {
+      list.forEach(function (sel) {
+        each(sel, function (node) {
+          classes.forEach(function (c) { node.classList.add(c); });
+          nodes.push(node);
+        });
+      });
+    }
+    tag(SINGLE, ["zeya-reveal"]);
+    tag(DEPTH, ["zeya-reveal", "zeya-reveal--depth"]);
+    tag(GROUP, ["zeya-stagger"]);
+    if (!nodes.length) { return; }
+
+    if (reduced.matches || !("IntersectionObserver" in window)) {
+      nodes.forEach(function (n) { n.classList.add("is-revealed"); });
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) { return; }
+        entry.target.classList.add("is-revealed");
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
+
+    nodes.forEach(function (n) { observer.observe(n); });
+  }());
+
+  /* ------------------------------------------------------------ tilt --- */
+  /* Only for devices that actually have a pointer to follow: a finger has no
+     hover state, and tilting under a fingertip just hides the card. */
+  (function tilt() {
+    var fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    if (!fine.matches || reduced.matches) { return; }
+
+    var MAX = 5.5; // degrees of rotation at the card's edge
+
+    each(".zeya-product, .zeya-collection", function (card) {
+      card.classList.add("zeya-tilt");
+
+      var frame = null;
+      var box = null;
+      var point = { x: 0.5, y: 0.5 };
+
+      function paint() {
+        frame = null;
+        card.style.setProperty("--zeya-ry", ((point.x - 0.5) * 2 * MAX).toFixed(2) + "deg");
+        card.style.setProperty("--zeya-rx", ((0.5 - point.y) * 2 * MAX).toFixed(2) + "deg");
+        card.style.setProperty("--zeya-mx", (point.x * 100).toFixed(1) + "%");
+        card.style.setProperty("--zeya-my", (point.y * 100).toFixed(1) + "%");
+      }
+
+      card.addEventListener("pointerenter", function () {
+        box = card.getBoundingClientRect();
+        card.classList.add("is-tilting");
+      });
+
+      card.addEventListener("pointermove", function (event) {
+        if (!box) { box = card.getBoundingClientRect(); }
+        point.x = clamp((event.clientX - box.left) / box.width, 0, 1);
+        point.y = clamp((event.clientY - box.top) / box.height, 0, 1);
+        if (frame) { return; } // at most one write per frame
+        frame = window.requestAnimationFrame(paint);
+      });
+
+      function reset() {
+        if (frame) { window.cancelAnimationFrame(frame); frame = null; }
+        box = null;
+        card.classList.remove("is-tilting");
+        card.style.removeProperty("--zeya-rx");
+        card.style.removeProperty("--zeya-ry");
+      }
+      card.addEventListener("pointerleave", reset);
+      card.addEventListener("pointercancel", reset);
+    });
+  }());
+
+  /* ---------------------------------------------------------- scroll --- */
+  (function scrollMotion() {
+    if (reduced.matches) { return; }
+
+    var hero = doc.querySelector(".zeya-hero");
+    var heroMedia = hero && hero.querySelector(".zeya-hero__media");
+
+    var drifters = [];
+    each(".zeya-split__media, .zeya-product-detail__media, .zeya-contact__aside," +
+         " .zeya-footer-cta__media",
+         function (n) { drifters.push(n); });
+
+    // The progress rule is injected rather than authored into the markup, so
+    // the WordPress header gets it without a template change.
+    var header = doc.querySelector("[data-zeya-header]");
+    var progress = null;
+    if (header) {
+      progress = doc.createElement("span");
+      progress.className = "zeya-header__progress";
+      progress.setAttribute("aria-hidden", "true");
+      header.appendChild(progress);
+    }
+
+    if (!hero && !drifters.length && !progress) { return; }
+
+    // Only the frames currently on screen get written to each tick.
+    var visible = drifters.slice();
+    if ("IntersectionObserver" in window && drifters.length) {
+      visible = [];
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var at = visible.indexOf(entry.target);
+          if (entry.isIntersecting && at === -1) {
+            visible.push(entry.target);
+            entry.target.classList.add("is-parallaxing");
+          } else if (!entry.isIntersecting && at !== -1) {
+            visible.splice(at, 1);
+            entry.target.classList.remove("is-parallaxing");
+            entry.target.style.removeProperty("--zeya-shift");
+          }
+        });
+      }, { rootMargin: "20% 0px 20% 0px" });
+      drifters.forEach(function (n) { io.observe(n); });
+    }
+
+    var ticking = false;
+    var last = -1;
+
+    function paint() {
+      ticking = false;
+      var y = window.pageYOffset || doc.documentElement.scrollTop;
+      var vh = window.innerHeight || doc.documentElement.clientHeight;
+
+      if (hero) {
+        var h = hero.offsetHeight || 1;
+        hero.style.setProperty("--zeya-p", clamp(y / h, 0, 1).toFixed(4));
+        if (heroMedia) { heroMedia.style.willChange = y < h ? "transform" : "auto"; }
+      }
+
+      visible.forEach(function (node) {
+        var rect = node.getBoundingClientRect();
+        // -1 while the frame is entering from below, +1 on its way out.
+        var centre = (rect.top + rect.height / 2) / vh;
+        node.style.setProperty("--zeya-shift", clamp((centre - 0.5) * 2, -1, 1).toFixed(4));
+      });
+
+      if (progress) {
+        var max = doc.documentElement.scrollHeight - vh;
+        progress.style.setProperty("--zeya-progress",
+          max > 0 ? clamp(y / max, 0, 1).toFixed(4) : "0");
+      }
+    }
+
+    function onScroll() {
+      var y = window.pageYOffset || doc.documentElement.scrollTop;
+      if (y === last) { return; } // nothing moved, so nothing to repaint
+      last = y;
+      if (ticking) { return; }
+      ticking = true;
+      window.requestAnimationFrame(paint);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", function () { last = -1; onScroll(); },
+                            { passive: true });
+    paint();
+  }());
 }());
 
 // Carry the selected product into the enquiry without overwriting user input.
