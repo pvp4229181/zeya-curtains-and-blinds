@@ -27,8 +27,11 @@ function zeya_contact_details() {
 		'address'       => 'Dubai, UAE',
 		'addressLine'   => '', // Optional second line, e.g. a street address.
 		'addressUrl'    => '', // e.g. a Google Maps link.
-		'whatsapp'      => '', // Digits only, e.g. 971500000000.
-		'whatsappLabel' => '', // Display form, e.g. +971 50 000 0000.
+		// Set the studio number here or under Appearance -> Customize ->
+		// ZEYA Contact Details; every WhatsApp link stays hidden until it is.
+		// TEST NUMBER: replace with ZEYA's real WhatsApp number before launch.
+		'whatsapp'      => '971500000000', // Digits only, country code first.
+		'whatsappLabel' => '+971 50 000 0000', // Display form.
 		'phone'         => '',
 		'email'         => '',
 		'instagram'     => '', // Full profile URL.
@@ -175,11 +178,11 @@ function zeya_preload_hero() {
 	$uri = get_template_directory_uri() . '/assets/images/';
 	printf(
 		'<link rel="preload" as="image" href="%1$s" imagesrcset="%2$s" imagesizes="100vw" fetchpriority="high">' . "\n",
-		esc_url( $uri . 'ai-hero.webp' ),
+		esc_url( $uri . 'signature-hero.webp' ),
 		esc_attr(
-			esc_url( $uri . 'ai-hero-1024.webp' ) . ' 1024w, ' .
-			esc_url( $uri . 'ai-hero.webp' ) . ' 1536w, ' .
-			esc_url( $uri . 'ai-hero.webp' ) . ' 1536w'
+			esc_url( $uri . 'signature-hero-640.webp' ) . ' 640w, ' .
+			esc_url( $uri . 'signature-hero-1024.webp' ) . ' 1024w, ' .
+			esc_url( $uri . 'signature-hero.webp' ) . ' 1536w'
 		)
 	);
 }
@@ -312,9 +315,9 @@ function zeya_collections() {
 function zeya_primary_nav_fallback() {
 	$items = array(
 		'home'     => __( 'Home', 'zeya' ),
-		'about'    => __( 'About', 'zeya' ),
-		'products' => __( 'Products', 'zeya' ),
-		'process'  => __( 'Process', 'zeya' ),
+		'products' => __( 'Collections', 'zeya' ),
+		'about'    => __( 'About Us', 'zeya' ),
+		'process'  => __( 'Our Process', 'zeya' ),
 		'contact'  => __( 'Contact', 'zeya' ),
 	);
 
@@ -354,9 +357,9 @@ function zeya_primary_nav_fallback() {
 function zeya_footer_nav_fallback() {
 	$items = array(
 		'home'     => __( 'Home', 'zeya' ),
-		'about'    => __( 'About', 'zeya' ),
-		'products' => __( 'Products', 'zeya' ),
-		'process'  => __( 'Process', 'zeya' ),
+		'products' => __( 'Collections', 'zeya' ),
+		'about'    => __( 'About Us', 'zeya' ),
+		'process'  => __( 'Our Process', 'zeya' ),
 		'contact'  => __( 'Contact', 'zeya' ),
 	);
 

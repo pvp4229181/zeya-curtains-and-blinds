@@ -6,7 +6,6 @@
 
 /* ------------------------------------------------------------- <= 1100px --- */
 @media (max-width:1100px){
-  .zeya-footer__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .zeya-section-heading{grid-template-columns:1fr;align-items:start;gap:20px}
   .zeya-product-detail{gap:40px}
 }
@@ -30,7 +29,7 @@
 
   .zeya-nav__list{flex-direction:column;gap:6px;text-align:center}
   .zeya-nav__link{font-family:var(--zeya-serif);font-size:30px;letter-spacing:0;
-    text-transform:none;padding-block:8px}
+    text-transform:none;padding-block:8px;justify-content:center}
   .zeya-nav__link::after{display:none}
 
   .zeya-nav-products{flex-direction:column;gap:2px}
@@ -53,7 +52,7 @@
 
 /* -------------------------------------------------------------- <= 700px --- */
 @media (max-width:700px){
-  :root{--zeya-nav-h:72px}
+  :root{--zeya-nav-h:78px;--zeya-nav-h-sm:62px;--zeya-logo-h:42px;--zeya-logo-h-sm:36px}
   .zeya-hero{min-height:clamp(420px,72vh,620px);padding-block:calc(var(--zeya-nav-h) + 40px) 84px}
   .zeya-hero--tall{min-height:100vh;min-height:100svh}
   .zeya-hero--product{min-height:clamp(380px,62vh,520px)}
@@ -65,9 +64,10 @@
   .zeya-process__step{grid-template-columns:1fr;gap:10px}
   .zeya-process__num{font-size:34px}
 
+  .zeya-legal__clause{grid-template-columns:1fr;gap:10px}
+  .zeya-legal__num{font-size:30px}
+
   .zeya-marquee__run{gap:26px;padding-right:26px}
-  .zeya-footer__grid{grid-template-columns:1fr;gap:34px}
-  .zeya-footer__bar{justify-content:flex-start}
 }
 
 /* -------------------------------------------------------------- <= 520px --- */
@@ -83,8 +83,130 @@
 }
 
 /* --------------------------------------------------------------- print --- */
+@media (min-width:901px) and (max-width:1150px){
+  :root{--zeya-logo-h:46px;--zeya-logo-h-sm:38px}
+  .zeya-header__inner{gap:20px}
+  .zeya-nav{gap:20px}
+  .zeya-nav__list{gap:14px}
+  .zeya-nav__link{font-size:11px;letter-spacing:.08em}
+  .zeya-nav__cta{padding:10px 16px;font-size:11px;letter-spacing:.08em}
+  .zeya-quality-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:1100px){
+  .zeya-signature-heading{flex-wrap:wrap;gap:8px 24px}
+  .zeya-solutions .zeya-signature-heading>p{order:3;max-width:none;flex-basis:100%;margin:0}
+  .zeya-signature-hero .zeya-hero__title{font-size:68px}
+  .zeya-art__copy{padding:32px}
+  .zeya-quality-grid{gap:14px;grid-template-columns:repeat(2,1fr)}
+  .zeya-service-band__features{padding:30px 18px}
+  .zeya-service-band__features .zeya-signature-feature{font-size:12px;padding:0 10px}
+  .zeya-mini-grid{gap:12px}
+  .zeya-mini-product h3{font-size:12px}
+}
+@media (max-width:900px){
+  .zeya-nav__link{font-size:28px;letter-spacing:0}
+  .zeya-nav__cta{padding:14px 24px}
+  .zeya-signature-hero{min-height:100svh;padding-top:110px}
+  .zeya-signature-hero .zeya-hero__title{font-size:64px}
+  .zeya-hero-aside{right:6%;top:30%}
+  .zeya-art__copy{padding:28px}
+  .zeya-desktop-break{display:none}
+  .zeya-mini-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 16px}
+  .zeya-mini-product h3{font-size:14px}
+  .zeya-solution__caption{inset:auto 14px 16px}
+  .zeya-solution__caption h3{font-size:25px}
+  .zeya-solution__caption p{font-size:8px;letter-spacing:.1em}
+  .zeya-solution__caption .zeya-circle-arrow{width:28px;height:28px}
+}
+@media (max-width:700px){
+  .zeya-signature-hero{min-height:100svh;padding:104px 0 24px;align-items:center}
+  .zeya-signature-hero .zeya-hero__inner{gap:18px}
+  .zeya-signature-hero .zeya-hero__media img{object-position:62% center}
+  .zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(42,33,31,.82),rgba(42,33,31,.34)),linear-gradient(0deg,rgba(42,33,31,.55),transparent)}
+  .zeya-signature-hero .zeya-hero__title{font-size:clamp(46px,9vw,66px);line-height:1}
+  .zeya-signature-hero .zeya-hero__eyebrow{font-size:10px}
+  .zeya-signature-hero .zeya-hero__sub{font-size:15px;max-width:360px}
+  .zeya-signature-hero .zeya-hero__actions{width:auto;flex-direction:row;flex-wrap:wrap;gap:12px}
+  .zeya-signature-hero .zeya-hero__actions .zeya-btn{width:auto;padding:12px 17px;font-size:9px}
+  .zeya-hero-promises{margin-top:16px;flex-wrap:wrap;column-gap:20px;row-gap:14px}
+  .zeya-hero-promises__item span{font-size:12px}
+  .zeya-hero-promises__icon{width:32px;height:32px;padding:7px}
+  .zeya-hero-promises small{font-size:10px}
+  .zeya-scroll-cue{margin-top:8px}
+  .zeya-hero-aside{display:none}
+  .zeya-solutions{padding:32px 0}
+  .zeya-signature-heading h2{font-size:34px}
+  .zeya-signature-heading{align-items:start}
+  .zeya-signature-heading .zeya-text-link{font-size:9px;white-space:normal}
+  .zeya-solution-grid{grid-template-columns:1fr;gap:16px}
+  .zeya-solution>img{aspect-ratio:1.45}
+  .zeya-solution__caption{inset:auto 24px 24px}
+  .zeya-solution__caption h3{font-size:34px}
+  .zeya-solution__caption p{font-size:10px;letter-spacing:.18em}
+  .zeya-solution__caption .zeya-circle-arrow{width:36px;height:36px}
+  .zeya-signature-collection{padding:30px 0}
+  .zeya-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 16px}
+  .zeya-mini-grid .zeya-mini-product:last-child{grid-column:1/-1;max-width:calc(50% - 8px)}
+  .zeya-art,.zeya-service-band{grid-template-columns:1fr}
+  .zeya-art__media{min-height:310px}
+  .zeya-art__copy{padding:36px var(--zeya-gutter)}
+  .zeya-art__copy h2{font-size:48px}
+  .zeya-art__copy .zeya-btn{width:auto}
+  .zeya-quality-grid{grid-template-columns:repeat(2,1fr);gap:22px}
+  .zeya-service-band__features{padding:36px 16px}
+  .zeya-service-band__image{min-height:240px}
+  .zeya-service-band__features .zeya-signature-feature{padding:0 8px;font-size:11px}
+  .zeya-service-band__features small{font-size:9px}
+}
+
+/* --------------------------------------------------------------- print --- */
 @media print{
   .zeya-header,.zeya-burger,.zeya-footer-cta,.zeya-hero__crumbs,.zeya-skip{display:none}
   body.zeya-body{background:#fff;color:#000}
   .zeya-hero,.zeya-hero--tall{min-height:0;padding-block:24px}
+}
+
+@media (max-height:760px){
+  .zeya-signature-hero{padding-top:calc(var(--zeya-nav-h) + 16px);padding-bottom:16px}
+  .zeya-signature-hero .zeya-hero__inner{gap:12px}
+  .zeya-signature-hero .zeya-hero__title{font-size:clamp(38px,8svh,66px)}
+  .zeya-signature-hero .zeya-hero__sub{font-size:15px}
+  .zeya-signature-hero .zeya-hero__actions{margin-top:4px}
+  .zeya-hero-promises{margin-top:8px}
+  .zeya-scroll-cue{margin-top:0}
+}
+
+/* --------------------------------------------------------------- footer --- */
+/* The brand block steps out of the column row first, then the three link
+   columns fold to two; the contact column keeps a row of its own so the
+   labelled values never sit half a column wide. */
+@media (max-width:1100px){
+  .zeya-footer__grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .zeya-footer__brand{grid-column:1/-1;max-width:56ch}
+}
+@media (max-width:700px){
+  .zeya-footer__invitation{display:grid;gap:24px;padding-block:40px}
+  .zeya-footer__invitation h2{font-size:clamp(38px,9vw,46px)}
+  .zeya-footer__invitation-action{max-width:none}
+  .zeya-footer__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 20px;
+    padding-block:34px}
+  .zeya-footer__contact{grid-column:1/-1;padding-top:24px;
+    border-top:1px solid rgba(183,110,121,.28)}
+  .zeya-footer__bar{justify-content:flex-start;padding-bottom:78px}
+}
+
+/* Service summary */
+@media (max-width:900px){
+  .zeya-services__inner{grid-template-columns:1fr}
+  .zeya-services__intro>p:not(.zeya-eyebrow){max-width:none}
+}
+@media (max-width:700px){
+  .zeya-services__list{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 18px}
+  .zeya-services__item h3{font-size:21px}
+  .zeya-service-band__title{margin-bottom:24px}
+  /* Why ZEYA: 2 x 2 on phones. The title is child 1, so odd children are the right-hand column. */
+  .zeya-service-band__features{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}
+  .zeya-service-band__features .zeya-signature-feature{font-size:13px}
+  .zeya-service-band__features .zeya-signature-feature:nth-child(odd){border-right:0}
+  .zeya-service-band__features small{font-size:11px}
 }

@@ -61,7 +61,9 @@ class Refs(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
-        for key in ("href", "src", "poster"):
+        # data-src/data-src-sm carry the hero video, which main.js loads only
+        # after deciding which encode this visitor should get.
+        for key in ("href", "src", "poster", "data-src", "data-src-sm"):
             if a.get(key):
                 self._add(a[key])
         for key in ("srcset", "imagesrcset"):

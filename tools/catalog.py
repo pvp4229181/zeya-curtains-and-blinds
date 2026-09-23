@@ -1,5 +1,6 @@
 """Product copy transcribed from the supplied ZEYA chart; static page rendering."""
 from html import escape
+from home_content import services_section, why_band
 import re
 
 def slug(s): return re.sub('[^a-z0-9]+','-',s.lower()).strip('-')
@@ -121,7 +122,7 @@ def render(h):
                 +f'<section class="zeya-section zeya-container zeya-product-detail">'
                  f'<figure class="zeya-product-detail__media">'
                  f'{h.img(key,"Interior inspiration: "+n,sizes="(max-width:700px) 100vw, 50vw")}'
-                 f'<figcaption>Interior inspiration &middot; AI-generated visual</figcaption></figure>'
+                 f'</figure>'
                  f'<div class="zeya-detail-copy"><p class="zeya-eyebrow">About this product</p>'
                  f'<h2>{escape(n)}</h2><p class="zeya-detail-lead">{escape(d)}</p>'
                  f'<p>Thoughtfully selected for your windows. We’ll help you choose the '
@@ -131,21 +132,25 @@ def render(h):
                  f'<div><dt>Finish</dt><dd>Selected during consultation</dd></div>'
                  f'<div><dt>Control</dt><dd>{operation}</dd></div>'
                  f'<div><dt>Service</dt><dd>Measured, designed &amp; installed</dd></div></dl>'
-                 f'{h.btn("Enquire about this product","contact.html?product="+slug(n),"gold")}'
+                 f'<div class="zeya-enquire">'
+                 f'<p class="zeya-enquire__title">Interested in {escape(n)}?</p>'
+                 f'<p class="zeya-enquire__note">Home visit, fabric samples and a clear '
+                 f'quotation, anywhere in Dubai.</p>'
+                 f'<div class="zeya-enquire__actions">'
+                 f'{h.btn("Enquire now","contact.html?product="+slug(n),"gold")}'
+                 f'<a class="zeya-btn zeya-btn--whatsapp" data-zeya-wa="product" '
+                 f'data-zeya-wa-product="{escape(n)}" hidden>'
+                 f'<svg aria-hidden="true" focusable="false"><use href="#zeya-i-whatsapp"></use></svg>'
+                 f'Chat on WhatsApp</a></div></div>'
                  f'<a class="zeya-back-link" href="{g}.html">Browse all {label.lower()} &rarr;</a>'
-                 f'<details class="zeya-product-faq"><summary>How do I choose the right specification?</summary>'
-                 f'<p>We review your window dimensions, privacy needs and natural light with you. '
-                 f'Fabric, controls, power requirements and fitting details are confirmed before '
-                 f'quotation.</p></details>'
-                 f'<details class="zeya-product-faq"><summary>What happens after my enquiry?</summary>'
-                 f'<p>We discuss your requirements, arrange the next steps and guide you through '
-                 f'suitable samples, measurement and installation.</p></details>'
                  f'</div></section>'
                  f'<section class="zeya-section zeya-section--chocolate">'
                  f'<div class="zeya-container zeya-catalog-section">'
                  f'<div class="zeya-catalog-toolbar"><h2>You may also like</h2>'
                  f'<a class="zeya-back-link" href="{g}.html">View collection &rarr;</a></div>'
-                 f'{cards(h,g,exclude=n,limit=3)}</div></section>')
+                 f'{cards(h,g,exclude=n,limit=3)}</div></section>'
+                +services_section(h,product=escape(n))
+                +why_band(h))
 
     pages['products']=(
         h.hero('hero-luxury-curtains','Curtains and blinds in a sunlit Dubai interior',

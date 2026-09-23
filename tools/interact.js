@@ -205,9 +205,6 @@ function check(label, actual, expected) {
   await cdp.eval(`document.querySelector('.zeya-detail-copy .zeya-btn').click()`);
   await sleep(1200);
   check("enquiry retains selected product", await cdp.eval(`document.querySelector('[name="your-message"]').value.includes('sheer curtains')`), true);
-  await go("product-sheer-curtains", 390);
-  await cdp.eval(`document.querySelector('.zeya-product-faq summary').click()`);
-  check("product FAQ opens", await cdp.eval(`document.querySelector('.zeya-product-faq').open`), true);
 
   // --------------------------------------------------------------- motion ---
   // The 3D/scroll system is driven by custom properties, so it can be read
@@ -235,6 +232,8 @@ function check(label, actual, expected) {
     `parseFloat(getComputedStyle(document.querySelector('.zeya-header__progress'))
        .getPropertyValue('--zeya-progress')) > 0`), true);
 
+  // The story page retains the editorial frame and reveal animations.
+  await go("about", 1440);
   // Drive an editorial frame into view and confirm it is being written to.
   check("image drift tracks scroll", await cdp.eval(
     `(function () {
@@ -261,38 +260,15 @@ function check(label, actual, expected) {
   check("reveal settles to opaque", await cdp.eval(
     `getComputedStyle(document.querySelector('.zeya-split__copy')).opacity === '1'`), true);
 
-  // The marquee has to actually be moving, and has to loop seamlessly —
-  // which means the track must be an exact multiple of its runs.
-  check("marquee is animating", await cdp.eval(
-    `getComputedStyle(document.querySelector('.zeya-marquee__track')).animationName`),
-    "zeya-marquee");
-  check("marquee track advances", await cdp.eval(
-    `(function () {
-       var t = document.querySelector('.zeya-marquee__track');
-       var first = getComputedStyle(t).transform;
-       return new Promise(function (done) {
-         setTimeout(function () {
-           done(getComputedStyle(t).transform !== first);
-         }, 400);
-       });
-     }())`, true), true);
-  check("marquee loops seamlessly", await cdp.eval(
-    `(function () {
-       var runs = document.querySelectorAll('.zeya-marquee__run');
-       if (runs.length < 2 || runs.length % 2 !== 0) { return false; }
-       // Half the track must line up exactly with a run boundary.
-       var total = document.querySelector('.zeya-marquee__track').scrollWidth;
-       var half = 0;
-       for (var i = 0; i < runs.length / 2; i++) { half += runs[i].offsetWidth; }
-       return Math.abs(half - total / 2) < 1.5;
-     }())`), true);
-  check("marquee repeats are hidden from AT", await cdp.eval(
-    `(function () {
-       var runs = Array.from(document.querySelectorAll('.zeya-marquee__run'));
-       return runs.slice(1).every(function (r) { return r.getAttribute('aria-hidden') === 'true'; })
-         && !runs[0].hasAttribute('aria-hidden');
-     }())`), true);
-  check("marquee does not widen the page", await cdp.eval(
+  // The new homepage replaces the marquee with a linked collection strip.
+  await go("index", 1440);
+  await cdp.eval(`document.querySelector('.zeya-scroll-cue').click()`);
+  await sleep(1000);
+  check("scroll cue reaches solutions", await cdp.eval(
+    `Math.abs(document.querySelector('#solutions').getBoundingClientRect().top) < 160`), true);
+  check("homepage product links target detail pages", await cdp.eval(
+    `Array.from(document.querySelectorAll('.zeya-mini-product')).every(a => /product-[a-z-]+\\.html$/.test(a.href))`), true);
+  check("homepage does not widen the page", await cdp.eval(
     `document.documentElement.scrollWidth <= window.innerWidth`), true);
 
   // ------------------------------------------------------------ card tilt ---
@@ -354,11 +330,8 @@ function check(label, actual, expected) {
   check("no tilt applied", await cdp.eval(
     `document.querySelector('.zeya-product').classList.contains('zeya-tilt')`), false);
   await go("index", 1440);
-  check("marquee stands still", await cdp.eval(
-    `getComputedStyle(document.querySelector('.zeya-marquee__track')).animationName`), "none");
-  check("only one marquee run shows", await cdp.eval(
-    `Array.from(document.querySelectorAll('.zeya-marquee__run'))
-       .filter(function (r) { return getComputedStyle(r).display !== 'none'; }).length`), 1);
+  check("collection remains visible with reduced motion", await cdp.eval(
+    `getComputedStyle(document.querySelector('.zeya-mini-grid')).opacity === '1'`), true);
 
   console.log(failures ? `\n${failures} check(s) failed.` : "\nAll interaction checks passed.");
   ws.close(); chrome.kill(); process.exit(failures ? 1 : 0);

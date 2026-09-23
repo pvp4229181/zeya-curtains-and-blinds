@@ -32,8 +32,12 @@
     address: "Dubai, UAE",
     addressLine: "",    // optional second line, e.g. a street address
     addressUrl: "",     // e.g. a Google Maps link
-    whatsapp: "",       // digits only, e.g. "971500000000"
-    whatsappLabel: "",  // e.g. "+971 50 000 0000"
+    // Every WhatsApp link on the site reads from here: the floating button,
+    // the product CTAs and the footer row all stay hidden until it is set.
+    // Until then the floating "Book a consultation" pill holds that corner.
+    // TEST NUMBER: replace both values with ZEYA's real WhatsApp number before launch.
+    whatsapp: "971500000000",       // digits only, country code first
+    whatsappLabel: "+971 50 000 0000",  // display form
     phone: "",          // e.g. "+971 4 000 0000"
     email: "",          // e.g. "hello@example.com"
     instagram: "",      // full profile URL
@@ -231,6 +235,32 @@
   }());
 
   /* ---------------------------------------------------------------------
+     4b. Hero video
+     The markup ships only a poster frame; the file itself is chosen here, so
+     a visitor who asked for reduced motion never downloads it and a phone
+     gets the light encode instead of the desktop one. Autoplay can still be
+     refused by the browser — the poster simply stays, which is a valid hero.
+  --------------------------------------------------------------------- */
+  (function heroVideo() {
+    var video = $("[data-zeya-hero-video]");
+    if (!video) { return; }
+
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (calm && calm.matches) {
+      video.removeAttribute("autoplay");
+      return;
+    }
+
+    var small = window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
+    var src = (small && video.getAttribute("data-src-sm")) || video.getAttribute("data-src");
+    if (!src) { return; }
+
+    video.src = src;
+    var started = video.play();
+    if (started && started.catch) { started.catch(function () { /* poster stays */ }); }
+  }());
+
+  /* ---------------------------------------------------------------------
      5. Active page indicator
      Driven by `data-zeya-page` on <body> so it also works once WordPress is
      generating the menu.
@@ -251,13 +281,59 @@
   }());
 
   /* ---------------------------------------------------------------------
+     5b. WhatsApp enquiry links
+     One number (CONTACT.whatsapp) feeds the floating button, the product
+     CTAs and the footer/contact rows. Each link carries a prefilled message
+     so the enquiry arrives with context instead of an empty chat. Anything
+     marked [data-zeya-wa] stays hidden while no number is configured.
+  --------------------------------------------------------------------- */
+  function waNumber() {
+    return digits(CONTACT.whatsapp).replace(/^\+/, "");
+  }
+
+  function waLink(product) {
+    var number = waNumber();
+    if (!number) { return ""; }
+    var message = product
+      ? "Hello ZEYA, I would like to enquire about " + product + "."
+      : "Hello ZEYA, I would like to enquire about your curtains and blinds.";
+    return "https://wa.me/" + number + "?text=" + encodeURIComponent(message);
+  }
+
+  (function whatsappEnquiry() {
+    var nodes = $$("[data-zeya-wa]");
+    if (!nodes.length || !waNumber()) { return; }
+
+    // On the enquiry page the ?product= parameter is the visitor's context,
+    // so the general button inherits it rather than asking twice.
+    var selected = new URLSearchParams(window.location.search).get("product");
+    var fromQuery = selected && /^[a-z0-9-]{1,100}$/.test(selected)
+      ? selected.replace(/-/g, " ")
+      : "";
+
+    nodes.forEach(function (node) {
+      var product = node.getAttribute("data-zeya-wa-product") || fromQuery;
+      node.setAttribute("href", waLink(product));
+      node.setAttribute("target", "_blank");
+      node.setAttribute("rel", "noopener");
+      node.removeAttribute("hidden");
+    });
+
+    // The floating consultation link stands in for the WhatsApp bubble
+    // until a number exists; once it does, only one float is shown.
+    $$("[data-zeya-consult-float]").forEach(function (node) {
+      node.setAttribute("hidden", "");
+    });
+  }());
+
+  /* ---------------------------------------------------------------------
      6. Contact detail hydration
      Placeholders stay as plain, unlinked labels until a real value exists.
   --------------------------------------------------------------------- */
   (function contactDetails() {
     var builders = {
       address: function (value) { return CONTACT.addressUrl || ""; },
-      whatsapp: function (value) { return "https://wa.me/" + digits(value).replace(/^\+/, ""); },
+      whatsapp: function (value) { return waLink(); },
       phone: function (value) { return "tel:" + digits(value); },
       email: function (value) { return "mailto:" + value; }
     };
@@ -265,7 +341,7 @@
     var displays = {
       // The address label already reads "Dubai, UAE", so the secondary line
       // stays empty until a fuller address is configured.
-      address: function () { return CONTACT.addressLine || ""; },
+      address: function () { return CONTACT.addressLine || CONTACT.address || ""; },
       whatsapp: function () { return CONTACT.whatsappLabel || CONTACT.whatsapp; },
       phone: function () { return CONTACT.phone; },
       email: function () { return CONTACT.email; }
@@ -279,6 +355,14 @@
 
       if (valueNode) {
         valueNode.textContent = text || "";
+      }
+
+      // Nothing configured means nothing to show: the row leaves the layout
+      // rather than standing there as an empty label.
+      if (text) {
+        node.removeAttribute("hidden");
+      } else {
+        node.setAttribute("hidden", "");
       }
 
       var href = value && builders[key] ? builders[key](value) : "";
@@ -297,6 +381,13 @@
           node.setAttribute("aria-disabled", "true");
         }
       }
+    });
+
+    $$(".zeya-methods").forEach(function (block) {
+      var shown = $$(".zeya-method", block).some(function (row) {
+        return !row.hasAttribute("hidden");
+      });
+      block.hidden = !shown;
     });
 
     // Social icons: only linked once a real profile URL is supplied.
@@ -525,13 +616,17 @@
     var SINGLE = [
       ".zeya-section-heading", ".zeya-split__copy", ".zeya-process__step",
       ".zeya-catalog-toolbar", ".zeya-detail-copy", ".zeya-formcard",
-      ".zeya-footer-cta__inner"
+      ".zeya-footer-cta__inner", ".zeya-signature-heading", ".zeya-art__copy",
+      ".zeya-services__intro"
     ];
     // Media settles in from further back than text does.
     var DEPTH = [".zeya-split__media", ".zeya-product-detail__media",
-                 ".zeya-contact__aside"];
+                 ".zeya-contact__aside", ".zeya-art__media",
+                 ".zeya-service-band__image"];
     var GROUP = [".zeya-collections", ".zeya-steps", ".zeya-catalog-grid",
-                 ".zeya-collection-nav"];
+                 ".zeya-collection-nav", ".zeya-solution-grid", ".zeya-mini-grid",
+                 ".zeya-quality-grid", ".zeya-service-band__features",
+                 ".zeya-services__list"];
 
     var nodes = [];
     function tag(list, classes) {
@@ -572,7 +667,7 @@
 
     var MAX = 5.5; // degrees of rotation at the card's edge
 
-    each(".zeya-product, .zeya-collection", function (card) {
+    each(".zeya-product, .zeya-collection, .zeya-solution", function (card) {
       card.classList.add("zeya-tilt");
 
       var frame = null;
@@ -621,7 +716,7 @@
 
     var drifters = [];
     each(".zeya-split__media, .zeya-product-detail__media, .zeya-contact__aside," +
-         " .zeya-footer-cta__media",
+         " .zeya-footer-cta__media, .zeya-art__media, .zeya-service-band__image",
          function (n) { drifters.push(n); });
 
     // The progress rule is injected rather than authored into the markup, so

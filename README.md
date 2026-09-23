@@ -40,6 +40,20 @@ zeya/
 
 ## 1. Product catalogue and supplied artwork
 
+The homepage follows the supplied September 23 design reference: a copper-and-cream
+palette, curtain-led hero, three solution cards, seven-product collection strip,
+fabric feature and service band. Five new images were generated with the built-in
+ImageGen tool and saved as `zeya-website/assets/images/signature-*.webp`, with
+responsive variants. Exact prompts and original output paths are recorded in
+`tools/design/signature-prompts.json`.
+
+All 38 products use locally saved Blinds.com photographs in homepage product links,
+collection cards, related products and detail pages. Source URLs and representative
+match limitations are recorded in `tools/blindscom_sources.json`. Some photographs
+do not demonstrate the exact fabric, lining, motorization or zip-screen construction.
+The redesigned layout and AI-generated section imagery remain in place. These images
+are references, not verified photographs of completed ZEYA installations.
+
 The static site includes 4 collection pages and 38 unique product detail pages.
 (The catalogue lists 39 entries; Motorized Curtains appears in two collections and
 resolves to one page.)
@@ -95,6 +109,11 @@ add_filter( 'zeya_contact_details', function ( $details ) {
 
 Filled values become real `tel:`, `mailto:` and `https://wa.me/` links automatically.
 Empty ones stay as labels and are marked `aria-disabled`.
+
+Every page carries a floating enquiry button in the bottom-right corner. With no
+WhatsApp number it is a **Book a consultation** link to the contact page (hidden on the
+contact page itself). Once `whatsapp` is set, it is replaced by the WhatsApp bubble, and
+the WhatsApp buttons on the home page service section and the product pages appear.
 
 ---
 
@@ -198,25 +217,25 @@ shade of one of them, named so it is obvious where it came from.
 | Token | Value | Use |
 |---|---|---|
 | `--zeya-black` | `#1A1A1A` | display type, the CTA band, image backdrops |
-| `--zeya-chocolate` | `#4A2E1E` | alternating dark sections |
-| `--zeya-gold` | `#C9A96A` | primary buttons, rules, accents on dark |
+| `--zeya-chocolate` | `#432C2A` | alternating dark sections |
+| `--zeya-gold` | `#D0A099` | rose gold — primary buttons, rules, accents on dark |
 | `--zeya-cream` | `#EDE6DA` | page background |
 
 Derived, in the same file:
 
 | Token | Value | Derived from |
 |---|---|---|
-| `--zeya-cream-lift` | `#F6F2EA` | cream lightened — cards, raised surfaces |
-| `--zeya-cream-line` | `#DCD1BE` | cream darkened — hairlines and borders |
-| `--zeya-gold-ink` | `#7E6029` | gold darkened — gold used as *text* on cream |
-| `--zeya-gold-soft` | `#E2CEA3` | gold lightened — text on the dark bands |
-| `--zeya-espresso` | `#2A1A10` | chocolate darkened — the footer |
-| `--zeya-body` | `#4A4038` | black warmed toward chocolate — body copy |
-| `--zeya-muted` | `#6B6057` | body lightened — captions and meta |
+| `--zeya-cream-lift` | `#F6F1EE` | cream lightened — cards, raised surfaces |
+| `--zeya-cream-line` | `#DCCFCA` | cream darkened — hairlines and borders |
+| `--zeya-gold-ink` | `#8A4A45` | rose gold darkened — used as *text* on cream |
+| `--zeya-gold-soft` | `#E7C4BD` | rose gold lightened — text on the dark bands |
+| `--zeya-espresso` | `#261A19` | chocolate darkened — the footer |
+| `--zeya-body` | `#463C3A` | black warmed toward cocoa rose — body copy |
+| `--zeya-muted` | `#6B5D5A` | body lightened — captions and meta |
 
-Raw `--zeya-gold` is too light to sit on cream as small text (2.0:1), which is what
+Raw `--zeya-gold` is too light to sit on cream as small text (1.9:1), which is what
 `--zeya-gold-ink` is for. **Every text/background pair in the system meets WCAG AA**;
-the lowest is gold-ink on cream at 4.71:1.
+the lowest is muted on cream at 5.07:1.
 
 Type: **Cormorant Garamond** for display, **Inter** for UI. All sizes are `clamp()`-based;
 hero titles run to 118px and section headings to 62px.

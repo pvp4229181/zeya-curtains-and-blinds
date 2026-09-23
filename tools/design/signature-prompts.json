@@ -1,0 +1,30 @@
+{
+  "mode": "Built-in image_gen",
+  "generated": [
+    {
+      "name": "signature-hero",
+      "prompt": "Photorealistic luxury interior editorial photograph, landscape 3:2 composition for a wide website hero. Dubai penthouse at warm late-afternoon golden hour. Tall flowing bronze-brown linen curtains and luminous ivory sheer curtains frame floor-to-ceiling windows. Dark curtain wall on LEFT HALF provides quiet negative space for text to be overlaid later. RIGHT HALF has elegant taupe sofa, curved lounge chair, low round travertine coffee table, delicate flowers and brushed brass dome floor lamp, subtle distant Dubai skyline. Rich chocolate shadows, muted copper, cream and warm stone. Architectural Digest quality, believable fabric weave, natural shadows, cinematic but realistic. No text, no logos, no watermark, no collage.",
+      "output_hint": "Generated images are saved to C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1 as C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1\\exec-32071850-f248-4dd5-b2cf-67ca690a493c.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "name": "signature-curtains",
+      "prompt": "Photorealistic luxury bedroom interior photograph, landscape 3:2. Full-height warm bronze linen curtains layered with glowing ivory sheers, window at right, softly made taupe bed at left with upholstered bench, quiet Dubai skyline beyond. Afternoon golden sunlight, elegant warm brown cream and copper palette, tactile fabric, high-end editorial interior styling, restrained furniture. Curtains are main subject. No text, no logos, no collage.",
+      "output_hint": "Generated images are saved to C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1 as C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1\\exec-9ba7bb9c-655b-4864-bb57-03bf17fb82da.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "name": "signature-blinds",
+      "prompt": "Photorealistic editorial architectural detail photograph, landscape 3:2. Wide window with beautifully crafted warm walnut horizontal Venetian blinds, angled open slats cast precise golden afternoon sunlight across a dark oak desk and warm beige wall. Close enough to appreciate wood grain and neat window treatment construction. Rich chocolate, muted copper and warm cream palette, sophisticated calm interior, realistic perspective and premium craftsmanship. No curtains obscuring blinds, no text, no logo, no collage.",
+      "output_hint": "Generated images are saved to C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1 as C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1\\exec-47c28189-94cc-4e51-a842-8107d6cf088d.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "name": "signature-motorized",
+      "prompt": "Photorealistic luxury Dubai apartment photograph, landscape 3:2. Three adjacent floor-to-ceiling windows with contemporary warm taupe motorized roller shades partially lowered at identical heights. Beautiful soft distant Dubai skyline beyond windows. Corner of a cream sofa and dark walnut side table in foreground right, a discreet small white shade remote placed on table. Golden afternoon light, warm chocolate copper cream palette, sophisticated architectural editorial photography. Emphasize clean roller shade mechanism and smooth fabric. No text, no logo, no collage.",
+      "output_hint": "Generated images are saved to C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1 as C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1\\exec-14f77acb-073d-4663-b917-fdc53e980f6a.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    },
+    {
+      "name": "signature-fabric",
+      "prompt": "Photorealistic macro editorial textile photograph, landscape 3:2. Close-up of luxurious bronze copper linen curtain folds beside softly backlit ivory sheer curtain, slanting warm sunlight revealing detailed delicate woven fibers. Rich deep brown shadows on left, luminous cream on right. Fabric fills the entire frame, elegant draped diagonal folds, quiet sophisticated luxury. No text, no logo, no objects, no collage.",
+      "output_hint": "Generated images are saved to C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1 as C:\\Users\\Lenovo\\.codex\\generated_images\\01a0cd79-266c-7a22-8514-c72a6659b2c1\\exec-b6c44eba-c226-4875-9da6-af14485c2515.png by default.\nIf you need to use a generated image at another path, copy it and leave the original in place unless the user explicitly asks you to delete it.\nThe generated image is already displayed to the user. There is no need to render it in the final response as a Markdown image or file link."
+    }
+  ]
+}

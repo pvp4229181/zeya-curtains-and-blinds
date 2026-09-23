@@ -1,0 +1,268 @@
+{
+  "product-sheer-curtains": {
+    "asset": "blindscom-sheer-curtains",
+    "page": "https://www.blinds.com/p/bali-custom-draperies/505264",
+    "image": "https://www.blinds.com/product-images/35bae40f-11f4-ed11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Shown in Color Gauze Bold Pecan 8310",
+    "note": "Representative drapery; sheer opacity is not verified."
+  },
+  "product-blackout-curtains": {
+    "asset": "blindscom-blackout-curtains",
+    "page": "https://www.blinds.com/p/blindscom-easy-grommet-drapery/518675",
+    "image": "https://www.blinds.com/product-images/d0e23e69-4ecc-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Rio Stone",
+    "note": "Drapery photo; blackout lining is not visible or verified."
+  },
+  "product-linen-curtains": {
+    "asset": "blindscom-linen-curtains",
+    "page": "https://www.blinds.com/p/blindscom-easy-classic-pleat-drapery/519228",
+    "image": "https://www.blinds.com/product-images/0b32ae0e-147e-e711-9468-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "The Light Filtering Sheer Shades paired with the easy classic pleat drapery. Shade Color: Linen Ash S65BN823; Drapery Color: Ashton Stripe Linen",
+    "note": "Linen-colour striped drapery; fibre composition is not verified."
+  },
+  "product-velvet-curtains": {
+    "asset": "blindscom-velvet-curtains",
+    "page": "https://www.blinds.com/p/bali-custom-draperies/505264",
+    "image": "https://www.blinds.com/product-images/8b9ca302-4ecc-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Lake Wanderer",
+    "note": "Representative custom drapery; velvet fabric is not verified."
+  },
+  "product-wave-curtains": {
+    "asset": "blindscom-wave-curtains",
+    "page": "https://www.blinds.com/p/blindscom-easy-ripplefold-drapery/522211",
+    "image": "https://www.blinds.com/product-images/f19c1214-d98a-f111-8494-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Tweed Cream",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-pinch-pleat-curtains": {
+    "asset": "blindscom-pinch-pleat-curtains",
+    "page": "https://www.blinds.com/p/blindscom-easy-classic-pleat-drapery/519228",
+    "image": "https://www.blinds.com/product-images/58e8d6c3-f691-e511-9465-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-double-layered-curtains": {
+    "asset": "blindscom-double-layered-curtains",
+    "page": "https://www.blinds.com/p/blindscom-easy-classic-pleat-drapery/519228",
+    "image": "https://www.blinds.com/product-images/0b32ae0e-147e-e711-9468-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "The Light Filtering Sheer Shades paired with the easy classic pleat drapery. Shade Color: Linen Ash S65BN823; Drapery Color: Ashton Stripe Linen",
+    "note": "Representative curtains paired with shades, not two curtain layers."
+  },
+  "product-motorized-curtains": {
+    "asset": "blindscom-motorized-curtains",
+    "page": "https://www.blinds.com/p/blindscom-easy-ripplefold-drapery/522211",
+    "image": "https://www.blinds.com/product-images/eecbf701-d98a-f111-8494-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Tweed Cream",
+    "note": "Ripplefold curtain detail; motorization is not shown."
+  },
+  "product-roller-blinds": {
+    "asset": "blindscom-roller-blinds",
+    "page": "https://www.blinds.com/p/blindscom-roller-shades/656827",
+    "image": "https://www.blinds.com/product-images/ad330b8f-d472-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Rocklin Jet R22; Lift: Motorized; Bottom Rail: Fabric Wrapped; Headrail: 3 Inch Square Aluminum Fascia in Black",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-zebra-blinds": {
+    "asset": "blindscom-zebra-blinds",
+    "page": "https://www.blinds.com/p/blindscom-zebra-shades/545469",
+    "image": "https://www.blinds.com/product-images/03674682-f708-f011-848c-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Airy Wicker; Lift: Motorized Wand Light Control",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-roman-blinds": {
+    "asset": "blindscom-roman-blinds",
+    "page": "https://www.blinds.com/p/blindscom-roman-shades/503434",
+    "image": "https://www.blinds.com/product-images/c514f735-8e5e-f111-8491-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Grasscloth Twine; Lift: Motorized",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-venetian-blinds": {
+    "asset": "blindscom-venetian-blinds",
+    "page": "https://www.blinds.com/p/blindscom-2-inch-aluminum-blinds/503342",
+    "image": "https://www.blinds.com/product-images/a1e0784b-75cc-ef11-848c-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: White Gloss",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-wooden-blinds": {
+    "asset": "blindscom-wooden-blinds",
+    "page": "https://www.blinds.com/p/blindscom-premium-2-in-wood-blinds/517857",
+    "image": "https://www.blinds.com/product-images/cdcd85e1-464d-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Mink 130; Lift and Tilt: Motorized; Slats: Rounded Corners; Valance: 4 Inch Cord",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-faux-wood-blinds": {
+    "asset": "blindscom-faux-wood-blinds",
+    "page": "https://www.blinds.com/p/blindscom-2-inch-faux-wood-blinds/524032",
+    "image": "https://www.blinds.com/product-images/df91ebfb-1b64-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Smooth Silver Ash 180; Headrail: Modern Valance",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-vertical-blinds": {
+    "asset": "blindscom-vertical-blinds",
+    "page": "https://www.blinds.com/p/blindscom-vinyl-vertical-blinds/518318",
+    "image": "https://www.blinds.com/product-images/8cb1323e-f47c-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Incline Beam",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-honeycomb-blinds": {
+    "asset": "blindscom-honeycomb-blinds",
+    "page": "https://www.blinds.com/p/blindscom-cellular-shades/653454",
+    "image": "https://www.blinds.com/product-images/63e21ee2-104a-f111-8491-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Agean; Lift: Cordless",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-sunscreen-blinds": {
+    "asset": "blindscom-sunscreen-blinds",
+    "page": "https://www.blinds.com/p/blindscom-classic-solar-shades/545485",
+    "image": "https://www.blinds.com/product-images/a2c439ad-caab-f111-8496-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Laramie 1% Pitch F1247; Lift: Stainless Steel Continuous Cord Loop; Hem Bar: Plain Black; Valance: Curved Fascia with Fabric Insert",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-motorized-blinds": {
+    "asset": "blindscom-motorized-blinds",
+    "page": "https://www.blinds.com/p/eve-motionblinds-motorized-blackout-roller-shades/598076",
+    "image": "https://www.blinds.com/product-images/645dfc52-3f72-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Interlude Black 6320; Headrail: Fabric Wrapped 4 Inch Cornice; Bottom Rail: Square Hem Bar; Motorized Hub: Google",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-outdoor-zip-screen-blinds": {
+    "asset": "blindscom-outdoor-zip-screen-blinds",
+    "page": "https://www.blinds.com/p/blindscom-outdoor-solar-shades/505227",
+    "image": "https://www.blinds.com/product-images/2fe5d92b-686d-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Palermo 1% Earthen",
+    "note": "Outdoor solar shade; zip-guided construction is not shown."
+  },
+  "product-motorized-roller-blinds": {
+    "asset": "blindscom-motorized-roller-blinds",
+    "page": "https://www.blinds.com/p/eve-motionblinds-motorized-blackout-roller-shades/598076",
+    "image": "https://www.blinds.com/product-images/645dfc52-3f72-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Interlude Black 6320; Headrail: Fabric Wrapped 4 Inch Cornice; Bottom Rail: Square Hem Bar; Motorized Hub: Google",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-motorized-zebra-blinds": {
+    "asset": "blindscom-motorized-zebra-blinds",
+    "page": "https://www.blinds.com/p/eve-motionblinds-motorized-zebra-shades/598078",
+    "image": "https://www.blinds.com/product-images/8692ae79-d1ab-f111-8496-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Melrose Iron QV16; Opacity: Light Filtering; Lift: Motorized; Valance: Semi Open with Fabric Insert Cassette",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-motorized-roman-blinds": {
+    "asset": "blindscom-motorized-roman-blinds",
+    "page": "https://www.blinds.com/p/ez-a-motorized-roman-shades/597547",
+    "image": "https://www.blinds.com/product-images/772e2f20-cbaf-f011-848e-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Kemah Moon; Lift: Motorized; Fold Style: Classic",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-motorized-blackout-blinds": {
+    "asset": "blindscom-motorized-blackout-blinds",
+    "page": "https://www.blinds.com/p/eve-motionblinds-motorized-blackout-roller-shades/598076",
+    "image": "https://www.blinds.com/product-images/645dfc52-3f72-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Interlude Black 6320; Headrail: Fabric Wrapped 4 Inch Cornice; Bottom Rail: Square Hem Bar; Motorized Hub: Google",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-motorized-sheer-curtains": {
+    "asset": "blindscom-motorized-sheer-curtains",
+    "page": "https://www.blinds.com/p/bali-custom-draperies/505264",
+    "image": "https://www.blinds.com/product-images/35bae40f-11f4-ed11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Shown in Color Gauze Bold Pecan 8310",
+    "note": "Representative drapery; motorization and sheer opacity are not verified."
+  },
+  "product-motorized-double-curtains": {
+    "asset": "blindscom-motorized-double-curtains",
+    "page": "https://www.blinds.com/p/blindscom-easy-classic-pleat-drapery/519228",
+    "image": "https://www.blinds.com/product-images/0b32ae0e-147e-e711-9468-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "The Light Filtering Sheer Shades paired with the easy classic pleat drapery. Shade Color: Linen Ash S65BN823; Drapery Color: Ashton Stripe Linen",
+    "note": "Representative curtains paired with shades; double curtains and motorization are not shown."
+  },
+  "product-motorized-venetian-blinds": {
+    "asset": "blindscom-motorized-venetian-blinds",
+    "page": "https://www.blinds.com/p/levolor-motorized-2-inch-real-wood-blinds/713932",
+    "image": "https://www.blinds.com/product-images/02b9fa1d-7137-f111-8491-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Estate Autumn",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-motorized-vertical-blinds": {
+    "asset": "blindscom-motorized-vertical-blinds",
+    "page": "https://www.blinds.com/p/blindscom-vinyl-vertical-blinds/518318",
+    "image": "https://www.blinds.com/product-images/8cb1323e-f47c-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Incline Beam",
+    "note": "Vertical-blind photo; motorization is not verified."
+  },
+  "product-motorized-outdoor-zip-screens": {
+    "asset": "blindscom-motorized-outdoor-zip-screens",
+    "page": "https://www.blinds.com/p/blindscom-outdoor-solar-shades/505227",
+    "image": "https://www.blinds.com/product-images/2fe5d92b-686d-f011-848d-0afffee37a07.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Palermo 1% Earthen",
+    "note": "Outdoor solar shade; zip guides and motorization are not shown."
+  },
+  "product-motorized-curtain-tracks": {
+    "asset": "blindscom-motorized-curtain-tracks",
+    "page": "https://www.blinds.com/p/blindscom-basic-custom-traversing-drapery-hardware/562053",
+    "image": "https://www.blinds.com/product-images/fc8f18dd-a588-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Cloud",
+    "note": "Traversing curtain hardware setting; motorization is not verified."
+  },
+  "product-smart-window-automation": {
+    "asset": "blindscom-smart-window-automation",
+    "page": "https://www.blinds.com/p/bali-motorization-parts/556075",
+    "image": "https://www.blinds.com/product-images/57fe65ac-50cc-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-curtain-rods-poles": {
+    "asset": "blindscom-curtain-rods-poles",
+    "page": "https://www.blinds.com/p/blindscom-1-inch-adjustable-metal-drapery-hardware/521850",
+    "image": "https://www.blinds.com/product-images/bfd3cc0c-a588-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Crown Nickel",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-curtain-tracks": {
+    "asset": "blindscom-curtain-tracks",
+    "page": "https://www.blinds.com/p/blindscom-basic-custom-traversing-drapery-hardware/562053",
+    "image": "https://www.blinds.com/product-images/fc8f18dd-a588-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Cloud",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-tiebacks-holdbacks": {
+    "asset": "blindscom-tiebacks-holdbacks",
+    "page": "https://www.blinds.com/p/blindscom-wrought-iron-orb-tieback/521889",
+    "image": "https://www.blinds.com/product-images/4b27425a-a588-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-curtain-rings-hooks": {
+    "asset": "blindscom-curtain-rings-hooks",
+    "page": "https://www.blinds.com/p/blindscom-deluxe-custom-drapery-rings/562052",
+    "image": "https://www.blinds.com/product-images/262866bd-a588-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-finials-end-caps": {
+    "asset": "blindscom-finials-end-caps",
+    "page": "https://www.blinds.com/p/blindscom-1-inch-custom-wrought-iron-drapery-hardware/521197",
+    "image": "https://www.blinds.com/product-images/84cb1ff5-a488-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Lantern Rustica",
+    "note": "Finial shown as part of a complete curtain rod."
+  },
+  "product-pelmets-valances": {
+    "asset": "blindscom-pelmets-valances",
+    "page": "https://www.blinds.com/p/bali-board-mounted-valance/509887",
+    "image": "https://www.blinds.com/product-images/d721f08f-a488-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Roman Anita Cream",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  },
+  "product-curtain-linings": {
+    "asset": "blindscom-curtain-linings",
+    "page": "https://www.blinds.com/p/blindscom-easy-grommet-drapery/518675",
+    "image": "https://www.blinds.com/product-images/d0e23e69-4ecc-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "Color: Rio Stone",
+    "note": "Representative drapery exterior; the lining itself is not shown."
+  },
+  "product-motorized-accessories": {
+    "asset": "blindscom-motorized-accessories",
+    "page": "https://www.blinds.com/p/bali-motorization-parts/556075",
+    "image": "https://www.blinds.com/product-images/57fe65ac-50cc-ee11-94a4-0a986990730e.jpg?quality=90&width=1600&height=1600&mode=max",
+    "source_alt": "",
+    "note": "Matching product type; source photo is a reference, not a ZEYA installation."
+  }
+}

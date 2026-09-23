@@ -11,6 +11,8 @@ regenerate it after editing the shell.
 """
 import os
 import re
+import json
+from pathlib import Path
 
 from PIL import Image
 
@@ -22,6 +24,18 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
 SITE = os.path.join(ROOT, "zeya-website")
 IMAGES = os.path.join(SITE, "assets", "images")
 VARIANTS = (640, 1024, 1600)
+PRODUCT_PHOTOS = json.loads(Path(ROOT, 'tools', 'blindscom_sources.json').read_text(encoding='utf-8'))
+SIGNATURE_PHOTOS = {
+    'hero-luxury-curtains': 'signature-hero',
+    'intro-living-room': 'signature-hero',
+    'about-zeya-curtains': 'signature-curtains',
+    'curtains-category': 'signature-curtains',
+    'blinds-category': 'signature-blinds',
+    'motorized-solutions': 'signature-motorized',
+    'fabric-consultation': 'signature-fabric',
+    'contact-interior': 'signature-curtains',
+    'cta-consultation': 'signature-hero',
+}
 
 _size_cache = {}
 
@@ -36,7 +50,10 @@ def _size(name):
 
 def img(name, alt, sizes="100vw", cls="", eager=False, position=None, ratio=None):
     """A responsive <img>, with intrinsic dimensions so nothing shifts on load."""
-    name = "ai-" + IMAGE_ALIASES[name] if name in IMAGE_ALIASES else name
+    if name in PRODUCT_PHOTOS:
+        name = PRODUCT_PHOTOS[name]['asset']
+    else:
+        name = SIGNATURE_PHOTOS.get(name, "ai-" + IMAGE_ALIASES[name] if name in IMAGE_ALIASES else name)
     w, h = _size(name)
     srcset = []
     for v in VARIANTS:
@@ -132,9 +149,9 @@ def sprite():
 
 NAV_ITEMS = (
     ("home", "Home", "index.html"),
-    ("about", "About", "about.html"),
-    ("products", "Products", "products.html"),
-    ("process", "Process", "process.html"),
+    ("products", "Collections", "products.html"),
+    ("about", "About Us", "about.html"),
+    ("process", "Our Process", "process.html"),
     ("contact", "Contact", "contact.html"),
 )
 
@@ -151,7 +168,7 @@ def logo(cls="", tag="a", href="index.html", eager=False, variant=""):
             '<img class="zeya-logo__img" src="assets/images/zeya-logo%(v)s.webp" '
             'srcset="assets/images/zeya-logo%(v)s-360.webp 360w, '
             'assets/images/zeya-logo%(v)s.webp 720w" '
-            'sizes="(max-width: 640px) 180px, 260px" width="720" height="238" '
+            'sizes="(max-width: 640px) 180px, 260px" width="720" height="229" '
             'alt="ZEYA Curtains &amp; Blinds" %(l)s decoding="async">'
             % {"v": variant, "l": loading} +
             close_tag)
@@ -169,7 +186,7 @@ def header(page, solid):
             items.append(
                 '<li class="zeya-nav-products">'
                 '<a class="zeya-nav__link" data-zeya-nav-item="products" '
-                'href="products.html">Products</a>'
+                'href="products.html">Collections</a>'
                 '<details class="zeya-product-menu">'
                 '<summary aria-label="Product categories">'
                 '<svg aria-hidden="true" focusable="false"><use href="#zeya-i-arrow-right"></use></svg>'
@@ -184,7 +201,7 @@ def header(page, solid):
     {logo}
     <nav class="zeya-nav" id="zeya-nav" data-zeya-nav aria-label="Primary">
       <ul class="zeya-nav__list">{links}</ul>
-      <a class="zeya-btn zeya-btn--line zeya-nav__cta" href="contact.html">Let’s talk</a>
+      <a class="zeya-btn zeya-btn--line zeya-nav__cta" href="contact.html">Book a Consultation <span aria-hidden="true">&#8594;</span></a>
     </nav>
     <button class="zeya-burger" type="button" data-zeya-burger
             aria-expanded="false" aria-controls="zeya-nav" aria-label="Open menu">
@@ -201,45 +218,82 @@ def header(page, solid):
 
 
 def footer():
-    links = "".join('<a data-zeya-nav-item="%s" href="%s">%s</a>' % (k, u, l)
-                    for k, l, u in NAV_ITEMS)
-    collections = "".join('<a href="%s.html">%s</a>' % (g, l)
+    """The closing band: an invitation, four columns and a legal line.
+
+    The invitation is the page's last call to action (the home page hides it,
+    since it closes on one of its own). The columns carry navigation, the
+    collections and the contact methods; the methods and social icons ship
+    without an href and main.js links them once real details are configured,
+    so the footer never points at an invented number or an empty profile.
+    """
+    links = "".join('<a class="zeya-footer__link" data-zeya-nav-item="%s" href="%s">%s</a>'
+                    % (k, u, l) for k, l, u in NAV_ITEMS)
+    collections = "".join('<a class="zeya-footer__link" href="%s.html">%s</a>' % (g, l)
                           for g, l in catalog.LABELS.items())
+    methods = "".join('<a class="zeya-method" data-zeya-contact="%s"><span>%s</span>'
+                      '<span data-zeya-contact-value></span></a>' % (k, l)
+                      for k, l in (("phone", "Phone"), ("whatsapp", "WhatsApp"),
+                                   ("email", "Email"), ("address", "Studio")))
+    socials = "".join(
+        '<a class="zeya-social__link" %s aria-label="%s">%s</a>' % (attr, label, icon(name))
+        for attr, label, name in (
+            ('data-zeya-social="instagram"', "ZEYA on Instagram", "instagram"),
+            ('data-zeya-social="facebook"', "ZEYA on Facebook", "facebook"),
+            ('data-zeya-wa="general"', "Enquire on WhatsApp", "whatsapp")))
+
+    def column(label, body, tag="div", extra=""):
+        return ('<%s class="zeya-footer__col%s"%s>'
+                '<p class="zeya-eyebrow">%s</p>%s</%s>'
+                % (tag, extra, ' aria-label="Footer"' if tag == "nav" else "",
+                   label, body, tag))
+
     return (
-        u'<section class="zeya-footer-cta">'
-        u'<div class="zeya-footer-cta__media">%s</div>'
-        % img('cta-consultation', 'Sunset over Dubai through sheer curtains in a '
-              'contemporary living room', sizes='100vw') +
-        u'<div class="zeya-footer-cta__scrim" aria-hidden="true"></div>'
-        u'<div class="zeya-container zeya-footer-cta__inner">'
-        u'<p class="zeya-eyebrow">Let’s transform your windows</p>'
-        u'<h2>Beautiful living<br>starts with a conversation.</h2>'
-        u'<p>Tell us about your space and we’ll bring the fabrics, finishes and '
-        u'light‑control options to you.</p>'
-        + btn("Book a consultation", "contact.html", "ivory") +
-        u'</div></section>'
-        u'<footer class="zeya-footer"><div class="zeya-container zeya-footer__grid">'
-        u'<div class="zeya-footer__brand">' + logo(variant="-footer") +
-        u'<p class="zeya-footer__line">Measured. Designed. Installed.</p>'
-        u'<p class="zeya-footer__note">Bespoke curtains, blinds and motorized window '
-        u'solutions in Dubai, UAE.</p></div>'
-        u'<nav class="zeya-footer__col" aria-label="Footer">'
-        u'<p class="zeya-eyebrow">Explore</p>' + links + u'</nav>'
-        u'<div class="zeya-footer__col"><p class="zeya-eyebrow">Collections</p>'
-        + collections + u'</div>'
-        u'<div class="zeya-footer__col zeya-footer__contact">'
-        u'<p class="zeya-eyebrow">Get in touch</p>'
-        + "".join(u'<a class="zeya-method" data-zeya-contact="%s"><span>%s</span>'
-                  u'<span data-zeya-contact-value></span></a>' % (k, l)
-                  for k, l in (("phone", "Phone"), ("whatsapp", "WhatsApp"),
-                               ("email", "Email"), ("address", "Studio")))
-        + u'</div></div>'
-        u'<div class="zeya-container zeya-footer__bar">'
-        u'<p>© <span data-zeya-year>2026</span> ZEYA Curtains &amp; Blinds.</p>'
-        u'<p>Interior imagery is AI‑generated for inspiration.</p>'
-        u'<p class="zeya-footer__credit">Made by '
-        u'<a href="https://www.nexmogen.com" target="_blank" rel="noopener">Nexmogen</a></p>'
-        u'</div></footer>')
+        '<footer class="zeya-footer">'
+        '<div class="zeya-container zeya-footer__invitation">'
+        '<div><p class="zeya-eyebrow">Your next chapter starts here</p>'
+        '<h2>Let&rsquo;s frame something<br><em>beautiful.</em></h2></div>'
+        '<div class="zeya-footer__invitation-action">'
+        '<p>Your space. Your style. Our attention to every detail.</p>'
+        + btn('Book a consultation', 'contact.html', 'ivory') +
+        '</div></div>'
+        '<div class="zeya-container zeya-footer__grid">'
+        '<div class="zeya-footer__brand">' + logo(variant="-footer") +
+        '<p class="zeya-footer__line">Measured. Designed. Installed.</p>'
+        '<p class="zeya-footer__note">Bespoke curtains, blinds and motorized window '
+        'solutions for homes and workplaces in Dubai, UAE.</p>'
+        '<div class="zeya-social">' + socials + '</div></div>'
+        + column('Explore', links, tag="nav")
+        + column('Collections', collections)
+        + column('Get in touch',
+                 '<p class="zeya-footer__location">Dubai, UAE</p>'
+                 '<p class="zeya-footer__note">We bring the fabrics, finishes and '
+                 'measurements to you, across homes and workplaces in the Emirates.</p>'
+                 + methods +
+                 '<a class="zeya-footer__enquiry" href="contact.html">Start your project '
+                 '<span aria-hidden="true">&rarr;</span></a>',
+                 extra=' zeya-footer__contact')
+        + '</div>'
+        '<div class="zeya-container zeya-footer__bar">'
+        '<p>&copy; <span data-zeya-year>2026</span> ZEYA Curtains &amp; Blinds. '
+        'All rights reserved.</p>'
+        '<p class="zeya-footer__legal"><a href="terms.html">Terms &amp; Conditions</a></p>'
+        '</div></footer>')
+
+
+def floating_cta():
+    """The enquiry button that stays on screen on every page.
+
+    Until a WhatsApp number is configured it is a consultation link to the
+    contact page; main.js swaps it for the WhatsApp bubble once a number
+    exists, so the float can never open an empty chat.
+    """
+    return (
+        '<a class="zeya-consult-float" data-zeya-consult-float href="contact.html">'
+        + icon("calendar", "zeya-consult-float__icon") +
+        '<span>Book a consultation</span></a>\n'
+        '<a class="zeya-wa-float" data-zeya-wa="general" '
+        'aria-label="Chat on WhatsApp" hidden>'
+        + icon("whatsapp", "zeya-wa-float__icon") + '</a>')
 
 
 SHELL = """<!DOCTYPE html>
@@ -256,13 +310,13 @@ SHELL = """<!DOCTYPE html>
 <meta property="og:site_name" content="ZEYA Curtains &amp; Blinds">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{description}">
-<meta property="og:image" content="assets/images/ai-hero.webp">
+<meta property="og:image" content="assets/images/signature-hero.webp">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="assets/icons/favicon.ico" sizes="32x32">
-<link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
-<link rel="icon" href="assets/icons/favicon-192.png" type="image/png" sizes="192x192">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="icon" href="assets/icons/favicon.ico?v=3" sizes="32x32">
+<link rel="icon" href="assets/icons/favicon-32.png?v=3" type="image/png" sizes="32x32">
+<link rel="icon" href="assets/icons/favicon-192.png?v=3" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png?v=3">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 {preload}
 <link rel="stylesheet" href="css/style.css">
@@ -288,6 +342,8 @@ SHELL = """<!DOCTYPE html>
 </main>
 
 {footer}
+
+{floating}
 
 <script src="js/main.js" defer></script>
 
@@ -323,6 +379,13 @@ PAGES = {
         description="A simple six-step process: free consultation, a visit to your space, your choice of "
                     "solution, accurate measurement, a clear quotation and professional installation.",
     ),
+    "terms.html": dict(
+        page="terms", solid=False,
+        title="Terms & Conditions | ZEYA Curtains & Blinds Dubai",
+        description="The terms that apply to quotations, orders, supply and installation by ZEYA "
+                    "Curtains & Blinds in Dubai — pricing and payment, custom-made products, "
+                    "installation conditions, motorized products and warranty.",
+    ),
     "contact.html": dict(
         page="contact", solid=False,
         title="Contact ZEYA Curtains & Blinds | Dubai, UAE",
@@ -340,7 +403,7 @@ def main():
     bodies = page_content.render(H)
     bodies.update(catalog.render(H))
     for key in bodies:
-        if key not in ('home','about','products','process','contact'):
+        if key not in ('home','about','products','process','contact','terms'):
             title = catalog.LABELS.get(key, key.removeprefix('product-').replace('-', ' ').title())
             PAGES[key+'.html'] = dict(page=key, solid=False, title=title+' | ZEYA Dubai', description='Explore '+title+' from ZEYA Curtains & Blinds in Dubai.')
     sprite_markup = sprite()
@@ -356,6 +419,7 @@ def main():
             header=header(meta["page"], meta["solid"]),
             body=bodies[meta["page"]],
             footer=foot,
+            floating=floating_cta(),
         )
         path = os.path.join(SITE, filename)
         with open(path, "w", encoding="utf-8", newline="\n") as fh:

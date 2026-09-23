@@ -73,58 +73,9 @@ def render(h):
             '<article class="zeya-step"><span class="zeya-step__num">%s</span>'
             '<h3>%s</h3><p>%s</p></article>' % row for row in rows) + '</div>')
 
-    # -------------------------------------------------------------- home ---
-    home = (
-        hero('hero-luxury-curtains',
-             'Layered linen and sheer curtains in a sunlit Dubai apartment',
-             'A softer light.<br>A space that’s <em>yours.</em>',
-             eyebrow='Bespoke curtains &amp; blinds &middot; Dubai',
-             sub='Thoughtfully made curtains, blinds and motorized solutions — '
-                 'designed around your windows, and the way you live.',
-             actions=btn('Explore the collections', 'products.html', 'gold'),
-             variant='tall')
-        + marquee(['Made to measure', 'Considered materials',
-                   'Expert installation', 'Dubai, UAE'])
-        + section('<div class="zeya-container">'
-                  + heading('01 / Our collections',
-                            'Beautiful windows.<br>Endless possibilities.',
-                            'From the first morning light to a quiet evening in, find the '
-                            'right balance of beauty, privacy and comfort.')
-                  + '<div class="zeya-collections">'
-                  + collection('curtains', 'Curtains',
-                               'Texture, movement and a softer way to frame your view.', '01')
-                  + collection('blinds', 'Blinds',
-                               'Clean lines. Beautiful light. Privacy on your terms.', '02')
-                  + collection('motorized', 'Motorized living',
-                               'Your favourite light, with effortless control.', '03')
-                  + '</div></div>')
-        + section('<div class="zeya-container zeya-split">'
-                  '<div class="zeya-split__media">{image}</div>'
-                  '<div class="zeya-split__copy">{eyebrow}'
-                  '<h2>It starts with<br>your space.</h2>'
-                  '<p>A window covering changes more than the light. It brings texture to '
-                  'a room, creates privacy, and makes an everyday space feel considered.</p>'
-                  '<p>We help you find that balance, with personal guidance, carefully '
-                  'chosen materials and a finish made for your windows.</p>'
-                  '{cta}</div></div>'.format(
-                      image=img('about-zeya-curtains',
-                                'Textured linen curtains framing a bright living room',
-                                sizes='(max-width:700px) 100vw, 50vw'),
-                      eyebrow=eyebrow('02 / The ZEYA approach'),
-                      cta=btn('Discover ZEYA', 'about.html', 'outline')),
-                  'zeya-section--chocolate')
-        + section('<div class="zeya-container">'
-                  + heading('03 / Beautifully simple', 'From an idea<br>to the final fold.',
-                            action=btn('Our process', 'process.html', 'outline'))
-                  + steplist([
-                      ('01', 'We listen',
-                       'Your style, your space and your practical needs come first.'),
-                      ('02', 'We design',
-                       'Explore fabrics, finishes and ways to control the light.'),
-                      ('03', 'We install',
-                       'Made to your measurements and fitted with care.')])
-                  + '</div>')
-    )
+    # Shared reference-inspired homepage.
+    from home_content import render as render_home
+    home = render_home(h)
 
     # ------------------------------------------------------------- about ---
     about = (
@@ -220,5 +171,95 @@ def render(h):
                       methods=methods, eyebrow=eyebrow('Start your project'), form=form))
     )
 
+
+    # ------------------------------------------------------------- terms ---
+    # The clauses supplied by ZEYA, renumbered 01-06 (the source document
+    # skipped a number). Each clause is a heading plus its bullet points.
+    clauses = [
+        ('01', 'Pricing &amp; Payment', [
+            'All prices are in AED unless otherwise agreed in writing.',
+            'Payment can be made by bank transfer, cash, cheque, payment link, '
+            'Visa or MasterCard.',
+            'Cheques are considered payment only after successful clearance.',
+            'Any changes to the confirmed order may result in additional charges.']),
+        ('02', 'Custom-Made Products', [
+            'Curtains and blinds are made according to the customer’s confirmed '
+            'measurements, selections and specifications.',
+            'Once production has started, customised items cannot normally be '
+            'cancelled, returned or exchanged.',
+            'Changes requested after production or installation may be treated as '
+            'a new order.',
+            'Natural variations in fabric colour, texture, weave and drape are '
+            'normal characteristics of textile products.']),
+        ('03', 'Installation Conditions', [
+            'The customer is responsible for ensuring that the property is '
+            'accessible and that any required building or management approvals are '
+            'obtained before installation.',
+            'The installation team will take reasonable care when drilling and '
+            'fitting products.',
+            'Walls and ceilings may contain concealed wiring, plumbing, HVAC '
+            'services or weak substrates that cannot be identified through a visual '
+            'inspection.',
+            'Minor marks or touch-ups may occasionally be required during '
+            'installation.',
+            'Existing damage should be brought to the Company’s attention before '
+            'installation.']),
+        ('04', 'Motorized Products', [
+            'Motorized curtains and blinds require a suitable and stable power '
+            'supply.',
+            'ZEYA Curtains &amp; Blinds is not responsible for faults caused by '
+            'power fluctuations, surges, incorrect electrical connections or '
+            'unsuitable electrical infrastructure.',
+            'Any required electrical work or surge protection should be arranged by '
+            'the customer through a qualified electrician.']),
+        ('05', 'Warranty', [
+            'A 12-month warranty is provided on eligible mechanisms and hardware '
+            'against manufacturing or workmanship defects.',
+            'The warranty does not cover normal wear and tear, fabric, misuse, '
+            'accidental damage, incorrect operation, unauthorised alterations or '
+            'electrical issues.',
+            'Repairs or replacements will be provided where the issue is confirmed '
+            'to be covered by the warranty and subject to parts availability.']),
+        ('06', 'Confirmation', [
+            'Once the quotation is approved or payment is made, the order is '
+            'considered confirmed and these Terms &amp; Conditions are accepted.']),
+    ]
+
+    def clauselist(rows):
+        return ('<div class="zeya-legal">' + ''.join(
+            '<article class="zeya-legal__clause" id="clause-%s">'
+            '<span class="zeya-legal__num">%s</span>'
+            '<div><h2>%s</h2><ul class="zeya-legal__points">%s</ul></div></article>'
+            % (num, num, title,
+               ''.join('<li>%s</li>' % point for point in points))
+            for num, title, points in rows) + '</div>')
+
+    terms = (
+        hero('about-zeya-curtains',
+             'Floor-length curtains in a calm Dubai interior',
+             'Clear terms.<br>Confident decisions.',
+             eyebrow='Terms &amp; Conditions',
+             sub='These terms apply to all quotations, orders, supply and installation '
+                 'services provided by ZEYA Curtains &amp; Blinds.',
+             variant='product')
+        + section('<div class="zeya-container">'
+                  '<p class="zeya-legal__intro">By approving a quotation or making '
+                  'payment, the customer confirms acceptance of these terms.</p>'
+                  + clauselist(clauses) + '</div>')
+        + section('<div class="zeya-container zeya-split">'
+                  '<div class="zeya-split__copy">{eyebrow}'
+                  '<h2>Questions before<br>you approve?</h2>'
+                  '<p>We are happy to walk you through your quotation, the '
+                  'specification and anything in these terms before your order is '
+                  'confirmed.</p>{cta}</div>'
+                  '<div class="zeya-split__media">{image}</div></div>'.format(
+                      eyebrow=eyebrow('Measure • Supply • Install'),
+                      cta=btn('Talk to us', 'contact.html', 'gold'),
+                      image=img('fabric-consultation',
+                                'Fabric samples reviewed during a consultation',
+                                sizes='(max-width:700px) 100vw, 50vw')),
+                  'zeya-section--chocolate')
+    )
+
     return {'home': home, 'about': about, 'process': process,
-            'contact': contact, 'products': ''}
+            'contact': contact, 'terms': terms, 'products': ''}

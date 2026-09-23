@@ -23,7 +23,7 @@ ROOT = build_pages.ROOT
 SITE = build_pages.SITE
 THEME = os.path.join(ROOT, "zeya-theme")
 
-PAGE_SLUGS = ("home", "about", "products", "process", "contact")
+PAGE_SLUGS = ("home", "about", "products", "process", "contact", "terms")
 
 TEMPLATE_FILES = {
     "home": ("front-page.php", "Front Page", None),
@@ -31,6 +31,7 @@ TEMPLATE_FILES = {
     "products": ("page-products.php", "ZEYA Products", "Products"),
     "process": ("page-process.php", "ZEYA Process", "Process"),
     "contact": ("page-contact.php", "ZEYA Contact", "Contact"),
+    "terms": ("page-terms.php", "ZEYA Terms", "Terms"),
 }
 
 
@@ -42,6 +43,7 @@ def copy_assets():
         (os.path.join(SITE, "assets", "images"), os.path.join(THEME, "assets", "images")),
         (os.path.join(SITE, "assets", "icons"), os.path.join(THEME, "assets", "icons")),
         (os.path.join(SITE, "assets", "fonts"), os.path.join(THEME, "assets", "fonts")),
+        (os.path.join(SITE, "assets", "videos"), os.path.join(THEME, "assets", "videos")),
     )
     for src, dst in pairs:
         if not os.path.isdir(src):
@@ -91,6 +93,13 @@ def to_php(body):
         body,
     )
 
+    # Theme video paths (the hero film), on the same footing as the images.
+    body = re.sub(
+        r"assets/videos/([\w.\-]+\.(?:mp4|webm))",
+        lambda m: "<?php echo esc_url( zeya_asset( 'videos/%s' ) ); ?>" % m.group(1),
+        body,
+    )
+
     # Internal page links, including ones carrying a fragment.
     def link(match):
         slug, frag = match.group(1), match.group(2) or ""
@@ -137,6 +146,7 @@ DESCRIPTIONS = {
     "products": "Products: page header, three category cards, curtain/blind/motorized panels and the dark strip.",
     "process": "Process: page header, consultation photograph, six-step timeline, gallery and closing line.",
     "contact": "Contact: enquiry copy, contact methods and the form card over the interior panel.",
+    "terms": "Terms & Conditions: page hero, numbered clauses and the closing enquiry split.",
 }
 
 
@@ -208,7 +218,7 @@ def main():
     build_templates()
     print("\nTheme chrome")
     from pathlib import Path
-    footer = "<?php\nif (!defined('ABSPATH')) { exit; }\n$zeya_images = zeya_asset('images/');\n?>\n</main>\n" + to_php(build_pages.footer()) + "\n<?php wp_footer(); ?>\n</body>\n</html>"
+    footer = "<?php\nif (!defined('ABSPATH')) { exit; }\n$zeya_images = zeya_asset('images/');\n?>\n</main>\n" + to_php(build_pages.footer()) + "\n" + to_php(build_pages.floating_cta()) + "\n<?php wp_footer(); ?>\n</body>\n</html>"
     Path(THEME, 'footer.php').write_text(footer, encoding='utf8')
     write_screenshot()
     print("\nBuilt -> zeya-theme/")
