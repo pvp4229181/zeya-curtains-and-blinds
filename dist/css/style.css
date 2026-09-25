@@ -712,3 +712,63 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   font:400 clamp(32px,2.8vw,42px)/1 var(--zeya-serif);letter-spacing:-.02em;color:var(--zeya-ivory)}
 
 
+/* ------------------------------------------------------ motorised film --- */
+/* The motorized page's full-bleed film behind the smart-home copy. main.js
+   supplies the file; until then (and for reduced motion) the poster fills it.
+   The scrim darkens the copy side only, so the footage stays legible right. */
+.zeya-motion{position:relative;isolation:isolate;overflow:hidden;display:grid;
+  min-height:100svh;background:var(--zeya-charcoal)}
+.zeya-motion__media{position:absolute;inset:0;z-index:-2}
+.zeya-motion__video{display:block;width:100%;height:100%;object-fit:cover;object-position:62% 50%}
+.zeya-motion__scrim{position:absolute;inset:0;z-index:-1;pointer-events:none;background:
+  linear-gradient(90deg,rgba(23,20,17,.94) 0%,rgba(23,20,17,.8) 34%,rgba(23,20,17,.3) 64%,rgba(23,20,17,.06) 100%),
+  linear-gradient(0deg,rgba(23,20,17,.92) 0%,rgba(23,20,17,0) 36%),
+  linear-gradient(180deg,rgba(23,20,17,.6) 0%,rgba(23,20,17,0) 24%)}
+.zeya-motion__inner{display:grid;grid-template-rows:1fr auto;gap:clamp(48px,7vw,96px);
+  padding-block:calc(var(--zeya-nav-h) + clamp(40px,6vw,88px)) clamp(32px,4vw,52px)}
+.zeya-motion__copy{display:grid;gap:26px;justify-items:start;align-content:center;max-width:620px}
+.zeya-motion__eyebrow{display:inline-flex;align-items:center;gap:14px;margin:0}
+.zeya-motion__eyebrow::before{content:"";width:36px;height:1px;background:currentColor}
+.zeya-motion h1{margin:0;font-size:clamp(44px,5.4vw,84px);line-height:.98;letter-spacing:-.025em}
+.zeya-motion h1 em{color:var(--zeya-champagne-gold)}
+.zeya-motion .zeya-crumbs{color:rgba(248,243,232,.72)}
+.zeya-motion .zeya-crumbs [aria-current]{color:var(--zeya-champagne-gold)}
+.zeya-motion__lead{margin:0;max-width:50ch;font-size:clamp(16px,1.2vw,18px);line-height:1.7;
+  color:rgba(248,243,232,.84)}
+.zeya-motion__works{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.zeya-motion__works>span{font:500 11px/1 var(--zeya-sans);letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(248,243,232,.62)}
+.zeya-motion__works ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.zeya-motion__works li{padding:9px 15px;border:1px solid rgba(248,243,232,.22);border-radius:999px;
+  background:rgba(248,243,232,.07);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  font:500 12px/1 var(--zeya-sans);letter-spacing:.04em;color:var(--zeya-cream)}
+.zeya-motion__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.zeya-motion__actions .zeya-btn--outline{color:var(--zeya-cream)}
+.zeya-motion__foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:32px;
+  align-items:end;padding-top:28px;border-top:1px solid rgba(248,243,232,.18)}
+.zeya-motion__tagline{margin:0;font:italic 400 clamp(22px,2vw,30px)/1.2 var(--zeya-serif);
+  color:var(--zeya-champagne-gold);text-wrap:balance}
+.zeya-motion__modes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin:0;
+  padding:0;list-style:none;font-size:13px;line-height:1.5;color:rgba(248,243,232,.68)}
+.zeya-motion__modes span{display:block;margin-bottom:6px;font:500 11px/1.4 var(--zeya-sans);
+  letter-spacing:.18em;text-transform:uppercase;color:var(--zeya-cream)}
+.zeya-motion__toggle{position:absolute;z-index:1;top:calc(var(--zeya-nav-h) + 16px);right:var(--zeya-gutter);
+  display:grid;place-items:center;width:44px;height:44px;padding:0;
+  border:1px solid rgba(248,243,232,.4);border-radius:50%;background:rgba(23,20,17,.35);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:var(--zeya-ivory);cursor:pointer;
+  transition:background .3s var(--zeya-ease),border-color .3s var(--zeya-ease)}
+.zeya-motion__toggle[hidden]{display:none}
+.zeya-motion__toggle:hover{background:var(--zeya-black);border-color:var(--zeya-gold)}
+.zeya-motion__toggle:focus-visible{outline:2px solid var(--zeya-gold);outline-offset:3px}
+.zeya-motion__toggle svg{width:14px;height:14px;fill:currentColor}
+.zeya-motion__pause,.zeya-motion__toggle.is-playing .zeya-motion__play{display:none}
+.zeya-motion__toggle.is-playing .zeya-motion__pause{display:block}
+@media (max-width:900px){
+  .zeya-motion__scrim{background:linear-gradient(180deg,rgba(23,20,17,.72) 0%,
+    rgba(23,20,17,.82) 50%,rgba(23,20,17,.95) 100%)}
+  .zeya-motion__foot{grid-template-columns:1fr}
+  .zeya-motion__modes{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:480px){
+  .zeya-motion__actions .zeya-btn{flex:1 1 100%;justify-content:center}
+}

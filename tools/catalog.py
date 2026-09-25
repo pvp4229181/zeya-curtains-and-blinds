@@ -81,6 +81,55 @@ def cards(h,group,exclude=None,limit=None):
         for n,d,b in products)+'</div>'
 
 
+def motion_section(h,crumbs=''):
+    """The motorized page's hero: the film full-bleed behind the smart-home copy.
+
+    It stands in for the image hero, so it carries the page's <h1> and the
+    breadcrumb trail, and clears the transparent header like the hero does.
+
+    Like the home hero, the markup ships only a poster: main.js loads the film
+    once it scrolls into view (the light encode on phones), plays it while in
+    view, and never fetches it for reduced-motion visitors unless they press
+    play. The toggle is the pause control for a loop that runs past 5s.
+    """
+    works=''.join(f'<li>{name}</li>' for name in
+                  ('Amazon Alexa','Google Home','Somfy','Tuya'))
+    modes=''.join(f'<li><span>{title}</span>{text}</li>' for title,text in [
+        ('Voice','Ask Alexa or Google Home'),
+        ('App','Somfy, Tuya and more'),
+        ('Remote &amp; switch','In hand or on the wall'),
+        ('Schedules','Timed around your day')])
+    play='<svg class="zeya-motion__play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9.5-5.5z"/></svg>'
+    pause='<svg class="zeya-motion__pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>'
+    return (f'<section class="zeya-section--chocolate zeya-motion" aria-labelledby="zeya-motion-title">'
+            f'<div class="zeya-motion__media">'
+            f'<video class="zeya-motion__video" data-zeya-motion-video'
+            f' data-src="assets/videos/motorized-in-operation.mp4"'
+            f' data-src-sm="assets/videos/motorized-in-operation-854.mp4"'
+            f' poster="assets/images/motorized-in-operation-poster.webp"'
+            f' width="1280" height="720" muted loop playsinline preload="none"'
+            f' aria-hidden="true" tabindex="-1"></video></div>'
+            f'<div class="zeya-motion__scrim" aria-hidden="true"></div>'
+            f'<button class="zeya-motion__toggle" type="button" data-zeya-motion-toggle'
+            f' aria-label="Play video" hidden>{play}{pause}</button>'
+            f'<div class="zeya-container zeya-motion__inner">'
+            f'<div class="zeya-motion__copy">{crumbs}'
+            f'<p class="zeya-eyebrow zeya-motion__eyebrow">Motorised Blinds</p>'
+            f'<h1 id="zeya-motion-title">Effortless control.<br><em>Intelligent comfort.</em></h1>'
+            f'<p class="zeya-motion__lead">We offer motorised curtain solutions that seamlessly '
+            f'integrate with Amazon Alexa, Google Home, Somfy, Tuya and more, bringing effortless '
+            f'control and intelligent comfort to your home.</p>'
+            f'<div class="zeya-motion__works"><span>Works with</span>'
+            f'<ul aria-label="Works with">{works}<li>And more</li></ul></div>'
+            f'<div class="zeya-motion__actions">'
+            f'{h.btn("Ask about smart control","contact.html?product=smart-window-automation","gold")}'
+            f'{h.btn("Browse the range","#range","outline")}</div></div>'
+            f'<div class="zeya-motion__foot">'
+            f'<p class="zeya-motion__tagline">Technology that works quietly around you.</p>'
+            f'<ul class="zeya-motion__modes" aria-label="Ways to control">{modes}</ul></div>'
+            f'</div></section>')
+
+
 def crumbs(title,group=None):
     links='<a href="index.html">Home</a><span aria-hidden="true">/</span><a href="products.html">Products</a>'
     if group: links+=f'<span aria-hidden="true">/</span><a href="{group}.html">{LABELS[group]}</a>'
@@ -100,10 +149,13 @@ def render(h):
         sections.append(section)
 
         # ---- the collection page -----------------------------------------
-        pages[g]=(h.hero(COVERS[g],label+' in a considered Dubai interior',escape(label),
-                         eyebrow='The ZEYA collection',sub=INTROS[g],
-                         crumbs=crumbs(label))
-                  +f'<section class="zeya-section zeya-container zeya-catalog-section">'
+        # The motorized page opens on its film instead of the image hero.
+        opener=(motion_section(h,crumbs(label)) if g=='motorized' else
+                h.hero(COVERS[g],label+' in a considered Dubai interior',escape(label),
+                       eyebrow='The ZEYA collection',sub=INTROS[g],
+                       crumbs=crumbs(label)))
+        pages[g]=(opener
+                  +f'<section class="zeya-section zeya-container zeya-catalog-section" id="range">'
                    f'<div class="zeya-catalog-toolbar"><h2>Explore the collection</h2>'
                    f'<span>{len(GROUPS[g])} options &middot; Made to measure</span></div>'
                    f'{cards(h,g)}</section>')

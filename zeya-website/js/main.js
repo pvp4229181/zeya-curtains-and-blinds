@@ -261,6 +261,56 @@
   }());
 
   /* ---------------------------------------------------------------------
+     4c. Motorised film
+     Same poster-first rule as the hero, but it sits further down the page:
+     the file loads once it scrolls into view and plays only while seen.
+     Reduced-motion visitors get the poster and a play button; the button
+     doubles as the pause control, and a visitor's pause is never overridden
+     by scrolling.
+  --------------------------------------------------------------------- */
+  (function motionVideo() {
+    var video = $("[data-zeya-motion-video]");
+    var toggle = $("[data-zeya-motion-toggle]");
+    if (!video || !toggle) { return; }
+
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var small = window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
+    var held = calm;      // true once the visitor has paused (or never asked for motion)
+
+    function load() {
+      if (video.getAttribute("src")) { return true; }
+      var src = (small && video.getAttribute("data-src-sm")) || video.getAttribute("data-src");
+      if (!src) { return false; }
+      video.src = src;
+      return true;
+    }
+    function play() {
+      if (!load()) { return; }
+      var started = video.play();
+      if (started && started.catch) { started.catch(function () { /* poster stays */ }); }
+    }
+    function sync() {
+      var playing = !video.paused;
+      toggle.classList.toggle("is-playing", playing);
+      toggle.setAttribute("aria-label", playing ? "Pause video" : "Play video");
+    }
+
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    toggle.hidden = false;
+    toggle.addEventListener("click", function () {
+      if (video.paused) { held = false; play(); } else { held = true; video.pause(); }
+    });
+
+    if (held) { return; }
+    if (!("IntersectionObserver" in window)) { play(); return; }
+
+    new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) { video.pause(); } else if (!held) { play(); }
+    }, { threshold: 0.35 }).observe(video);
+  }());
+
+  /* ---------------------------------------------------------------------
      5. Active page indicator
      Driven by `data-zeya-page` on <body> so it also works once WordPress is
      generating the menu.
