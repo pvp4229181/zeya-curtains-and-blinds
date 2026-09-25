@@ -20,12 +20,12 @@ $zeya_page  = zeya_current_page();
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#191713">
+<meta name="theme-color" content="#171411">
 <link rel="profile" href="https://gmpg.org/xfn/11">
-<link rel="icon" href="<?php echo esc_url( zeya_asset( 'icons/favicon.ico?v=3' ) ); ?>" sizes="32x32">
-<link rel="icon" href="<?php echo esc_url( zeya_asset( 'icons/favicon-32.png?v=3' ) ); ?>" type="image/png" sizes="32x32">
-<link rel="icon" href="<?php echo esc_url( zeya_asset( 'icons/favicon-192.png?v=3' ) ); ?>" type="image/png" sizes="192x192">
-<link rel="apple-touch-icon" href="<?php echo esc_url( zeya_asset( 'icons/apple-touch-icon.png?v=3' ) ); ?>">
+<link rel="icon" href="<?php echo esc_url( zeya_asset( 'icons/favicon.ico?v=4' ) ); ?>" sizes="32x32">
+<link rel="icon" href="<?php echo esc_url( zeya_asset( 'icons/favicon-32.png?v=4' ) ); ?>" type="image/png" sizes="32x32">
+<link rel="icon" href="<?php echo esc_url( zeya_asset( 'icons/favicon-192.png?v=4' ) ); ?>" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="<?php echo esc_url( zeya_asset( 'icons/apple-touch-icon.png?v=4' ) ); ?>">
 <script>document.documentElement.classList.add('zeya-js');</script>
 <?php wp_head(); ?>
 </head>
@@ -51,7 +51,7 @@ $zeya_page  = zeya_current_page();
 					     esc_url( zeya_asset( 'images/zeya-logo-footer-360.webp' ) ) . ' 360w, ' .
 					     esc_url( zeya_asset( 'images/zeya-logo-footer.webp' ) ) . ' 720w'
 				     ); ?>"
-				     sizes="(max-width: 640px) 180px, 260px" width="720" height="229"
+				     sizes="(max-width: 640px) 180px, 260px" width="720" height="240"
 				     loading="eager" fetchpriority="high" decoding="async"
 				     alt="<?php esc_attr_e( 'ZEYA Curtains &amp; Blinds', 'zeya' ); ?>">
 			</a>

@@ -168,7 +168,7 @@ def logo(cls="", tag="a", href="index.html", eager=False, variant=""):
             '<img class="zeya-logo__img" src="assets/images/zeya-logo%(v)s.webp" '
             'srcset="assets/images/zeya-logo%(v)s-360.webp 360w, '
             'assets/images/zeya-logo%(v)s.webp 720w" '
-            'sizes="(max-width: 640px) 180px, 260px" width="720" height="229" '
+            'sizes="(max-width: 640px) 180px, 260px" width="720" height="240" '
             'alt="ZEYA Curtains &amp; Blinds" %(l)s decoding="async">'
             % {"v": variant, "l": loading} +
             close_tag)
@@ -238,8 +238,7 @@ def footer():
         '<a class="zeya-social__link" %s aria-label="%s">%s</a>' % (attr, label, icon(name))
         for attr, label, name in (
             ('data-zeya-social="instagram"', "ZEYA on Instagram", "instagram"),
-            ('data-zeya-social="facebook"', "ZEYA on Facebook", "facebook"),
-            ('data-zeya-wa="general"', "Enquire on WhatsApp", "whatsapp")))
+            ('data-zeya-social="facebook"', "ZEYA on Facebook", "facebook")))
 
     def column(label, body, tag="div", extra=""):
         return ('<%s class="zeya-footer__col%s"%s>'
@@ -303,7 +302,7 @@ SHELL = """<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
 <meta name="description" content="{description}">
-<meta name="theme-color" content="#191713">
+<meta name="theme-color" content="#171411">
 <meta name="robots" content="index, follow">
 
 <meta property="og:type" content="website">
@@ -313,10 +312,10 @@ SHELL = """<!DOCTYPE html>
 <meta property="og:image" content="assets/images/signature-hero.webp">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="icon" href="assets/icons/favicon.ico?v=3" sizes="32x32">
-<link rel="icon" href="assets/icons/favicon-32.png?v=3" type="image/png" sizes="32x32">
-<link rel="icon" href="assets/icons/favicon-192.png?v=3" type="image/png" sizes="192x192">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png?v=3">
+<link rel="icon" href="assets/icons/favicon.ico?v=4" sizes="32x32">
+<link rel="icon" href="assets/icons/favicon-32.png?v=4" type="image/png" sizes="32x32">
+<link rel="icon" href="assets/icons/favicon-192.png?v=4" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png?v=4">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 {preload}
 <link rel="stylesheet" href="css/style.css">

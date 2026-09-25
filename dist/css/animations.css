@@ -76,7 +76,7 @@
   content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
   transition:opacity .5s var(--zeya-ease);
   background:radial-gradient(460px circle at var(--zeya-mx,50%) var(--zeya-my,50%),
-    rgba(183,110,121,.30),rgba(183,110,121,0) 62%)}
+    rgba(201,162,77,.30),rgba(201,162,77,0) 62%)}
 .zeya-js .zeya-tilt:hover :is(.zeya-product__image,.zeya-collection__image)::after{
   opacity:1}
 

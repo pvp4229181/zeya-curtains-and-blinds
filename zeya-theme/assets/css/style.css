@@ -2,8 +2,10 @@
    ZEYA — "Classic Luxury" design system.
    Shared by the static site and the WordPress theme.
 
-   The supplied palette: Ivory #F8F4EF, Champagne #E8D5C4, Rose Gold #B76E79,
-   Taupe #B8A79B and Espresso #2A211F. Darker shades preserve text contrast.
+   The supplied palette: Luxury Gold #C9A24D, Champagne Gold #E2C275,
+   Warm Ivory #F8F3E8, Champagne Cream #EADBC8, Taupe #B8A28D,
+   Espresso Brown #2B2118, Charcoal #171411 and White #FFFFFF.
+   Darker shades preserve text contrast.
    Change a token, not a rule.
 
    The reset is scoped with :where(.zeya-body) so it carries zero specificity
@@ -13,21 +15,23 @@
 
 :root{
   /* Supplied palette. Existing component aliases share these five colours. */
-  --zeya-ivory:#F8F4EF;
-  --zeya-champagne:#E8D5C4;
-  --zeya-rose-gold:#B76E79;
-  --zeya-taupe:#B8A79B;
-  --zeya-espresso:#2A211F;
-  --zeya-black:var(--zeya-espresso);
+  --zeya-ivory:#F8F3E8;
+  --zeya-champagne:#EADBC8;
+  --zeya-champagne-gold:#E2C275; /* Light gold accent on dark grounds and photos. */
+  --zeya-taupe:#B8A28D;
+  --zeya-espresso:#2B2118;
+  --zeya-charcoal:#171411;
+  --zeya-white:#FFFFFF;
+  --zeya-black:var(--zeya-charcoal);
   --zeya-chocolate:var(--zeya-espresso);
-  --zeya-gold:var(--zeya-rose-gold);
+  --zeya-gold:#C9A24D;
   --zeya-cream:var(--zeya-ivory);
   --zeya-cream-lift:var(--zeya-champagne);
   --zeya-cream-line:var(--zeya-taupe);
-  --zeya-gold-ink:#96515C; /* Darker rose for readable small text and buttons. */
+  --zeya-gold-ink:#806120; /* Darker gold for readable small text and buttons. */
   --zeya-gold-soft:var(--zeya-champagne);
   --zeya-body:var(--zeya-espresso);
-  --zeya-muted:#64564F; /* Dark taupe for secondary text on ivory. */
+  --zeya-muted:#665748; /* Dark taupe for secondary text on ivory. */
 
   /* type */
   --zeya-serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
@@ -41,7 +45,7 @@
   --zeya-logo-h:56px;     /* wordmark height, one per bar height */
   --zeya-logo-h-sm:44px;
   --zeya-ease:cubic-bezier(.16,1,.3,1);
-  --zeya-shadow:0 26px 70px rgba(42,33,31,.12);
+  --zeya-shadow:0 26px 70px rgba(43,33,24,.12);
 }
 
 /* --------------------------------------------------------------- reset --- */
@@ -123,7 +127,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   color:var(--zeya-cream);transition:background .4s var(--zeya-ease),
   color .4s var(--zeya-ease),box-shadow .4s var(--zeya-ease),height .4s var(--zeya-ease)}
 .zeya-header::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(to bottom,rgba(42,33,31,.62) 0%,rgba(42,33,31,.44) 58%,rgba(42,33,31,0) 100%);
+  background:linear-gradient(to bottom,rgba(43,33,24,.62) 0%,rgba(43,33,24,.44) 58%,rgba(43,33,24,0) 100%);
   opacity:1;transition:opacity .4s var(--zeya-ease)}
 /* Scrolled, the bar compresses and the wordmark compresses with it, so the
    clearance above and below the logo is the same at either height. */
@@ -135,13 +139,13 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
    `backdrop-filter` makes the header a containing block for position:fixed
    descendants, which would collapse the full-screen mobile panel inside it. */
 .zeya-header:is(.is-scrolled,.zeya-header--solid):not(.is-open){
-  background:rgba(248,244,239,.94);-webkit-backdrop-filter:blur(14px);
+  background:rgba(248,243,232,.94);-webkit-backdrop-filter:blur(14px);
   backdrop-filter:blur(14px)}
 .zeya-header.is-scrolled::after,.zeya-header--solid::after,.zeya-header.is-open::after{opacity:0}
 .zeya-header__inner{height:100%;display:flex;align-items:center;justify-content:space-between;
   gap:clamp(24px,4vw,64px)}
 
-/* The wordmark is sized by HEIGHT, never width. The artwork is 720x229, so a
+/* The wordmark is sized by HEIGHT, never width. The artwork is 720x240, so a
    width rule lets it grow taller than the bar and clip the "Curtains & Blinds"
    line underneath; height-first means it can never outgrow its container. */
 .zeya-logo{display:flex;align-items:center;flex-shrink:0;height:var(--zeya-logo-h);
@@ -164,10 +168,10 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   background:currentColor;transform:scaleX(0);transform-origin:right;
   transition:transform .35s var(--zeya-ease)}
 .zeya-nav__link:hover::after,.zeya-nav__link.is-active::after{transform:scaleX(1);transform-origin:left}
-/* The current-page marker needs two values, not one: rose reads muddy on the
-   hero photograph AND thin on the cream bar. Champagne carries it over the
-   image; the darker rose ink carries it once the bar goes solid. */
-.zeya-nav__link.is-active{color:var(--zeya-champagne)}
+/* The current-page marker needs two values, not one: gold reads muddy on the
+   hero photograph AND thin on the cream bar. Champagne gold carries it over the
+   image; the darker gold ink carries it once the bar goes solid. */
+.zeya-nav__link.is-active{color:var(--zeya-champagne-gold)}
 .zeya-header:is(.is-scrolled,.zeya-header--solid,.is-open) .zeya-nav__link.is-active{
   color:var(--zeya-gold-ink)}
 
@@ -219,22 +223,22 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-hero__media img,.zeya-hero__media video{width:100%;height:100%;object-fit:cover}
 .zeya-hero__video{background:var(--zeya-black)}
 .zeya-hero__scrim{position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(to bottom,rgba(42,33,31,.62) 0%,rgba(42,33,31,.34) 45%,rgba(42,33,31,.78) 100%)}
+  background:linear-gradient(to bottom,rgba(43,33,24,.62) 0%,rgba(43,33,24,.34) 45%,rgba(43,33,24,.78) 100%)}
 .zeya-hero__inner{display:grid;justify-items:center;gap:22px;color:var(--zeya-cream);
   max-width:1000px}
 .zeya-hero__eyebrow{font-family:var(--zeya-sans);font-size:11px;font-weight:600;
-  letter-spacing:.3em;text-transform:uppercase;color:var(--zeya-champagne);margin:0;
-  text-shadow:0 1px 3px rgba(42,33,31,.95),0 1px 18px rgba(42,33,31,.85)}
-.zeya-hero__title{color:var(--zeya-ivory);text-shadow:0 2px 40px rgba(42,33,31,.45);
+  letter-spacing:.3em;text-transform:uppercase;color:var(--zeya-champagne-gold);margin:0;
+  text-shadow:0 1px 3px rgba(43,33,24,.95),0 1px 18px rgba(43,33,24,.85)}
+.zeya-hero__title{color:var(--zeya-ivory);text-shadow:0 2px 40px rgba(43,33,24,.45);
   font-size:clamp(46px,8vw,118px);line-height:.98;letter-spacing:-.025em}
 .zeya-hero__title em{color:var(--zeya-gold)}
 .zeya-hero__sub{max-width:60ch;font-size:clamp(15px,1.3vw,18px);line-height:1.7;
-  color:rgba(248,244,239,.94);text-shadow:0 1px 14px rgba(42,33,31,.6)}
+  color:rgba(248,243,232,.94);text-shadow:0 1px 14px rgba(43,33,24,.6)}
 .zeya-hero__actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:8px}
 .zeya-hero__crumbs{position:absolute;left:0;right:0;bottom:0;padding-block:16px;
-  border-top:1px solid rgba(248,244,239,.18);background:rgba(42,33,31,.35);
+  border-top:1px solid rgba(248,243,232,.18);background:rgba(43,33,24,.35);
   -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.zeya-hero__crumbs .zeya-crumbs{justify-content:center;color:rgba(248,244,239,.8)}
+.zeya-hero__crumbs .zeya-crumbs{justify-content:center;color:rgba(248,243,232,.8)}
 .zeya-hero__crumbs .zeya-crumbs a:hover{color:var(--zeya-gold)}
 .zeya-hero__crumbs .zeya-crumbs [aria-current]{color:var(--zeya-gold)}
 
@@ -268,7 +272,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   transition:transform .9s var(--zeya-ease)}
 .zeya-collection:hover .zeya-collection__image img{transform:scale(1.06)}
 .zeya-collection__veil{position:absolute;inset:0;
-  background:linear-gradient(to top,rgba(42,33,31,.55),rgba(42,33,31,0) 55%)}
+  background:linear-gradient(to top,rgba(43,33,24,.55),rgba(43,33,24,0) 55%)}
 .zeya-collection__number{position:absolute;left:22px;bottom:18px;font-family:var(--zeya-serif);
   font-size:42px;line-height:1;color:var(--zeya-gold)}
 .zeya-collection__title{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
@@ -281,7 +285,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px)}
 .zeya-step{display:grid;gap:14px;align-content:start;padding-top:26px;
   border-top:1px solid var(--zeya-cream-line)}
-.zeya-section--chocolate .zeya-step{border-top-color:rgba(248,244,239,.22)}
+.zeya-section--chocolate .zeya-step{border-top-color:rgba(248,243,232,.22)}
 .zeya-step__num{font-family:var(--zeya-serif);font-size:15px;letter-spacing:.2em;
   color:var(--zeya-gold-ink)}
 .zeya-section--chocolate .zeya-step__num{color:var(--zeya-gold)}
@@ -336,7 +340,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-product__image img{aspect-ratio:4/5;object-fit:cover;transition:transform .9s var(--zeya-ease)}
 .zeya-product:hover .zeya-product__image img{transform:scale(1.07)}
 .zeya-product__veil{position:absolute;inset:0;opacity:0;transition:opacity .5s var(--zeya-ease);
-  background:linear-gradient(to top,rgba(42,33,31,.5),rgba(42,33,31,0) 60%)}
+  background:linear-gradient(to top,rgba(43,33,24,.5),rgba(43,33,24,0) 60%)}
 .zeya-product:hover .zeya-product__veil{opacity:1}
 .zeya-product__copy{display:grid;gap:12px;padding:clamp(20px,2vw,30px)}
 .zeya-product__copy p{font-size:15px;color:var(--zeya-muted);max-width:38ch}
@@ -422,11 +426,11 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   z-index:90;display:inline-flex;align-items:center;justify-content:center;
   width:58px;height:58px;border-radius:50%;
   background:#25D366;color:#FFF;
-  box-shadow:0 14px 34px rgba(42,33,31,.28);
+  box-shadow:0 14px 34px rgba(43,33,24,.28);
   transition:background .3s var(--zeya-ease),
   transform .3s var(--zeya-ease),box-shadow .3s var(--zeya-ease)}
 .zeya-wa-float:hover{background:#1DA851;color:#FFF;
-  transform:translateY(-2px);box-shadow:0 18px 40px rgba(42,33,31,.34)}
+  transform:translateY(-2px);box-shadow:0 18px 40px rgba(43,33,24,.34)}
 .zeya-wa-float__icon{width:30px;height:30px;flex-shrink:0}
 .zeya-wa-float[hidden]{display:none}
 
@@ -443,11 +447,11 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   padding:0 22px 0 18px;border-radius:999px;
   background:var(--zeya-gold-ink);color:var(--zeya-ivory);
   font:500 11px/1 var(--zeya-sans);letter-spacing:.14em;text-transform:uppercase;
-  box-shadow:0 14px 34px rgba(42,33,31,.28);
+  box-shadow:0 14px 34px rgba(43,33,24,.28);
   transition:background .3s var(--zeya-ease),
   transform .3s var(--zeya-ease),box-shadow .3s var(--zeya-ease)}
 .zeya-consult-float:hover{background:var(--zeya-espresso);color:var(--zeya-ivory);
-  transform:translateY(-2px);box-shadow:0 18px 40px rgba(42,33,31,.34)}
+  transform:translateY(-2px);box-shadow:0 18px 40px rgba(43,33,24,.34)}
 .zeya-consult-float__icon{width:20px;height:20px;flex-shrink:0}
 .zeya-consult-float[hidden],.zeya-page--contact .zeya-consult-float{display:none}
 
@@ -507,27 +511,27 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-footer-cta__media{position:absolute;inset:0;z-index:-2}
 .zeya-footer-cta__media img{width:100%;height:100%;object-fit:cover;object-position:center}
 .zeya-footer-cta__scrim{position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(to bottom,rgba(42,33,31,.72) 0%,rgba(42,33,31,.5) 50%,rgba(42,33,31,.82) 100%)}
+  background:linear-gradient(to bottom,rgba(43,33,24,.72) 0%,rgba(43,33,24,.5) 50%,rgba(43,33,24,.82) 100%)}
 .zeya-footer-cta__inner{display:grid;justify-items:center;gap:22px}
 .zeya-footer-cta .zeya-eyebrow{color:var(--zeya-gold)}
 .zeya-footer-cta h2{color:var(--zeya-cream);font-size:clamp(34px,5vw,74px)}
-.zeya-footer-cta p{max-width:52ch;color:rgba(248,244,239,.78)}
+.zeya-footer-cta p{max-width:52ch;color:rgba(248,243,232,.78)}
 
 /* --------------------------------------------------------------- footer --- */
-/* One light band in the ivory / champagne / rose-gold palette: a closing
+/* One light band in the ivory / champagne / gold palette: a closing
    invitation (the home page closes on a CTA of its own and hides it), four
    columns and a legal line. The contact rows and social icons ship without an
    href — main.js links them once real details are configured and CSS keeps the
    unlinked ones out of the layout, so nothing here points nowhere. */
 .zeya-footer{background:linear-gradient(180deg,var(--zeya-ivory) 0%,var(--zeya-champagne) 100%);
-  color:var(--zeya-muted);border-top:1px solid rgba(183,110,121,.35)}
+  color:var(--zeya-muted);border-top:1px solid rgba(201,162,77,.35)}
 .zeya-footer .zeya-eyebrow{color:var(--zeya-gold-ink)}
 
 .zeya-footer__invitation{display:flex;flex-wrap:wrap;align-items:center;
   justify-content:space-between;gap:clamp(28px,4vw,64px);padding-block:clamp(46px,6vw,78px)}
 .zeya-footer__invitation h2{margin-top:14px;font-size:clamp(40px,5vw,72px);line-height:1.02;
   color:var(--zeya-espresso)}
-.zeya-footer__invitation h2 em{color:var(--zeya-rose-gold)}
+.zeya-footer__invitation h2 em{color:var(--zeya-gold)}
 .zeya-footer__invitation-action{display:grid;gap:22px;justify-items:start;max-width:300px}
 .zeya-footer__invitation-action p{font-size:14px}
 .zeya-footer__invitation .zeya-btn{min-height:48px;font-size:10px;
@@ -538,17 +542,17 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 
 .zeya-footer__grid{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(0,1fr));
   gap:clamp(26px,3.5vw,56px);padding-block:clamp(40px,5vw,66px);
-  border-top:1px solid rgba(183,110,121,.28)}
+  border-top:1px solid rgba(201,162,77,.28)}
 .zeya-footer__brand{display:grid;gap:14px;align-content:start}
-.zeya-footer__brand .zeya-logo{width:180px}
+.zeya-footer__brand .zeya-logo{height:clamp(64px,7vw,88px)}
 .zeya-footer__brand .zeya-logo__img{opacity:1}
 .zeya-footer__line{font-family:var(--zeya-serif);font-size:23px;color:var(--zeya-espresso)}
 .zeya-footer__note{max-width:31ch;font-size:13px;line-height:1.7}
 
 /* Each column label sits over a hairline, so the four heads read as one row. */
 .zeya-footer__col{display:grid;gap:2px;align-content:start}
-.zeya-footer__col>.zeya-eyebrow{margin-bottom:12px;padding-bottom:12px;
-  border-bottom:1px solid rgba(183,110,121,.28)}
+.zeya-footer__col>.zeya-eyebrow{margin-bottom:12px;padding-bottom:12px;font-size:13px;
+  border-bottom:1px solid rgba(201,162,77,.28)}
 .zeya-footer__link{position:relative;display:inline-flex;align-items:center;width:fit-content;
   min-height:38px;font-size:13px;color:var(--zeya-espresso);transition:color .25s}
 .zeya-footer__link::after{content:"";position:absolute;left:0;right:0;bottom:9px;height:1px;
@@ -579,7 +583,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 
 .zeya-social{display:flex;gap:10px;margin-top:8px}
 .zeya-social__link{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;
-  border:1px solid rgba(183,110,121,.5);color:var(--zeya-gold-ink);
+  border:1px solid rgba(201,162,77,.5);color:var(--zeya-gold-ink);
   transition:background .25s,color .25s,border-color .25s,transform .25s var(--zeya-ease)}
 .zeya-social__link svg{width:18px;height:18px}
 .zeya-social__link:hover{transform:translateY(-2px);background:var(--zeya-gold-ink);
@@ -587,14 +591,14 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-social__link:not([href]){display:none}
 
 .zeya-footer__bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;
-  padding-block:20px;border-top:1px solid rgba(183,110,121,.28);font-size:11px;
+  padding-block:20px;border-top:1px solid rgba(201,162,77,.28);font-size:11px;
   letter-spacing:.04em;color:var(--zeya-muted)}
-.zeya-footer__legal a{color:inherit;border-bottom:1px solid rgba(150,81,92,.35);
+.zeya-footer__legal a{color:inherit;border-bottom:1px solid rgba(128,97,32,.35);
   transition:color .2s ease,border-color .2s ease}
 .zeya-footer__legal a:hover,.zeya-footer__legal a:focus-visible{color:var(--zeya-gold-ink);
   border-bottom-color:currentColor}
 
-/* Reference-inspired rose gold and ivory editorial layout. */
+/* Reference-inspired gold and ivory editorial layout. */
 /* The call to action carries the shared 6px button radius and the same small
    uppercase label as the links beside it, so it reads as the one emphasised
    item in the bar rather than as a separate widget. */
@@ -605,32 +609,32 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   color:var(--zeya-ivory);border-color:var(--zeya-espresso)}
 .zeya-btn{border-radius:6px}
 .zeya-btn--gold{background:var(--zeya-gold-ink);color:var(--zeya-ivory);
-  border-color:var(--zeya-rose-gold);font-size:11px;font-weight:600;letter-spacing:.12em}
-.zeya-btn--gold:hover{background:var(--zeya-gold-ink);color:var(--zeya-ivory);border-color:var(--zeya-rose-gold)}
+  border-color:var(--zeya-gold);font-size:11px;font-weight:600;letter-spacing:.12em}
+.zeya-btn--gold:hover{background:var(--zeya-gold-ink);color:var(--zeya-ivory);border-color:var(--zeya-gold)}
 .zeya-section--chocolate .zeya-product__action{color:var(--zeya-gold-ink)}
 .zeya-signature-hero{min-height:100vh;min-height:100svh;text-align:left;
   padding:calc(var(--zeya-nav-h) + 32px) 0 28px;place-items:stretch;align-items:center}
 .zeya-signature-hero .zeya-hero__inner{max-width:var(--zeya-max);justify-items:start;gap:18px}
-.zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(42,33,31,.78),rgba(42,33,31,.35) 45%,rgba(42,33,31,.04) 75%),linear-gradient(0deg,rgba(42,33,31,.35),transparent 45%)}
+.zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(43,33,24,.78),rgba(43,33,24,.35) 45%,rgba(43,33,24,.04) 75%),linear-gradient(0deg,rgba(43,33,24,.35),transparent 45%)}
 .zeya-signature-hero .zeya-hero__media img,.zeya-signature-hero .zeya-hero__media video{object-position:center 58%}
-.zeya-signature-hero .zeya-hero__eyebrow{color:var(--zeya-champagne);font-size:12px;letter-spacing:.25em;text-shadow:none}
+.zeya-signature-hero .zeya-hero__eyebrow{color:var(--zeya-champagne-gold);font-size:12px;letter-spacing:.25em;text-shadow:none}
 .zeya-signature-hero .zeya-hero__title{font-size:clamp(56px,5.8vw,88px);line-height:.94;
   max-width:none;letter-spacing:-.035em;font-weight:400}
-.zeya-signature-hero .zeya-hero__title span{color:var(--zeya-rose-gold)}
+.zeya-signature-hero .zeya-hero__title span{color:var(--zeya-gold)}
 .zeya-signature-hero .zeya-hero__sub{font-size:18px;max-width:510px;text-align:left;line-height:1.5;color:var(--zeya-ivory)}
 .zeya-signature-hero .zeya-hero__actions{justify-content:flex-start;gap:18px;margin-top:10px}
 .zeya-signature-hero .zeya-btn{min-height:48px;padding:13px 25px}
-.zeya-signature-hero .zeya-btn--outline{border-color:var(--zeya-rose-gold);background:rgba(42,33,31,.22);font-size:11px}
-.zeya-signature-hero .zeya-btn--outline:is(:hover,:focus-visible){background:var(--zeya-gold-ink);color:var(--zeya-ivory);border-color:var(--zeya-rose-gold)}
+.zeya-signature-hero .zeya-btn--outline{border-color:var(--zeya-gold);background:rgba(43,33,24,.22);font-size:11px}
+.zeya-signature-hero .zeya-btn--outline:is(:hover,:focus-visible){background:var(--zeya-gold-ink);color:var(--zeya-ivory);border-color:var(--zeya-gold)}
 .zeya-hero-promises{display:flex;flex-wrap:nowrap;column-gap:24px;row-gap:20px;margin-top:32px;max-width:none;width:100%}
 .zeya-hero-promises__item{display:flex;align-items:center;gap:12px}
-.zeya-hero-promises__icon{width:38px;height:38px;padding:9px;box-sizing:border-box;flex-shrink:0;border:1px solid var(--zeya-champagne);border-radius:50%;color:var(--zeya-champagne)}
+.zeya-hero-promises__icon{width:38px;height:38px;padding:9px;box-sizing:border-box;flex-shrink:0;border:1px solid var(--zeya-champagne-gold);border-radius:50%;color:var(--zeya-champagne-gold)}
 .zeya-hero-promises__item span{font-size:15px;line-height:1.35;color:var(--zeya-ivory);white-space:nowrap}
-.zeya-hero-promises small{display:block;font-size:12px;color:rgba(248,244,239,.65)}
-.zeya-circle-arrow{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--zeya-champagne);border-radius:50%;flex-shrink:0}
+.zeya-hero-promises small{display:block;font-size:12px;color:rgba(248,243,232,.65)}
+.zeya-circle-arrow{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--zeya-champagne-gold);border-radius:50%;flex-shrink:0}
 .zeya-scroll-cue{display:flex;align-items:center;gap:14px;min-height:44px;margin-top:16px;font-size:10px;letter-spacing:.18em;text-transform:uppercase}
 .zeya-scroll-cue svg{transform:rotate(90deg)}
-.zeya-hero-aside{position:absolute;right:8%;top:32%;font-size:11px;line-height:1.9;text-transform:uppercase;letter-spacing:.24em;color:var(--zeya-champagne)}
+.zeya-hero-aside{position:absolute;right:8%;top:32%;font-size:11px;line-height:1.9;text-transform:uppercase;letter-spacing:.24em;color:var(--zeya-champagne-gold)}
 .zeya-hero-aside span{display:block;width:90px;height:1px;background:currentColor;margin-top:18px}
 .zeya-solutions{padding:34px 0 30px}
 .zeya-signature-heading{display:flex;justify-content:space-between;align-items:center;gap:26px;margin-bottom:18px}
@@ -643,25 +647,25 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-solution-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .zeya-solution{position:relative;overflow:hidden;display:block;isolation:isolate;color:var(--zeya-ivory)}
 .zeya-solution>img{aspect-ratio:4/3;object-fit:cover;transition:transform .7s var(--zeya-ease)}
-.zeya-solution::after{content:'';position:absolute;inset:35% 0 0;z-index:0;background:linear-gradient(transparent,rgba(42,33,31,.84))}
+.zeya-solution::after{content:'';position:absolute;inset:35% 0 0;z-index:0;background:linear-gradient(transparent,rgba(43,33,24,.84))}
 .zeya-solution:hover>img{transform:scale(1.035)}
 .zeya-solution__caption{position:absolute;inset:auto 24px 21px;z-index:1;display:flex;justify-content:space-between;align-items:end;gap:8px}
 .zeya-solution__caption h3{color:var(--zeya-ivory);font-size:clamp(26px,2.5vw,36px)}
 .zeya-solution__caption p{color:var(--zeya-ivory);font-size:10px;letter-spacing:.18em;text-transform:uppercase;margin-top:3px}
 .zeya-signature-collection{padding:26px 0 28px;background:radial-gradient(ellipse at 25% 0,var(--zeya-espresso),var(--zeya-espresso) 75%);color:var(--zeya-ivory)}
 .zeya-signature-collection h2{color:var(--zeya-ivory)}
-.zeya-signature-collection .zeya-eyebrow{color:var(--zeya-champagne);margin-top:5px}
+.zeya-signature-collection .zeya-eyebrow{color:var(--zeya-champagne-gold);margin-top:5px}
 .zeya-signature-collection .zeya-text-link{color:var(--zeya-ivory)!important}
 .zeya-mini-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:16px}
 .zeya-mini-product{display:block;min-width:0}
 .zeya-mini-product img{aspect-ratio:1.08;object-fit:cover;transition:filter .3s}
 .zeya-mini-product:hover img{filter:brightness(1.15)}
 .zeya-mini-product h3{font:400 14px/1.5 var(--zeya-sans);color:var(--zeya-ivory);letter-spacing:0;margin-top:9px}
-.zeya-mini-product p{font-size:11px;color:var(--zeya-champagne);line-height:1.5}
+.zeya-mini-product p{font-size:11px;color:var(--zeya-champagne-gold);line-height:1.5}
 .zeya-art{display:grid;grid-template-columns:54% 46%;background:var(--zeya-cream)}
 .zeya-art__media{position:relative;min-height:380px;overflow:hidden}
 .zeya-art__media>img{position:absolute;width:100%;height:100%;object-fit:cover}
-.zeya-art__media>p{position:absolute;top:35%;left:10%;font:italic 39px/1.2 var(--zeya-serif);color:var(--zeya-champagne);text-shadow:0 1px 15px var(--zeya-espresso)}
+.zeya-art__media>p{position:absolute;top:35%;left:10%;font:italic 39px/1.2 var(--zeya-serif);color:var(--zeya-champagne-gold);text-shadow:0 1px 15px var(--zeya-espresso)}
 .zeya-art__media>p span{margin-left:24px}
 .zeya-art__copy{padding:36px clamp(25px,4vw,65px);display:grid;gap:14px;align-content:center;justify-items:start}
 .zeya-art__copy h2{font-size:clamp(42px,4.6vw,68px);line-height:1}
@@ -678,16 +682,16 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-service-band__features .zeya-signature-feature{display:grid;align-content:start;justify-items:center;text-align:center;padding:0 16px;border-right:1px solid var(--zeya-taupe);font-size:14px}
 .zeya-service-band__features .zeya-signature-feature:last-child{border:0}
 .zeya-service-band__features small{font-size:11px;margin-top:4px}
-.zeya-service-band__features svg{color:var(--zeya-champagne);width:34px;height:34px;margin-bottom:8px}
+.zeya-service-band__features svg{color:var(--zeya-champagne-gold);width:34px;height:34px;margin-bottom:8px}
 .zeya-service-band__image{position:relative;overflow:hidden;display:grid;place-items:center;isolation:isolate}
 .zeya-service-band__image>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.5);z-index:-1}
 .zeya-service-band__image>span{text-align:center;text-transform:uppercase;font:24px/1.2 var(--zeya-serif);letter-spacing:.12em}
-.zeya-service-band__image strong{display:block;font:italic 64px/1 var(--zeya-serif);text-transform:none;letter-spacing:-.02em;color:var(--zeya-champagne)}
+.zeya-service-band__image strong{display:block;font:italic 64px/1 var(--zeya-serif);text-transform:none;letter-spacing:-.02em;color:var(--zeya-champagne-gold)}
 .zeya-page--home .zeya-footer-cta{display:none}
 
 /* Service summary: what a visit covers, from first sample to installation. */
 .zeya-services{padding:clamp(52px,6vw,88px) 0;background:var(--zeya-cream);
-  border-top:1px solid rgba(184,167,155,.45)}
+  border-top:1px solid rgba(184,162,141,.45)}
 .zeya-services__inner{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);
   gap:clamp(32px,5vw,80px);align-items:center}
 .zeya-services__intro{display:grid;gap:16px;justify-items:start}
