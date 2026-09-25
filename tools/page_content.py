@@ -261,5 +261,35 @@ def render(h):
                   'zeya-section--chocolate')
     )
 
+    # ------------------------------------------------------------ review ---
+    # The page behind the link ZEYA sends clients after an installation. It
+    # greets them with ZEYA's own message, then hands them to Google's review
+    # form, which cannot carry a message of its own. Until a review link is
+    # configured the Google button stays hidden and the contact page stands in.
+    from home_content import REVIEW_MESSAGE, review_button
+    review = (
+        hero('contact-interior', 'Softly lit sheer curtains in a Dubai apartment',
+             'Thank you for<br>choosing ZEYA.',
+             eyebrow='Share your experience',
+             sub=REVIEW_MESSAGE,
+             actions=review_button(h)
+             + '<span data-zeya-review-fallback>'
+             + btn('Share your feedback', 'contact.html', 'gold') + '</span>',
+             variant='product')
+        + section('<div class="zeya-container">'
+                  + heading('It takes a minute', 'Three quick steps.')
+                  + steplist([
+                      ('01', 'Open the review form',
+                       'Tap &ldquo;Write a Google review&rdquo; and Google opens ZEYA&rsquo;s '
+                       'review form. You may be asked to sign in to your Google account.'),
+                      ('02', 'Choose your stars',
+                       'Rate your experience, from the first visit to the finished '
+                       'installation.'),
+                      ('03', 'Add a few words',
+                       'Tell others what stood out, then tap Post. Thank you &mdash; it '
+                       'means a great deal to us.')])
+                  + '</div>')
+    )
+
     return {'home': home, 'about': about, 'process': process,
-            'contact': contact, 'terms': terms, 'products': ''}
+            'contact': contact, 'terms': terms, 'review': review, 'products': ''}

@@ -18,7 +18,7 @@ const CHROME = [
 ].find((p) => fs.existsSync(p));
 
 const SITE = path.resolve(__dirname, "..", "zeya-website");
-const PAGES = ["index", "about", "products", "process", "contact", "curtains", "blinds", "motorized", "product-sheer-curtains", "product-smart-window-automation"];
+const PAGES = ["index", "about", "products", "process", "contact", "curtains", "blinds", "motorized", "residential-commercial", "review", "product-sheer-curtains", "product-smart-window-automation"];
 const WIDTHS = [1440, 1200, 1024, 768, 480, 390];
 const PORT = 9334;
 

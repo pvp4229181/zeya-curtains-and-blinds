@@ -197,7 +197,7 @@ function check(label, actual, expected) {
     `(function () {
        var nav = Array.from(document.querySelectorAll('.zeya-collection-nav a'))
          .map(function (a) { return a.getAttribute('href').replace('#', ''); }).sort();
-       var menu = Array.from(document.querySelectorAll('.zeya-product-menu a'))
+       var menu = Array.from(document.querySelectorAll('.zeya-product-menu__item'))
          .map(function (a) { return a.getAttribute('href').replace('.html', ''); }).sort();
        return nav.length > 0 && JSON.stringify(nav) === JSON.stringify(menu);
      }())`), true);

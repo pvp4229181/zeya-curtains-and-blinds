@@ -42,6 +42,13 @@
     email: "",          // e.g. "hello@example.com"
     instagram: "",      // full profile URL
     facebook: "",       // full profile URL
+    // The "Write a Google review" buttons and the home page reviews band stay
+    // hidden until this is set. Paste either the share link from Google
+    // Business Profile -> "Ask for reviews" (https://g.page/r/.../review)
+    // or the bare Place ID (ChIJ...), which is turned into a review link.
+    // PLACEHOLDER: shows the review band and buttons, but the link does not
+    // open a real review form. Replace with ZEYA's real link before sharing it.
+    googleReview: "ZEYA_GOOGLE_PLACE_ID",
     formEndpoint: ""    // POST target; leave empty until a handler is connected
   };
 
@@ -320,7 +327,7 @@
     if (!page) { return; }
 
     $$("[data-zeya-nav-item]").forEach(function (link) {
-      var match = link.getAttribute("data-zeya-nav-item") === (['curtains', 'blinds', 'motorized', 'curtain-accessories'].indexOf(page) !== -1 || page.indexOf('product-') === 0 ? 'products' : page);
+      var match = link.getAttribute("data-zeya-nav-item") === (['curtains', 'blinds', 'motorized', 'curtain-accessories', 'residential-commercial'].indexOf(page) !== -1 || page.indexOf('product-') === 0 ? 'products' : page);
       link.classList.toggle("is-active", match);
       if (match) {
         link.setAttribute("aria-current", "page");
@@ -453,6 +460,23 @@
         node.setAttribute("aria-disabled", "true");
       }
     });
+
+    // Google reviews: the buttons and the home page band only appear once a
+    // review link exists; until then the review page offers the contact page.
+    var review = String(CONTACT.googleReview || "").trim();
+    if (review && !/^https?:\/\//i.test(review)) {
+      review = "https://search.google.com/local/writereview?placeid=" + encodeURIComponent(review);
+    }
+    $$("[data-zeya-review]").forEach(function (node) {
+      if (review) {
+        node.setAttribute("href", review);
+        node.setAttribute("target", "_blank");
+        node.setAttribute("rel", "noopener");
+      }
+      node.hidden = !review;
+    });
+    $$("[data-zeya-review-section]").forEach(function (node) { node.hidden = !review; });
+    $$("[data-zeya-review-fallback]").forEach(function (node) { node.hidden = !!review; });
   }());
 
   /* ---------------------------------------------------------------------

@@ -126,6 +126,11 @@
   to{transform:translate3d(-50%,0,0)}
 }
 
+/* The review cards ride the same loop: two identical runs, half the width. */
+.zeya-reviews__track{animation:zeya-marquee 60s linear infinite}
+.zeya-reviews__marquee:hover .zeya-reviews__track,
+.zeya-reviews__marquee:focus-within .zeya-reviews__track{animation-play-state:paused}
+
 /* -------------------------------------------------- 4. Scroll progress --- */
 /* A gold rule along the bottom edge of the bar, injected by main.js so the
    WordPress header gets it without a template change. */
@@ -176,6 +181,12 @@
   .zeya-marquee__run{flex:1 1 auto;justify-content:space-between;
     padding-right:0;flex-wrap:wrap;white-space:normal}
   .zeya-marquee__run+.zeya-marquee__run{display:none}
+
+  /* The review cards stand still and scroll by hand instead. */
+  .zeya-reviews__track{animation:none}
+  .zeya-reviews__marquee{overflow-x:auto;scroll-snap-type:x mandatory}
+  .zeya-review-card{scroll-snap-align:center}
+  .zeya-reviews__run+.zeya-reviews__run{display:none}
 
   .zeya-hero__media img,
   .zeya-js .zeya-hero__inner>*{animation:none}

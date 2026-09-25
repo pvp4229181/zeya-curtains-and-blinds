@@ -46,6 +46,80 @@ def why_band(h):
             f'<span>Spaces<br>that feel<strong>Like You</strong></span></a></section>')
 
 
+# The line ZEYA asked to greet clients with when they are invited to review.
+REVIEW_MESSAGE = ('We&rsquo;d love to hear about your experience with us. Your feedback means '
+                  'a lot to our team and encourages us to keep delivering exceptional service.')
+
+
+def review_button(h, variant='gold'):
+    """The "Write a Google review" button. main.js links it, and shows it, once
+    CONTACT.googleReview is configured, so it never points at nothing."""
+    return (f'<a class="zeya-btn zeya-btn--{variant} zeya-btn--review" data-zeya-review hidden>'
+            f'{h.icon("star")}Write a Google review</a>')
+
+
+# PLACEHOLDER: sample cards to show the layout until real Google reviews are
+# chosen. Each card says "Sample review" on the page, so none of them can pass
+# for a real client's words. Replace with genuine reviews (quoted with the
+# client's permission) or remove before launch.
+SAMPLE_REVIEWS = [
+    ('Client name', 'Blackout curtains &middot; Villa',
+     'From the first visit to the final fitting, everything was clear and on time. '
+     'The blackout curtains fit perfectly and the bedroom finally stays dark.'),
+    ('Client name', 'Motorised blinds &middot; Apartment',
+     'They explained every option without any pressure. The motorised blinds work '
+     'with our phones and the installation was spotless.'),
+    ('Client name', 'Sheer &amp; wave curtains &middot; Living room',
+     'We compared fabric samples in our own light, which made choosing easy. '
+     'The sheers soften the afternoon sun beautifully.'),
+    ('Client name', 'Roller blinds &middot; Office',
+     'Measured, quoted and installed across the whole office with no disruption. '
+     'Clean lines and exactly the light control we needed.'),
+    ('Client name', 'Roman blinds &middot; Majlis',
+     'The team helped us pick a fabric that suits the room perfectly. '
+     'Careful installers who left everything tidy.'),
+    ('Client name', 'Curtain tracks &middot; Penthouse',
+     'Precise measuring on very tall windows and a flawless finish. '
+     'Friendly, professional and easy to deal with.'),
+]
+
+
+def _review_card(h, name, meta, text):
+    stars = ''.join(h.icon('star-fill') for _ in range(5))
+    return (f'<figure class="zeya-review-card">'
+            f'<div class="zeya-review-card__top"><span class="zeya-review-card__stars" '
+            f'role="img" aria-label="5 out of 5 stars">{stars}</span>'
+            f'<span class="zeya-review-card__tag">Sample review</span></div>'
+            f'<blockquote><p>&ldquo;{text}&rdquo;</p></blockquote>'
+            f'<figcaption><strong>{name}</strong><span>{meta}</span></figcaption></figure>')
+
+
+def reviews_section(h):
+    """The Google Reviews band that closes the home page.
+
+    The review cards drift sideways on a loop: the track holds two identical
+    runs and travels half its width, so the second run lands where the first
+    began. Only the first run is exposed to assistive tech. The band stays
+    hidden until a review link is configured.
+    """
+    stars = ''.join(h.icon('star') for _ in range(5))
+    run = ''.join(_review_card(h, *row) for row in SAMPLE_REVIEWS)
+    track = (f'<div class="zeya-reviews__run">{run}</div>'
+             f'<div class="zeya-reviews__run" aria-hidden="true">{run}</div>')
+    return f'''<section class="zeya-reviews" id="reviews" aria-labelledby="zeya-reviews-title" data-zeya-review-section hidden>
+  <div class="zeya-container zeya-reviews__inner">
+    <p class="zeya-eyebrow">Google Reviews</p>
+    <div class="zeya-reviews__stars" aria-hidden="true">{stars}</div>
+    <h2 id="zeya-reviews-title">Tell us how we did.</h2>
+    <p>{REVIEW_MESSAGE}</p>
+  </div>
+  <div class="zeya-reviews__marquee" role="region" tabindex="0" aria-label="Client reviews">
+    <div class="zeya-reviews__track">{track}</div>
+  </div>
+  <div class="zeya-container zeya-reviews__actions">{review_button(h)}</div>
+</section>'''
+
+
 def render(h):
     def photo(name, alt, sizes='100vw', eager=False):
         return h.img(name, alt, sizes=sizes, eager=eager)
@@ -122,4 +196,5 @@ def render(h):
 </section>
 {services_section(h)}
 {why_band(h)}
+{reviews_section(h)}
 '''

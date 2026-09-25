@@ -9,7 +9,8 @@ class Links(HTMLParser):
             url=a.get(key,''); p=urlsplit(url)
             if url and not p.scheme and p.path:
                 assert (ROOT/unquote(p.path)).is_file(), (self.page,url)
-        if tag=='img': assert a.get('alt'), self.page
+        # alt="" is correct for decorative images (the menu thumbnails); it must be present.
+        if tag=='img': assert a.get('alt') is not None, self.page
 for page in ROOT.glob('*.html'):
     parser=Links(); parser.page=page.name; parser.feed(page.read_text(encoding='utf8'))
 import sys

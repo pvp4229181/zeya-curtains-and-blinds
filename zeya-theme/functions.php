@@ -36,6 +36,10 @@ function zeya_contact_details() {
 		'email'         => '',
 		'instagram'     => '', // Full profile URL.
 		'facebook'      => '', // Full profile URL.
+		// Google Business Profile -> "Ask for reviews" link, or the bare Place ID.
+		// The review buttons and the home page reviews band stay hidden until set.
+		// PLACEHOLDER: replace with ZEYA's real review link before sharing it.
+		'googleReview'  => 'ZEYA_GOOGLE_PLACE_ID',
 		'formEndpoint'  => '', // POST target; leave empty until a handler exists.
 	);
 
@@ -50,6 +54,7 @@ function zeya_contact_details() {
 		'email'         => 'zeya_email',
 		'instagram'     => 'zeya_instagram',
 		'facebook'      => 'zeya_facebook',
+		'googleReview'  => 'zeya_google_review',
 		'formEndpoint'  => 'zeya_form_endpoint',
 	);
 
@@ -303,7 +308,78 @@ function zeya_collections() {
 		'blinds' => __( 'Blinds', 'zeya' ),
 		'motorized' => __( 'Motorized Window Solutions', 'zeya' ),
 		'curtain-accessories' => __( 'Curtain Accessories', 'zeya' ),
+		'residential-commercial' => __( 'Residential & Commercial', 'zeya' ),
 	) );
+}
+
+/**
+ * The Collections dropdown panel, matching the static site's markup.
+ *
+ * Product collections fill a 2x2 grid; the sector page (by space rather than
+ * by product) gets its own row. Thumbnails are decorative, so alt is empty.
+ */
+function zeya_product_menu_panel() {
+	$notes = array(
+		'curtains'               => array( 'signature-curtains-640.webp', 427, __( 'Sheer, blackout, linen, velvet & wave', 'zeya' ) ),
+		'blinds'                 => array( 'signature-blinds-640.webp', 427, __( 'Roller, zebra, Roman, Venetian & wooden', 'zeya' ) ),
+		'motorized'              => array( 'signature-motorized-640.webp', 427, __( 'Smart control for curtains & blinds', 'zeya' ) ),
+		'curtain-accessories'    => array( 'ai-tracks-640.webp', 800, __( 'Poles, tracks, tiebacks & linings', 'zeya' ) ),
+		'residential-commercial' => array( 'signature-hero-640.webp', 427, __( 'Solutions for homes, offices, hotels, cafés & clinics', 'zeya' ) ),
+	);
+	$current = zeya_current_page();
+	$post    = get_queried_object();
+	if ( $post instanceof WP_Post ) {
+		$current = $post->post_name;
+	}
+
+	$item = function ( $slug, $name, $wide ) use ( $notes, $current ) {
+		$note = isset( $notes[ $slug ] ) ? $notes[ $slug ] : array( '', 0, '' );
+		$thumb = $note[0] ? sprintf(
+			'<img src="%1$s" width="640" height="%2$d" alt="" loading="lazy" decoding="async">',
+			esc_url( zeya_asset( 'images/' . $note[0] ) ),
+			(int) $note[1]
+		) : '';
+		printf(
+			'<a class="zeya-product-menu__item%1$s" href="%2$s"%3$s><span class="zeya-product-menu__thumb">%4$s</span>' .
+			'<span class="zeya-product-menu__text"><span class="zeya-product-menu__name">%5$s</span>' .
+			'<span class="zeya-product-menu__note">%6$s</span></span></a>',
+			$wide ? ' zeya-product-menu__item--wide' : '',
+			esc_url( zeya_link( $slug ) ),
+			$slug === $current ? ' aria-current="page"' : '',
+			$thumb, // phpcs:ignore WordPress.Security.EscapeOutput -- built from escaped parts above.
+			esc_html( $name ),
+			esc_html( $note[2] )
+		);
+	};
+
+	$products = array();
+	$spaces   = array();
+	foreach ( zeya_collections() as $slug => $name ) {
+		if ( 'residential-commercial' === $slug ) {
+			$spaces[ $slug ] = $name;
+		} else {
+			$products[ $slug ] = $name;
+		}
+	}
+
+	echo '<div class="zeya-product-menu__panel"><p class="zeya-product-menu__label">' . esc_html__( 'By product', 'zeya' ) . '</p>';
+	echo '<div class="zeya-product-menu__grid">';
+	foreach ( $products as $slug => $name ) {
+		$item( $slug, $name, false );
+	}
+	echo '</div>';
+	if ( $spaces ) {
+		echo '<p class="zeya-product-menu__label">' . esc_html__( 'By space', 'zeya' ) . '</p>';
+		foreach ( $spaces as $slug => $name ) {
+			$item( $slug, $name, true );
+		}
+	}
+	printf(
+		'<div class="zeya-product-menu__foot"><a href="%1$s">%2$s <span aria-hidden="true">&rarr;</span></a><span>%3$s</span></div></div>',
+		esc_url( zeya_link( 'products' ) ),
+		esc_html__( 'View all collections', 'zeya' ),
+		esc_html__( 'Made to measure · Installed across Dubai', 'zeya' )
+	);
 }
 
 /**
@@ -336,17 +412,10 @@ function zeya_primary_nav_fallback() {
 		}
 
 		echo '<li class="zeya-nav-products">' . $link; // phpcs:ignore WordPress.Security.EscapeOutput
-		echo '<details class="zeya-product-menu"><summary aria-label="' .
-			esc_attr__( 'Product categories', 'zeya' ) .
-			'"><svg aria-hidden="true" focusable="false"><use href="#zeya-i-arrow-right"></use></svg></summary><div>';
-		foreach ( zeya_collections() as $collection => $name ) {
-			printf(
-				'<a href="%1$s">%2$s</a>',
-				esc_url( zeya_link( $collection ) ),
-				esc_html( $name )
-			);
-		}
-		echo '</div></details></li>';
+		echo '<details class="zeya-product-menu"><summary>' . esc_html__( 'Browse collections', 'zeya' ) .
+			'<svg aria-hidden="true" focusable="false"><use href="#zeya-i-arrow-right"></use></svg></summary>';
+		zeya_product_menu_panel();
+		echo '</details></li>';
 	}
 	echo '</ul>';
 }
@@ -410,6 +479,7 @@ function zeya_customize_register( $wp_customize ) {
 		'zeya_email'          => array( __( 'Email address', 'zeya' ), '', 'sanitize_email' ),
 		'zeya_instagram'      => array( __( 'Instagram URL', 'zeya' ), '', 'esc_url_raw' ),
 		'zeya_facebook'       => array( __( 'Facebook URL', 'zeya' ), '', 'esc_url_raw' ),
+		'zeya_google_review'  => array( __( 'Google review link or Place ID', 'zeya' ), '', 'sanitize_text_field' ),
 		'zeya_form_endpoint'  => array( __( 'Contact form endpoint', 'zeya' ), '', 'esc_url_raw' ),
 	);
 
@@ -457,3 +527,19 @@ function zeya_contact_form_shortcode() {
 function zeya_has_form_plugin() {
 	return '' !== trim( zeya_contact_form_shortcode() );
 }
+
+/**
+ * Keep the review page (the link ZEYA sends clients) out of search results,
+ * matching the static site's review.html.
+ *
+ * @param array $robots Robots directives.
+ * @return array
+ */
+function zeya_review_robots( $robots ) {
+	if ( is_page( 'review' ) ) {
+		$robots['noindex'] = true;
+		$robots['follow']  = true;
+	}
+	return $robots;
+}
+add_filter( 'wp_robots', 'zeya_review_robots' );

@@ -32,14 +32,21 @@
     text-transform:none;padding-block:8px;justify-content:center}
   .zeya-nav__link::after{display:none}
 
-  .zeya-nav-products{flex-direction:column;gap:2px}
-  .zeya-product-menu{width:100%}
-  .zeya-product-menu summary{margin-inline:auto}
-  .zeya-product-menu>div{position:static;min-width:0;box-shadow:none;
-    background:transparent;padding:4px 0 10px;justify-items:center}
-  .zeya-product-menu>div a{text-align:center;font-size:14px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--zeya-muted)}
-  .zeya-product-menu>div a:hover{background:none;color:var(--zeya-gold-ink)}
+  .zeya-nav-products{flex-direction:column;gap:6px}
+  .zeya-product-menu{width:min(100%,380px);text-align:center}
+  .zeya-product-menu__panel{position:static;transform:none;width:auto;margin-top:14px;
+    gap:8px;padding:14px 10px 12px;background:var(--zeya-cream-lift);box-shadow:none}
+  .zeya-product-menu__grid{grid-template-columns:1fr;gap:0}
+  .zeya-product-menu__item{padding:8px}
+  .zeya-product-menu__item:hover{background:var(--zeya-ivory)}
+  .zeya-product-menu__thumb,
+  .zeya-product-menu__item--wide .zeya-product-menu__thumb{width:52px;height:52px}
+  .zeya-product-menu__name{font-size:19px}
+  .zeya-product-menu__foot{justify-content:center;text-align:center}
+  .zeya-product-menu__foot>span{display:none}
+  /* The open menu outgrows the screen; centring would push its top under the
+     header, so the panel runs from the top and scrolls instead. */
+  .zeya-nav:has(.zeya-product-menu[open]){align-content:start}
 
   .zeya-nav__cta{margin-top:8px}
 

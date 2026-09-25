@@ -41,6 +41,14 @@ if ( ! defined( 'ABSPATH' ) ) {
     <path d="M12 20.6S3.8 15.4 3.8 9.6a4.4 4.4 0 0 1 8.2-2.3 4.4 4.4 0 0 1 8.2 2.3c0 5.8-8.2 11-8.2 11Z"/>
   </g></symbol>
 
+  <symbol id="zeya-i-star" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m12 3.4 2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.8l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8Z"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-star-fill" viewBox="0 0 24 24">
+    <path fill="currentColor" d="m12 3.4 2.6 5.5 6 .8-4.4 4.1 1.1 5.9L12 16.8l-5.3 2.9 1.1-5.9-4.4-4.1 6-.8Z"/>
+  </symbol>
+
   <symbol id="zeya-i-people" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="8.3" r="3.1"/>
     <path d="M2.8 20.2a6.2 6.2 0 0 1 12.4 0"/>

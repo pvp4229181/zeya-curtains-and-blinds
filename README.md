@@ -93,6 +93,7 @@ var CONTACT = window.ZEYA_CONTACT || {
   email:         "",   // e.g. "hello@example.com"
   instagram:     "",   // full profile URL
   facebook:      "",   // full profile URL
+  googleReview:  "",   // Google review link or Place ID (see below)
   formEndpoint:  ""    // POST target for the contact form
 };
 ```
@@ -109,6 +110,21 @@ add_filter( 'zeya_contact_details', function ( $details ) {
 
 Filled values become real `tel:`, `mailto:` and `https://wa.me/` links automatically.
 Empty ones stay as labels and are marked `aria-disabled`.
+
+### Google reviews
+
+`review.html` is the page to send clients after a job (e.g.
+`https://zeya-curtains-and-blinds.vercel.app/review.html`). It greets them with ZEYA's
+message and a **Write a Google review** button; Google's own review form cannot carry a
+custom message, so the message lives on this page. The home page also closes on a
+*Google Reviews* band with the same button. It is kept out of search results (`noindex`).
+
+Set `googleReview` to either the share link from **Google Business Profile → Ask for
+reviews** (`https://g.page/r/…/review`) or the bare **Place ID** (`ChIJ…`), which becomes
+`https://search.google.com/local/writereview?placeid=…`. Until it is set, the button and the
+home page band stay hidden and the review page offers **Share your feedback** (contact page)
+instead. In WordPress: *Customize → ZEYA Contact Details → Google review link or Place ID*,
+and create a page with the slug `review`.
 
 Every page carries a floating enquiry button in the bottom-right corner. With no
 WhatsApp number it is a **Book a consultation** link to the contact page (hidden on the

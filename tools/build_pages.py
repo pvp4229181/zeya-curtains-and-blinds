@@ -50,10 +50,14 @@ def _size(name):
 
 def img(name, alt, sizes="100vw", cls="", eager=False, position=None, ratio=None):
     """A responsive <img>, with intrinsic dimensions so nothing shifts on load."""
-    if name in PRODUCT_PHOTOS:
+    # Prefer the curated AI catalogue art whenever an alias exists.  The
+    # extracted supplier photography remains available as a fallback only.
+    if name in IMAGE_ALIASES:
+        name = "ai-" + IMAGE_ALIASES[name]
+    elif name in PRODUCT_PHOTOS:
         name = PRODUCT_PHOTOS[name]['asset']
     else:
-        name = SIGNATURE_PHOTOS.get(name, "ai-" + IMAGE_ALIASES[name] if name in IMAGE_ALIASES else name)
+        name = SIGNATURE_PHOTOS.get(name, name)
     w, h = _size(name)
     srcset = []
     for v in VARIANTS:
@@ -174,6 +178,40 @@ def logo(cls="", tag="a", href="index.html", eager=False, variant=""):
             close_tag)
 
 
+def product_menu(page=None):
+    """The Collections dropdown panel.
+
+    The four product collections sit in a 2x2 grid; the sector page, which
+    shows the same range by space rather than by product, gets its own row.
+    Thumbnails are decorative (the name beside each one is the link text),
+    so they carry an empty alt and stay out of the accessible name.
+    """
+    def item(g, wide=False):
+        image, note = catalog.MENU_NOTES[g]
+        current = ' aria-current="page"' if g == page else ""
+        return ('<a class="zeya-product-menu__item%s" href="%s.html"%s>'
+                '<span class="zeya-product-menu__thumb">%s</span>'
+                '<span class="zeya-product-menu__text">'
+                '<span class="zeya-product-menu__name">%s</span>'
+                '<span class="zeya-product-menu__note">%s</span></span></a>'
+                % (" zeya-product-menu__item--wide" if wide else "", g, current,
+                   img(image, "", sizes="96px"), esc(catalog.MENU[g]), esc(note)))
+
+    by_space = [g for g in catalog.MENU if g not in catalog.LABELS]
+    return (
+        '<div class="zeya-product-menu__panel">'
+        '<p class="zeya-product-menu__label">By product</p>'
+        '<div class="zeya-product-menu__grid">'
+        + "".join(item(g) for g in catalog.LABELS) +
+        '</div>'
+        '<p class="zeya-product-menu__label">By space</p>'
+        + "".join(item(g, wide=True) for g in by_space) +
+        '<div class="zeya-product-menu__foot">'
+        '<a href="products.html">View all collections <span aria-hidden="true">&rarr;</span></a>'
+        '<span>Made to measure &middot; Installed across Dubai</span></div>'
+        '</div>')
+
+
 def header(page, solid):
     """The navigation bar. It rides transparent over the hero and swaps to the
     solid shell once the hero has scrolled away — the transition is driven from
@@ -181,16 +219,14 @@ def header(page, solid):
     items = []
     for key, label, href in NAV_ITEMS:
         if key == "products":
-            sub = "".join('<a href="%s.html">%s</a>' % (g, l)
-                          for g, l in catalog.LABELS.items())
             items.append(
                 '<li class="zeya-nav-products">'
                 '<a class="zeya-nav__link" data-zeya-nav-item="products" '
                 'href="products.html">Collections</a>'
                 '<details class="zeya-product-menu">'
-                '<summary aria-label="Product categories">'
+                '<summary>Browse collections'
                 '<svg aria-hidden="true" focusable="false"><use href="#zeya-i-arrow-right"></use></svg>'
-                '</summary><div>%s</div></details></li>' % sub)
+                '</summary>%s</details></li>' % product_menu(page))
         else:
             items.append('<li><a class="zeya-nav__link" data-zeya-nav-item="%s" '
                          'href="%s">%s</a></li>' % (key, href, label))
@@ -228,8 +264,8 @@ def footer():
     """
     links = "".join('<a class="zeya-footer__link" data-zeya-nav-item="%s" href="%s">%s</a>'
                     % (k, u, l) for k, l, u in NAV_ITEMS)
-    collections = "".join('<a class="zeya-footer__link" href="%s.html">%s</a>' % (g, l)
-                          for g, l in catalog.LABELS.items())
+    collections = "".join('<a class="zeya-footer__link" href="%s.html">%s</a>' % (g, esc(l))
+                          for g, l in catalog.MENU.items())
     methods = "".join('<a class="zeya-method" data-zeya-contact="%s"><span>%s</span>'
                       '<span data-zeya-contact-value></span></a>' % (k, l)
                       for k, l in (("phone", "Phone"), ("whatsapp", "WhatsApp"),
@@ -259,7 +295,7 @@ def footer():
         '<div class="zeya-footer__brand">' + logo(variant="-footer") +
         '<p class="zeya-footer__line">Measured. Designed. Installed.</p>'
         '<p class="zeya-footer__note">Bespoke curtains, blinds and motorized window '
-        'solutions for homes and workplaces in Dubai, UAE.</p>'
+        'solutions for homes and workplaces across Dubai, UAE.</p>'
         '<div class="zeya-social">' + socials + '</div></div>'
         + column('Explore', links, tag="nav")
         + column('Collections', collections)
@@ -303,7 +339,7 @@ SHELL = """<!DOCTYPE html>
 <title>{title}</title>
 <meta name="description" content="{description}">
 <meta name="theme-color" content="#171411">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="{robots}">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ZEYA Curtains &amp; Blinds">
@@ -378,12 +414,27 @@ PAGES = {
         description="A simple six-step process: free consultation, a visit to your space, your choice of "
                     "solution, accurate measurement, a clear quotation and professional installation.",
     ),
+    "residential-commercial.html": dict(
+        page="residential-commercial", solid=False,
+        title="Residential & Commercial Curtains and Blinds | ZEYA Dubai",
+        description="Curtains and blinds for villas, apartments, bedrooms and majlis, and for offices, "
+                    "hotels, restaurants, showrooms and clinics across Dubai — measured, supplied "
+                    "and installed by ZEYA.",
+    ),
     "terms.html": dict(
         page="terms", solid=False,
         title="Terms & Conditions | ZEYA Curtains & Blinds Dubai",
         description="The terms that apply to quotations, orders, supply and installation by ZEYA "
                     "Curtains & Blinds in Dubai — pricing and payment, custom-made products, "
                     "installation conditions, motorized products and warranty.",
+    ),
+    # The link ZEYA shares with clients to invite a Google review. It is kept
+    # out of search results: it is an invitation, not a page to be found.
+    "review.html": dict(
+        page="review", solid=False, robots="noindex, follow",
+        title="Share Your Experience | ZEYA Curtains & Blinds Dubai",
+        description="We'd love to hear about your experience with ZEYA Curtains & Blinds. "
+                    "Leave us a Google review.",
     ),
     "contact.html": dict(
         page="contact", solid=False,
@@ -402,9 +453,9 @@ def main():
     bodies = page_content.render(H)
     bodies.update(catalog.render(H))
     for key in bodies:
-        if key not in ('home','about','products','process','contact','terms'):
+        if key not in ('home','about','products','process','contact','terms','review'):
             title = catalog.LABELS.get(key, key.removeprefix('product-').replace('-', ' ').title())
-            PAGES[key+'.html'] = dict(page=key, solid=False, title=title+' | ZEYA Dubai', description='Explore '+title+' from ZEYA Curtains & Blinds in Dubai.')
+            PAGES.setdefault(key+'.html', dict(page=key, solid=False, title=title+' | ZEYA Dubai', description='Explore '+title+' from ZEYA Curtains & Blinds in Dubai.'))
     sprite_markup = sprite()
     foot = footer()
 
@@ -413,6 +464,7 @@ def main():
             title=esc(meta["title"]),
             description=esc(meta["description"]),
             preload=meta.get("preload", ""),
+            robots=meta.get("robots", "index, follow"),
             page=meta["page"],
             sprite=sprite_markup,
             header=header(meta["page"], meta["solid"]),

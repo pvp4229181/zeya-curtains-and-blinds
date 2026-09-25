@@ -11,7 +11,7 @@ IMAGES={
 'product-venetian-blinds':'venetian','product-wooden-blinds':'wooden','product-faux-wood-blinds':'faux-wood',
 'product-vertical-blinds':'vertical','product-honeycomb-blinds':'honeycomb',
 'product-sunscreen-blinds':'sunscreen','product-motorized-blinds':'smart',
-'product-outdoor-zip-screen-blinds':'outdoor','product-motorized-roller-blinds':'roller',
+'product-motorized-roller-blinds':'roller',
 'product-motorized-zebra-blinds':'zebra','product-motorized-roman-blinds':'roman',
 'product-motorized-blackout-blinds':'blackout-roller','product-motorized-sheer-curtains':'sheer',
 'product-motorized-double-curtains':'hero','product-motorized-venetian-blinds':'venetian',

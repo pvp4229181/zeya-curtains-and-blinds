@@ -1,6 +1,7 @@
 """Product copy transcribed from the supplied ZEYA chart; static page rendering."""
 from html import escape
 from home_content import services_section, why_band
+import sectors
 import re
 
 def slug(s): return re.sub('[^a-z0-9]+','-',s.lower()).strip('-')
@@ -23,8 +24,7 @@ BLINDS=[
 ('Vertical Blinds','A practical solution for large windows and sliding doors.'),
 ('Honeycomb Blinds','Energy-efficient design that helps insulate your space.'),
 ('Sunscreen Blinds','Reduce glare while maintaining your view and natural light.'),
-('Motorized Blinds','Effortless control with smart automation for modern living.'),
-('Outdoor / Zip Screen Blinds','Durable weather protection for patios, balconies and outdoor spaces.')]
+('Motorized Blinds','Effortless control with smart automation for modern living.')]
 MOTORIZED=[
 ('Motorized Curtains','Effortlessly open and close full-height curtains with smooth automated movement.'),
 ('Motorized Roller Blinds','Minimal, contemporary roller blinds with convenient powered operation.'),
@@ -57,6 +57,16 @@ GROUPS={
 # The chart repeats Motorized Blinds; use its phone-control image.
 GROUPS['blinds'][9]=(*BLINDS[9],(1125,491,1199,682))
 LABELS={'curtains':'Curtains','blinds':'Blinds','motorized':'Motorized Window Solutions','curtain-accessories':'Curtain Accessories'}
+# Everything the Collections menu lists: the product collections, then the
+# sector page, which shows the same range by the spaces it serves.
+MENU={**LABELS,sectors.SLUG:sectors.LABEL}
+# The Collections dropdown: a thumbnail and one line per entry. The thumbnails
+# are the small encodes of each collection's cover, as they render at 64px.
+MENU_NOTES={'curtains':('signature-curtains-640','Sheer, blackout, linen, velvet & wave'),
+ 'blinds':('signature-blinds-640','Roller, zebra, Roman, Venetian & wooden'),
+ 'motorized':('signature-motorized-640','Smart control for curtains & blinds'),
+ 'curtain-accessories':('ai-tracks-640','Poles, tracks, tiebacks & linings'),
+ sectors.SLUG:('signature-hero-640','Solutions for homes, offices, hotels, cafés & clinics')}
 INTROS={'curtains':'Elegant fabrics for every space. Explore custom-made curtains in a range of textures, styles and finishes.', 'blinds':'Modern, versatile options. Find the balance of light, privacy and style for your home or workplace.', 'motorized':'Smart living. Made simple. Explore powered curtains and blinds for effortless everyday comfort.', 'curtain-accessories':'The details that finish the window. Poles, tracks, linings and fittings chosen to match your curtains.'}
 # The hero photograph that opens each collection page.
 COVERS={'curtains':'curtains-category','blinds':'blinds-category','motorized':'motorized-solutions','curtain-accessories':'accessories-category'}
@@ -81,11 +91,11 @@ def cards(h,group,exclude=None,limit=None):
         for n,d,b in products)+'</div>'
 
 
-def motion_section(h,crumbs=''):
+def motion_section(h):
     """The motorized page's hero: the film full-bleed behind the smart-home copy.
 
-    It stands in for the image hero, so it carries the page's <h1> and the
-    breadcrumb trail, and clears the transparent header like the hero does.
+    It stands in for the image hero, so it carries the page's <h1> and clears
+    the transparent header like the hero does.
 
     Like the home hero, the markup ships only a poster: main.js loads the film
     once it scrolls into view (the light encode on phones), plays it while in
@@ -94,11 +104,6 @@ def motion_section(h,crumbs=''):
     """
     works=''.join(f'<li>{name}</li>' for name in
                   ('Amazon Alexa','Google Home','Somfy','Tuya'))
-    modes=''.join(f'<li><span>{title}</span>{text}</li>' for title,text in [
-        ('Voice','Ask Alexa or Google Home'),
-        ('App','Somfy, Tuya and more'),
-        ('Remote &amp; switch','In hand or on the wall'),
-        ('Schedules','Timed around your day')])
     play='<svg class="zeya-motion__play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9.5-5.5z"/></svg>'
     pause='<svg class="zeya-motion__pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>'
     return (f'<section class="zeya-section--chocolate zeya-motion" aria-labelledby="zeya-motion-title">'
@@ -113,8 +118,8 @@ def motion_section(h,crumbs=''):
             f'<button class="zeya-motion__toggle" type="button" data-zeya-motion-toggle'
             f' aria-label="Play video" hidden>{play}{pause}</button>'
             f'<div class="zeya-container zeya-motion__inner">'
-            f'<div class="zeya-motion__copy">{crumbs}'
-            f'<p class="zeya-eyebrow zeya-motion__eyebrow">Motorised Blinds</p>'
+            f'<div class="zeya-motion__copy">'
+            f'<p class="zeya-eyebrow zeya-motion__eyebrow">Motorized Window Solutions</p>'
             f'<h1 id="zeya-motion-title">Effortless control.<br><em>Intelligent comfort.</em></h1>'
             f'<p class="zeya-motion__lead">We offer motorised curtain solutions that seamlessly '
             f'integrate with Amazon Alexa, Google Home, Somfy, Tuya and more, bringing effortless '
@@ -124,9 +129,6 @@ def motion_section(h,crumbs=''):
             f'<div class="zeya-motion__actions">'
             f'{h.btn("Ask about smart control","contact.html?product=smart-window-automation","gold")}'
             f'{h.btn("Browse the range","#range","outline")}</div></div>'
-            f'<div class="zeya-motion__foot">'
-            f'<p class="zeya-motion__tagline">Technology that works quietly around you.</p>'
-            f'<ul class="zeya-motion__modes" aria-label="Ways to control">{modes}</ul></div>'
             f'</div></section>')
 
 
@@ -150,7 +152,7 @@ def render(h):
 
         # ---- the collection page -----------------------------------------
         # The motorized page opens on its film instead of the image hero.
-        opener=(motion_section(h,crumbs(label)) if g=='motorized' else
+        opener=(motion_section(h) if g=='motorized' else
                 h.hero(COVERS[g],label+' in a considered Dubai interior',escape(label),
                        eyebrow='The ZEYA collection',sub=INTROS[g],
                        crumbs=crumbs(label)))
@@ -211,6 +213,7 @@ def render(h):
                    'Four collections, made around you.',
                crumbs=crumbs('Products'))
         +'<nav class="zeya-collection-nav zeya-container" aria-label="Product categories">'
-        +''.join(f'<a href="#{g}">{l}<span aria-hidden="true">&#8595;</span></a>' for g,l in LABELS.items())
-        +'</nav>'+''.join(sections))
+        +''.join(f'<a href="#{g}">{escape(l)}<span aria-hidden="true">&#8595;</span></a>' for g,l in MENU.items())
+        +'</nav>'+''.join(sections)+sectors.teaser(h))
+    pages[sectors.SLUG]=sectors.page(h,crumbs)
     return pages
