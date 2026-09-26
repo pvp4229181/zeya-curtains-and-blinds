@@ -23,7 +23,7 @@ ROOT = build_pages.ROOT
 SITE = build_pages.SITE
 THEME = os.path.join(ROOT, "zeya-theme")
 
-PAGE_SLUGS = ("home", "about", "products", "process", "contact", "terms", "review")
+PAGE_SLUGS = ("home", "about", "products", "process", "contact", "terms", "review", "faq")
 
 TEMPLATE_FILES = {
     "home": ("front-page.php", "Front Page", None),
@@ -33,6 +33,7 @@ TEMPLATE_FILES = {
     "contact": ("page-contact.php", "ZEYA Contact", "Contact"),
     "terms": ("page-terms.php", "ZEYA Terms", "Terms"),
     "review": ("page-review.php", "ZEYA Review", "Review"),
+    "faq": ("page-faq.php", "ZEYA FAQ", "FAQ"),
 }
 
 
@@ -149,6 +150,7 @@ DESCRIPTIONS = {
     "contact": "Contact: enquiry copy, contact methods and the form card over the interior panel.",
     "terms": "Terms & Conditions: page hero, numbered clauses and the closing enquiry split.",
     "review": "Review: the thank-you hero with ZEYA's message, the Google review button and three steps.",
+    "faq": "FAQ: accessible answers to common questions about curtains, blinds, measuring, care and motorisation.",
 }
 
 

@@ -394,6 +394,7 @@ function zeya_primary_nav_fallback() {
 		'products' => __( 'Collections', 'zeya' ),
 		'about'    => __( 'About Us', 'zeya' ),
 		'process'  => __( 'Our Process', 'zeya' ),
+		'faq'      => __( 'FAQs', 'zeya' ),
 		'contact'  => __( 'Contact', 'zeya' ),
 	);
 
@@ -429,6 +430,7 @@ function zeya_footer_nav_fallback() {
 		'products' => __( 'Collections', 'zeya' ),
 		'about'    => __( 'About Us', 'zeya' ),
 		'process'  => __( 'Our Process', 'zeya' ),
+		'faq'      => __( 'FAQs', 'zeya' ),
 		'contact'  => __( 'Contact', 'zeya' ),
 	);
 

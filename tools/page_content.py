@@ -291,5 +291,83 @@ def render(h):
                   + '</div>')
     )
 
+    # --------------------------------------------------------------- faq ---
+    faqs = [
+        ('Do you provide free measuring and installation?',
+         'Yes. ZEYA provides professional measurement and installation as part of our curtain and blind solutions.'),
+        ('Can I get a quote from a photo?',
+         'Yes. A photo with approximate window dimensions can help us provide a rough estimate. The final price is confirmed after measuring the window and selecting the fabric, style and hardware.'),
+        ('Which is more affordable: curtains or roller blinds?',
+         'It depends on the size and specification. Basic roller blinds can be a cost-effective option, while made-to-measure curtains may cost more depending on the fabric, fullness, sewing and track system.'),
+        ('Are blackout curtains more expensive than sheer curtains?',
+         'Not necessarily. The price depends on the fabric quality, lining, size and curtain system. Blackout lining can affect the overall cost.'),
+        ('Why choose two layers of curtains?',
+         'A sheer and main curtain provide greater flexibility. The sheer allows natural light and daytime privacy, while the main curtain provides additional privacy, light control and insulation.'),
+        ('Are curtains and blinds soundproof?',
+         'Curtains and blinds are not completely soundproof, but certain fabrics can help absorb and reduce noise. Heavier and denser fabrics generally provide better noise reduction.'),
+        ('Can curtains and blinds help reduce electricity consumption?',
+         'They can help reduce heat entering through windows, which may reduce the workload on your air conditioner. Actual savings depend on the window, glass, fabric, sunlight exposure and installation.'),
+        ('Do blackout curtains or blinds make a room completely dark?',
+         'Blackout fabric blocks light through the fabric, but light can still enter around the sides, top and bottom. Correct sizing and installation can help achieve maximum darkness.'),
+        ('What is the difference between blackout and dim-out?',
+         'Blackout fabrics block most light passing through the fabric, while dim-out fabrics reduce light but allow some light through. The final level of darkness also depends on gaps around the window.'),
+        ('How do I clean roller blinds?',
+         'Regularly remove dust with a soft cloth, microfibre duster or suitable vacuum attachment. Small marks can usually be gently wiped with a slightly damp cloth. Avoid harsh chemicals and excessive water.'),
+        ('How often should curtains be cleaned?',
+         'For normal residential use, we generally recommend professional cleaning approximately twice a year. More frequent cleaning may be needed in dusty or high-use environments.'),
+        ('Will curtains fade in sunlight?',
+         'Prolonged direct sunlight can cause fading over time. Using a sheer curtain can help reduce direct sunlight reaching the main curtain and help protect the fabric and colour.'),
+        ('Can curtains help keep a room cooler?',
+         'Yes. Certain heavier, lined or coated fabrics can help reduce solar heat entering through windows. However, they cannot completely prevent heat from entering.'),
+        ('Can you make curtains for large or unusual windows?',
+         'Yes. We can assess the window and recommend suitable fabric, tracks, hardware and operating systems for large, curved or unusually shaped windows.'),
+        ('Do you offer flexible curtain tracks?',
+         'Yes. We offer flexible curtain tracks that can be customised for curved, bay and uniquely shaped windows.'),
+        ('Can flexible curtain tracks be motorised?',
+         'Yes. Motorised options are available for selected flexible track systems, depending on the window design and track requirements.'),
+        ('Can you provide double curtain tracks?',
+         'Yes. Double-track systems are available for combining sheers and blackout or main curtains.'),
+        ('Can I use curtains and blinds in the same room?',
+         'Yes. Combining blinds and curtains can provide greater flexibility for light control, privacy and insulation, while creating a layered interior look.'),
+        ('Can we use our existing curtain tracks?',
+         'Yes. In many cases, we can use your existing curtain tracks, provided they are suitable and in good condition. We can assess them before installation.'),
+        ('Do you offer motorised curtains and blinds?',
+         'Yes. Motorised options are available for selected systems and are particularly useful for large, high or hard-to-reach windows.'),
+        ('Can motorised curtains and blinds be automated?',
+         'Depending on the system, they can be operated using a remote, wall switch, smartphone or compatible smart-home system. Features depend on the selected motor and control system.'),
+        ('Can I see samples before ordering?',
+         'Yes. We recommend viewing physical samples to check the actual colour, texture, thickness, transparency and finish before making your final selection.'),
+        ('Why is professional measurement important?',
+         'Accurate measurement helps ensure the correct fabric quantity, finished curtain dimensions, track or rod length, blind size, mounting position and operating clearance. It also helps identify installation limitations before ordering.'),
+        ('Are curtains better than blinds?',
+         'Neither is universally better. The right choice depends on light control, privacy, style, maintenance, window type and budget. We can recommend a suitable option based on your space.'),
+        ('How do I choose the right curtain or blind?',
+         'We consider sunlight, heat, privacy, desired darkness, window size, interior style, maintenance, operation and budget before recommending a suitable solution.'),
+        ('What curtains or blinds are suitable for bedrooms?',
+         'For bedrooms, we commonly recommend blackout curtains, blackout blinds or layered curtains, depending on the desired level of darkness, privacy and window type.'),
+        ('What curtains or blinds are suitable for living rooms?',
+         'Living rooms can benefit from sheers, layered curtains, blinds or a combination of curtains and blinds, depending on sunlight, privacy and interior design.'),
+    ]
+
+    faq = (
+        hero('about-zeya-curtains',
+             'Floor-length curtains filtering soft light in a calm Dubai interior',
+             'Questions, answered.<br>Choices made simpler.',
+             eyebrow='Curtains &amp; blinds advice',
+             sub='Clear answers about measuring, materials, light control, care and motorised window solutions.',
+             variant='product')
+        + section('<div class="zeya-container zeya-faq-layout">'
+                  '<aside class="zeya-faq-intro">' + eyebrow('Frequently asked questions') +
+                  '<h2>Everything you need to know.</h2>'
+                  '<p>Explore the details before your consultation. If your question is not covered, we are happy to help.</p>'
+                  + btn('Ask us a question', 'contact.html', 'gold') + '</aside>'
+                  '<div class="zeya-faq-list">' + ''.join(
+                      '<details class="zeya-faq-item"><summary><span>%02d</span><h3>%s</h3>'
+                      '<i aria-hidden="true"></i></summary><div class="zeya-faq-answer"><p>%s</p></div></details>'
+                      % (index, question, answer)
+                      for index, (question, answer) in enumerate(faqs, 1))
+                  + '</div></div>')
+    )
+
     return {'home': home, 'about': about, 'process': process,
-            'contact': contact, 'terms': terms, 'review': review, 'products': ''}
+            'contact': contact, 'terms': terms, 'review': review, 'faq': faq, 'products': ''}

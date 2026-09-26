@@ -156,6 +156,7 @@ NAV_ITEMS = (
     ("products", "Collections", "products.html"),
     ("about", "About Us", "about.html"),
     ("process", "Our Process", "process.html"),
+    ("faq", "FAQs", "faq.html"),
     ("contact", "Contact", "contact.html"),
 )
 
@@ -311,7 +312,7 @@ def footer():
         '<div class="zeya-container zeya-footer__bar">'
         '<p>&copy; <span data-zeya-year>2026</span> ZEYA Curtains &amp; Blinds. '
         'All rights reserved.</p>'
-        '<p class="zeya-footer__legal"><a href="terms.html">Terms &amp; Conditions</a></p>'
+        '<p class="zeya-footer__legal"><a href="faq.html">FAQs</a><span aria-hidden="true"> &middot; </span><a href="terms.html">Terms &amp; Conditions</a></p>'
         '</div></footer>')
 
 
@@ -428,6 +429,11 @@ PAGES = {
                     "Curtains & Blinds in Dubai — pricing and payment, custom-made products, "
                     "installation conditions, motorized products and warranty.",
     ),
+    "faq.html": dict(
+        page="faq", solid=False,
+        title="Frequently Asked Questions | Curtains & Blinds | ZEYA Dubai",
+        description="Answers to frequently asked questions about made-to-measure curtains, blinds, blackout fabrics, measuring, installation, care and motorised systems in Dubai.",
+    ),
     # The link ZEYA shares with clients to invite a Google review. It is kept
     # out of search results: it is an invitation, not a page to be found.
     "review.html": dict(
@@ -453,7 +459,7 @@ def main():
     bodies = page_content.render(H)
     bodies.update(catalog.render(H))
     for key in bodies:
-        if key not in ('home','about','products','process','contact','terms','review'):
+        if key not in ('home','about','products','process','contact','terms','review','faq'):
             title = catalog.LABELS.get(key, key.removeprefix('product-').replace('-', ' ').title())
             PAGES.setdefault(key+'.html', dict(page=key, solid=False, title=title+' | ZEYA Dubai', description='Explore '+title+' from ZEYA Curtains & Blinds in Dubai.'))
     sprite_markup = sprite()
