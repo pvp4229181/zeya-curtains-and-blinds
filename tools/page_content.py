@@ -143,6 +143,7 @@ def render(h):
     )
 
     # ----------------------------------------------------------- contact ---
+    from home_content import service_areas_section
     form = Path(__file__).with_name('contact-form.html').read_text(encoding='utf8')
     methods = ''.join(
         '<a class="zeya-method" data-zeya-contact="%s"><span>%s</span>'
@@ -169,6 +170,7 @@ def render(h):
                                 'Sheer curtains diffusing afternoon light',
                                 sizes='(max-width:700px) 100vw, 45vw'),
                       methods=methods, eyebrow=eyebrow('Start your project'), form=form))
+        + service_areas_section(h)
     )
 
 

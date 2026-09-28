@@ -132,4 +132,48 @@ if ( ! defined( 'ABSPATH' ) ) {
     <path d="M4.5 12h15"/>
     <path d="m13.2 5.6 6.4 6.4-6.4 6.4"/>
   </g></symbol>
+
+  
+  <symbol id="zeya-i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3.8"/>
+    <path d="M12 2.8v2.2M12 19v2.2M2.8 12H5M19 12h2.2M5.5 5.5 7 7M17 17l1.5 1.5M5.5 18.5 7 17M17 7l1.5-1.5"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-drop" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3.4c3.4 4.3 5.6 7.6 5.6 10.8a5.6 5.6 0 0 1-11.2 0c0-3.2 2.2-6.5 5.6-10.8Z"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.6 12S6 5.8 12 5.8 21.4 12 21.4 12 18 18.2 12 18.2 2.6 12 2.6 12Z"/>
+    <circle cx="12" cy="12" r="2.9"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-coin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8.6"/>
+    <path d="M14.6 9.2c-.5-.9-1.5-1.4-2.6-1.4-1.5 0-2.6.8-2.6 2s1.1 1.7 2.6 2.2 2.6 1 2.6 2.2-1.1 2-2.6 2c-1.1 0-2.1-.5-2.6-1.4M12 6.4v1.4M12 16.2v1.4"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-screen" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2.8" y="4.4" width="18.4" height="12.4" rx="1.2"/>
+    <path d="M8.6 20.2h6.8M12 16.8v3.4"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-remote" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="8" y="2.8" width="8" height="18.4" rx="2"/>
+    <circle cx="12" cy="7.4" r="1.4"/>
+    <path d="M10.8 12h2.4M10.8 15h2.4"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-moon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19.8 14.6A8.2 8.2 0 1 1 9.4 4.2a6.6 6.6 0 0 0 10.4 10.4Z"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-sparkle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 5.4c.6 4.4 2.2 6 6.6 6.6-4.4.6-6 2.2-6.6 6.6-.6-4.4-2.2-6-6.6-6.6 4.4-.6 6-2.2 6.6-6.6Z"/>
+  </g></symbol>
+
+  <symbol id="zeya-i-window" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3.6" y="3.6" width="16.8" height="16.8" rx="1.2"/>
+    <path d="M12 3.6v16.8M3.6 12h16.8"/>
+  </g></symbol>
 </svg>

@@ -46,6 +46,133 @@ def why_band(h):
             f'<span>Spaces<br>that feel<strong>Like You</strong></span></a></section>')
 
 
+# Need -> the combination we recommend, the page that shows it, and the
+# image that illustrates it. The flag marks what most Dubai homes ask for.
+NEEDS = [
+    ('sun', 'Block Sunlight', 'Too much brightness entering the room',
+     'Blackout Curtains + Light Control Blinds', 'Blocks harsh sunlight, improves comfort, protects furniture',
+     'product-blackout-curtains', False,
+     'ai-blackout', 'Dark blackout curtains drawn beside a sunlit window'),
+    ('drop', 'Reduce Heat', 'Room becomes hot due to the Dubai sun',
+     'Thermal Solutions + Solar Blinds', 'Reduces heat, improves energy efficiency, protects interiors',
+     'product-sunscreen-blinds', True,
+     'ai-sunscreen', 'Sunscreen roller blind softening the view of the Dubai skyline'),
+    ('eye', 'Increase Privacy', 'Need privacy without making the room dark',
+     'Privacy Curtains + Adjustable Blinds', 'Day &amp; night privacy, flexible light control',
+     'product-zebra-blinds', False,
+     'ai-zebra', 'Zebra blinds with alternating sheer and solid bands'),
+    ('coin', 'Budget Friendly', 'Need an affordable window covering',
+     'Practical Curtains &amp; Blinds', 'Affordable, durable, easy maintenance',
+     'product-roller-blinds', False,
+     'ai-roller', 'Pale roller blind over a window with a city view'),
+    ('screen', 'Reduce TV Glare', 'Sunlight reflects on screens',
+     'Glare Control Solutions', 'Reduces reflection, improves viewing experience',
+     'product-venetian-blinds', False,
+     'ai-venetian', 'Venetian blinds tilted to filter afternoon light'),
+    ('remote', 'Smart Home Automation', 'Want modern convenience',
+     'Motorised Window Solutions', 'Remote control, voice automation, luxury feel',
+     'motorized', False,
+     'ai-smart', 'Motorised roller shades in a living room'),
+    ('moon', 'Better Sleep', 'Light affects sleep quality',
+     'Complete Light Blocking Solutions', 'Darker sleeping environment, quieter nights',
+     'product-double-layered-curtains', False,
+     'ai-blackout-roller', 'Blackout roller blind lowered in a bedroom'),
+    ('sparkle', 'Enhance Home D&eacute;cor', 'Want a premium interior look',
+     'Designer Window Styling', 'Adds elegance, improves room aesthetics',
+     'product-wave-curtains', False,
+     'ai-wave', 'Floor-length sheer wave curtains in a bright living room'),
+    ('window', 'Large Window Solutions', 'Large glass areas need coverage',
+     'Custom Made Solutions', 'Smooth operation, modern finish, better coverage',
+     'product-curtain-tracks', False,
+     'ai-vertical', 'Vertical blinds covering a wide glass wall'),
+]
+
+
+def needs_section(h):
+    """The "find your solution" picker: choose a problem, see the combination
+    we recommend with a photograph of it.
+
+    main.js turns the list into tabs and shows one panel at a time. Without
+    it the tabs stay hidden and every panel is shown, each one naming its own
+    problem, so the section still reads top to bottom.
+    """
+    flag = (f'<span class="zeya-needs__flag">{h.icon("star-fill")}'
+            f'<span>Most requested</span></span>')
+    tabs, panels = [], []
+    for i, (icon, need, concern, solution, benefit, slug, top, image, alt) in enumerate(NEEDS, 1):
+        benefits = ''.join(f'<li>{b[:1].upper()}{b[1:]}</li>' for b in benefit.split(', '))
+        tabs.append(
+            f'<button class="zeya-needs__tab" type="button" id="zeya-need-tab-{i}" data-zeya-needs-tab="zeya-need-{i}">'
+            f'<span class="zeya-needs__num" aria-hidden="true">{i:02d}</span>{h.icon(icon)}'
+            f'<span class="zeya-needs__tab-text"><span class="zeya-needs__tab-name">{need}</span>'
+            f'<span class="zeya-needs__tab-concern">{concern}</span></span>'
+            f'{h.icon("arrow-right", "zeya-needs__tab-arrow")}</button>')
+        panels.append(
+            f'<article class="zeya-needs__panel" id="zeya-need-{i}" aria-labelledby="zeya-need-title-{i}">'
+            f'<div class="zeya-needs__media">{h.img(image, alt, "(max-width:900px) 100vw, 58vw")}</div>'
+            f'<div class="zeya-needs__tag">{h.icon(icon)}<span>{need}</span></div>'
+            f'{flag if top else ""}'
+            f'<div class="zeya-needs__content">'
+            f'<p class="zeya-needs__concern">&ldquo;{concern}.&rdquo;</p>'
+            f'<p class="zeya-eyebrow">We recommend</p>'
+            f'<h3 id="zeya-need-title-{i}">{solution}</h3>'
+            f'<ul class="zeya-needs__benefits">{benefits}</ul>'
+            f'<div class="zeya-needs__actions">{h.btn("See options", slug + ".html", "gold")}'
+            f'{h.btn("Book a consultation", "contact.html", "outline", arrow=False)}</div>'
+            f'</div></article>')
+    return f'''<section class="zeya-needs" id="find-your-solution" aria-labelledby="zeya-needs-title" data-zeya-needs>
+  <div class="zeya-container">
+    <div class="zeya-needs__head"><div><p class="zeya-eyebrow">Find your solution</p><h2 id="zeya-needs-title">Start with the problem.</h2></div><p>Choose what bothers you about your window, and we&rsquo;ll show you the combination we recommend.</p></div>
+    <div class="zeya-needs__body">
+      <div class="zeya-needs__tabs" data-zeya-needs-tabs aria-label="Window problems">{''.join(tabs)}</div>
+      <div class="zeya-needs__panels">{''.join(panels)}</div>
+    </div>
+  </div>
+</section>'''
+
+
+# The communities we visit most. Each chip opens a WhatsApp chat that names
+# the community; until a number is configured it falls back to the contact page.
+SERVICE_AREAS = [
+    'Arabian Ranches', 'Downtown Dubai', 'JLT', 'JBR', 'The Springs', 'The Meadows',
+    'DAMAC Hills', 'Al Barsha', 'Mirdif', 'Silicon Oasis', 'Motor City', 'Tilal Al Ghaf',
+    'Meydan', 'Dubai Creek Harbour', 'Emirates Hills', 'Dubai Marina', 'DAMAC Hills 1',
+    'Town Square', 'Jumeirah Golf Estates', 'Jumeirah Village Circle (JVC)', 'Palm Jumeirah',
+    'Jumeirah Islands', 'Jumeirah Park', 'Mira &amp; Mira Oasis', 'The Lakes', 'Business Bay',
+    'Dubai Hills', 'Mudon', 'Dubai Sports City',
+]
+
+
+def service_areas_section(h):
+    """The "Service Areas We Cover" band: one chip per community."""
+    chips = ''.join(
+        f'<li><a class="zeya-areas__chip" href="contact.html" data-zeya-wa="area" '
+        f'data-zeya-wa-area="{area}">{area}</a></li>'
+        for area in SERVICE_AREAS)
+    return f'''<section class="zeya-areas" id="service-areas" aria-labelledby="zeya-areas-title">
+  <div class="zeya-container">
+    <div class="zeya-areas__top">
+      <div class="zeya-areas__copy">
+        <p class="zeya-eyebrow">We come to you</p>
+        <h2 id="zeya-areas-title">Service Areas<br>We Cover</h2>
+        <p class="zeya-areas__lead">From waterfront apartments to family villas, our team brings samples, advice and precise measuring directly to your space.</p>
+        <p class="zeya-areas__note"><strong>{len(SERVICE_AREAS)}</strong><span>Dubai communities<br>and the wider UAE</span></p>
+      </div>
+      <div class="zeya-areas__media">
+        <video class="zeya-areas__video" data-zeya-motion-video data-src="assets/videos/zeya-brand-film.mp4" poster="assets/images/zeya-brand-film-poster.webp" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+        <span class="zeya-areas__film-label">Across Dubai</span>
+        <button class="zeya-areas__toggle" type="button" data-zeya-motion-toggle aria-label="Play video" hidden>
+          <svg class="zeya-motion__play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9.5-5.5z"/></svg>
+          <svg class="zeya-motion__pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="zeya-areas__directory"><p>Choose your community to enquire</p><span aria-hidden="true"></span></div>
+    <ul class="zeya-areas__list">{chips}</ul>
+  </div>
+</section>'''
+
+
 # The line ZEYA asked to greet clients with when they are invited to review.
 REVIEW_MESSAGE = ('We&rsquo;d love to hear about your experience with us. Your feedback means '
                   'a lot to our team and encourages us to keep delivering exceptional service.')
@@ -192,8 +319,10 @@ def render(h):
 </section>
 <section class="zeya-art" id="why-zeya">
   <div class="zeya-art__media">{photo('signature-fabric', 'AI textile study: bronze linen and luminous ivory sheer curtain folds', '(max-width:700px) 100vw, 54vw')}<p>More than<br><span>Window Coverings</span></p></div>
-  <div class="zeya-art__copy"><p class="zeya-eyebrow">The ZEYA difference <span aria-hidden="true"></span></p><h2>The Art of Light</h2><p>We don’t just cover windows, we transform spaces.<br>At ZEYA, every fabric, texture and detail is chosen<br class="zeya-desktop-break"> to bring harmony, comfort and style to your home or workspace.</p><div class="zeya-quality-grid">{qualities}</div>{h.btn('Discover our story', 'about.html', 'gold')}</div>
+  <div class="zeya-art__copy"><p class="zeya-eyebrow">The ZEYA difference <span aria-hidden="true"></span></p><h2>The Art of Light</h2><p>We don’t just cover windows, we transform spaces.<br>At ZEYA, every fabric, texture and detail is chosen<br class="zeya-desktop-break"> to bring harmony, comfort and style to your home or workspace.</p><div class="zeya-quality-grid">{qualities}</div><div class="zeya-art__actions">{h.btn('Discover our story', 'about.html', 'gold')}{h.btn('Terms &amp; Conditions', 'terms.html', 'line')}</div></div>
 </section>
+{needs_section(h)}
+{service_areas_section(h)}
 {services_section(h)}
 {why_band(h)}
 {reviews_section(h)}

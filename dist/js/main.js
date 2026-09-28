@@ -13,6 +13,7 @@
      7. Hero slide indicators
      8. Contact form
      9. Footer year
+    10. Find-your-solution picker
    ========================================================================== */
 (function () {
   "use strict";
@@ -348,10 +349,12 @@
     return digits(CONTACT.whatsapp).replace(/^\+/, "");
   }
 
-  function waLink(product) {
+  function waLink(product, area) {
     var number = waNumber();
     if (!number) { return ""; }
-    var message = product
+    var message = area
+      ? "Hello ZEYA, I am in " + area + " and would like a free measurement visit."
+      : product
       ? "Hello ZEYA, I would like to enquire about " + product + "."
       : "Hello ZEYA, I would like to enquire about your curtains and blinds.";
     return "https://wa.me/" + number + "?text=" + encodeURIComponent(message);
@@ -370,7 +373,7 @@
 
     nodes.forEach(function (node) {
       var product = node.getAttribute("data-zeya-wa-product") || fromQuery;
-      node.setAttribute("href", waLink(product));
+      node.setAttribute("href", waLink(product, node.getAttribute("data-zeya-wa-area")));
       node.setAttribute("target", "_blank");
       node.setAttribute("rel", "noopener");
       node.removeAttribute("hidden");
@@ -658,6 +661,75 @@
   --------------------------------------------------------------------- */
   $$("[data-zeya-year]").forEach(function (node) {
     node.textContent = String(new Date().getFullYear());
+  });
+
+  /* ---------------------------------------------------------------------
+     10. Find-your-solution picker (home)
+     The list of problems becomes a tab list and one recommendation shows at
+     a time. Without this script the list stays hidden (CSS keys it off
+     .zeya-js) and every recommendation is shown, so nothing is lost.
+  --------------------------------------------------------------------- */
+  $$("[data-zeya-needs]").forEach(function (section) {
+    var list = $("[data-zeya-needs-tabs]", section);
+    var tabs = $$("[data-zeya-needs-tab]", section);
+    if (!list || !tabs.length) { return; }
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    list.setAttribute("role", "tablist");
+    tabs.forEach(function (tab) {
+      var panel = doc.getElementById(tab.getAttribute("data-zeya-needs-tab"));
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-controls", panel.id);
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", tab.id);
+      panel.tabIndex = 0;
+    });
+
+    // On small screens the tabs are a sideways row of chips: bring the
+    // chosen one into view without scrolling the page itself.
+    function reveal(tab) {
+      if (list.scrollWidth <= list.clientWidth) { return; }
+      var left = tab.offsetLeft, right = left + tab.offsetWidth;
+      if (left < list.scrollLeft || right > list.scrollLeft + list.clientWidth) {
+        list.scrollTo({ left: Math.max(0, left - 24), behavior: calm ? "auto" : "smooth" });
+      }
+    }
+
+    function select(index, focus, animate) {
+      tabs.forEach(function (tab, i) {
+        var on = i === index;
+        var panel = doc.getElementById(tab.getAttribute("aria-controls"));
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.tabIndex = on ? 0 : -1;
+        panel.hidden = !on;
+        panel.classList.remove("is-entering");
+        if (on && animate && !calm) {
+          void panel.offsetWidth; // restart the entrance animation
+          panel.classList.add("is-entering");
+        }
+      });
+      if (focus) { tabs[index].focus(); }
+      reveal(tabs[index]);
+    }
+
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener("click", function () {
+        if (tab.getAttribute("aria-selected") !== "true") { select(i, false, true); }
+      });
+      tab.addEventListener("keydown", function (event) {
+        var n = tabs.length, next = null;
+        if (event.key === "ArrowDown" || event.key === "ArrowRight") { next = (i + 1) % n; }
+        else if (event.key === "ArrowUp" || event.key === "ArrowLeft") { next = (i - 1 + n) % n; }
+        else if (event.key === "Home") { next = 0; }
+        else if (event.key === "End") { next = n - 1; }
+        if (next !== null) {
+          event.preventDefault();
+          select(next, true, true);
+        }
+      });
+    });
+
+    select(0, false, false);
   });
 }());
 
