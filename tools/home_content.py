@@ -308,13 +308,15 @@ def render(h):
 <section class="zeya-solutions" id="solutions">
   <div class="zeya-container">
     <div class="zeya-signature-heading"><div><p class="zeya-eyebrow">Made for your space</p><h2>Explore Our Solutions</h2></div><p>From elegant curtains to modern blinds and smart automation,<br class="zeya-desktop-break"> ZEYA brings style, comfort and functionality to every space.</p><a class="zeya-text-link" href="products.html">View all products {h.icon('arrow-right')}</a></div>
-    <div class="zeya-solution-grid">{solutions}</div>
+    <p class="zeya-swipe-hint" aria-hidden="true">Swipe to explore <span>&rarr;</span></p>
+    <div class="zeya-solution-grid" aria-label="Explore our solutions">{solutions}</div>
   </div>
 </section>
 <section class="zeya-signature-collection" id="collection">
   <div class="zeya-container">
     <div class="zeya-signature-heading"><div><h2>The ZEYA Collection</h2><p class="zeya-eyebrow">A curated range for every style, every space.</p></div><a class="zeya-text-link" href="products.html">View all collections {h.icon('arrow-right')}</a></div>
-    <div class="zeya-mini-grid">{products}</div>
+    <p class="zeya-swipe-hint" aria-hidden="true">Swipe through the collection <span>&rarr;</span></p>
+    <div class="zeya-mini-grid" aria-label="The ZEYA collection">{products}</div>
   </div>
 </section>
 <section class="zeya-art" id="why-zeya">

@@ -724,6 +724,7 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
 .zeya-signature-collection .zeya-eyebrow{color:var(--zeya-champagne-gold);margin-top:5px}
 .zeya-signature-collection .zeya-text-link{color:var(--zeya-ivory)!important}
 .zeya-mini-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:16px}
+.zeya-swipe-hint{display:none}
 .zeya-mini-product{display:block;min-width:0}
 .zeya-mini-product img{aspect-ratio:1.08;object-fit:cover;transition:filter .3s}
 .zeya-mini-product:hover img{filter:brightness(1.15)}
