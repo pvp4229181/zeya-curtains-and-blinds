@@ -396,6 +396,10 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
   border-color:var(--zeya-gold)}
 .zeya-product__image{position:relative;overflow:hidden;background:var(--zeya-black)}
 .zeya-product__image img{aspect-ratio:4/5;object-fit:cover;transition:transform .9s var(--zeya-ease)}
+.zeya-page--curtains .zeya-product__image img,
+.zeya-page--blinds .zeya-product__image img,
+#curtains .zeya-product__image img,
+#blinds .zeya-product__image img,
 .zeya-catalog-grid--motorized .zeya-product__image img{aspect-ratio:3/2;object-position:center}
 .zeya-product:hover .zeya-product__image img{transform:scale(1.07)}
 .zeya-product__veil{position:absolute;inset:0;opacity:0;transition:opacity .5s var(--zeya-ease);
@@ -437,14 +441,28 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
 .zeya-section--chocolate .zeya-field__label{color:var(--zeya-gold-ink)}
 
 /* -------------------------------------------------------- product detail --- */
-.zeya-product-detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:clamp(28px,5vw,80px);align-items:start}
-.zeya-product-detail__media{position:relative}
-.zeya-product-detail__media img{aspect-ratio:4/5;object-fit:cover;background:var(--zeya-cream-lift)}
-.zeya-product-detail--motorized .zeya-product-detail__media img{aspect-ratio:3/2;object-position:center}
-.zeya-detail-copy{display:grid;gap:22px;justify-items:start}
+.zeya-product-detail{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(380px,.88fr);
+  gap:clamp(36px,6vw,96px);align-items:start}
+.zeya-product-detail__media{position:sticky;top:calc(var(--zeya-nav-h-sm) + 28px);overflow:hidden}
+.zeya-product-detail__media img{aspect-ratio:3/2;object-fit:cover;object-position:center;
+  background:var(--zeya-cream-lift)}
+.zeya-product-detail__media figcaption{position:absolute;right:18px;bottom:18px;padding:10px 14px;
+  background:rgba(38,26,25,.88);color:var(--zeya-cream);font-size:10px;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;backdrop-filter:blur(8px)}
+.zeya-product-detail__media figcaption span{padding-inline:6px;color:var(--zeya-gold)}
+.zeya-detail-copy{display:grid;gap:28px;justify-items:start}
+.zeya-detail-copy__intro{display:grid;gap:18px}
+.zeya-detail-copy__intro h2{font-size:clamp(38px,4.4vw,64px);line-height:.98;max-width:12ch}
 .zeya-detail-lead{font-family:var(--zeya-serif);font-size:clamp(20px,2vw,27px);line-height:1.35;
   color:var(--zeya-chocolate)}
+.zeya-detail-points{display:grid;width:100%;border-block:1px solid var(--zeya-cream-line)}
+.zeya-detail-points li{position:relative;padding:13px 0 13px 24px;font-size:13px;font-weight:600;
+  letter-spacing:.04em;color:var(--zeya-chocolate)}
+.zeya-detail-points li+li{border-top:1px solid var(--zeya-cream-line)}
+.zeya-detail-points li::before{content:"";position:absolute;left:2px;top:19px;width:7px;height:7px;
+  background:var(--zeya-gold-ink);transform:rotate(45deg)}
+.zeya-spec-block{display:grid;gap:14px;width:100%}
+.zeya-spec-block h3{font-size:clamp(23px,2vw,30px)}
 .zeya-specs{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;width:100%;
   background:var(--zeya-cream-line);border:1px solid var(--zeya-cream-line)}
 .zeya-specs>div{display:grid;gap:6px;padding:18px 20px;background:var(--zeya-cream)}
@@ -468,15 +486,15 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
    the full row. */
 .zeya-enquire{display:grid;gap:6px;width:100%;margin-top:6px;
   padding:24px clamp(20px,2.4vw,30px) 26px;
-  background:rgba(255,255,255,.55);border:1px solid var(--zeya-cream-line);
-  border-top:2px solid var(--zeya-gold-ink)}
+  background:var(--zeya-chocolate);border:1px solid var(--zeya-chocolate)}
 .zeya-enquire__title{font:400 clamp(24px,2.1vw,30px)/1.15 var(--zeya-serif);
-  color:var(--zeya-black);letter-spacing:-.01em}
-.zeya-enquire__note{font-size:13px;line-height:1.6;color:var(--zeya-muted)}
+  color:var(--zeya-cream);letter-spacing:-.01em}
+.zeya-enquire__note{font-size:13px;line-height:1.6;color:var(--zeya-gold-soft)}
 .zeya-enquire__actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
   gap:12px;margin-top:14px}
 .zeya-enquire__actions .zeya-btn{justify-content:center;min-height:52px;
   padding:14px 20px;font-size:11px;letter-spacing:.14em}
+.zeya-enquire .zeya-btn--whatsapp{color:var(--zeya-cream);border-color:var(--zeya-gold-soft)}
 
 /* WhatsApp's own green, deliberately outside the ZEYA palette: the bubble is
    a platform affordance, and people look for that colour. Icon only; the

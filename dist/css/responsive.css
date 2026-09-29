@@ -52,6 +52,7 @@
 
   .zeya-collections,.zeya-steps,.zeya-catalog-grid{grid-template-columns:repeat(2,1fr)}
   .zeya-split,.zeya-product-detail,.zeya-contact{grid-template-columns:1fr}
+  .zeya-product-detail__media{position:relative;top:auto}
   .zeya-split--reverse .zeya-split__media{order:0}
   .zeya-split__media img,.zeya-contact__aside img{aspect-ratio:16/10}
   .zeya-product-detail__media img{aspect-ratio:16/11}
