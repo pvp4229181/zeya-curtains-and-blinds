@@ -70,7 +70,7 @@ NEEDS = [
      'product-venetian-blinds', False,
      'ai-venetian', 'Venetian blinds tilted to filter afternoon light'),
     ('remote', 'Smart Home Automation', 'Want modern convenience',
-     'Motorised Window Solutions', 'Remote control, voice automation, luxury feel',
+     'Motorized Curtains &amp; Blinds', 'Remote control, voice automation, luxury feel',
      'motorized', False,
      'ai-smart', 'Motorised roller shades in a living room'),
     ('moon', 'Better Sleep', 'Light affects sleep quality',
@@ -260,9 +260,9 @@ def render(h):
         f'<div class="zeya-solution__caption"><div><h3>{title}</h3><p>{caption}</p></div>'
         f'<span class="zeya-circle-arrow" aria-hidden="true">{h.icon("arrow-right")}</span></div></a>'
         for slug, image, title, caption, alt in [
-            ('curtains', 'signature-curtains', 'Curtains', 'Timeless elegance', 'AI interior concept: bronze curtains and ivory sheers in a sunlit bedroom'),
-            ('blinds', 'signature-blinds', 'Blinds', 'Modern functionality', 'AI interior concept: warm wooden Venetian blinds filtering golden sunlight'),
-            ('motorized', 'signature-motorized', 'Motorised Solutions', 'Smart living', 'AI interior concept: automated roller shades overlooking Dubai'),
+            ('curtains', 'ai-collection-curtains-v2', 'Curtains', 'Timeless elegance', 'Layered ivory sheers and warm taupe curtains in a luxury Dubai living room'),
+            ('blinds', 'ai-collection-blinds-v2', 'Blinds', 'Modern functionality', 'Made-to-measure Roman and sunscreen blinds overlooking Dubai'),
+            ('motorized', 'ai-motorized-curtains', 'Motorized Curtains &amp; Blinds', 'Smart living', 'Phone app controlling motorized curtains in a Dubai living room'),
         ])
     products = ''.join(
         f'<a class="zeya-mini-product" href="product-{slug}.html">'
@@ -299,7 +299,7 @@ def render(h):
   <div class="zeya-container zeya-hero__inner">
     <p class="zeya-hero__eyebrow">Windows that inspire</p>
     <h1 class="zeya-hero__title zeya-hero__title--steps"><span class="zeya-hero__step"><span class="zeya-hero__word">Measured<span class="zeya-hero__dot">.</span></span></span> <span class="zeya-hero__step"><span class="zeya-hero__word">Designed<span class="zeya-hero__dot">.</span></span></span> <span class="zeya-hero__step"><em class="zeya-hero__word">Installed.</em></span></h1>
-    <p class="zeya-hero__sub">Bespoke curtains, blinds and motorized window<br class="zeya-desktop-break"> solutions for homes and workplaces across Dubai, UAE.</p>
+    <p class="zeya-hero__sub">Bespoke and motorized curtains and blinds<br class="zeya-desktop-break"> for homes and workplaces across Dubai, UAE.</p>
     <div class="zeya-hero__actions">{h.btn('Explore collection', '#solutions', 'gold')}{h.btn('Book consultation', 'contact.html', 'outline')}</div>
     <div class="zeya-hero-promises"><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-swatch"></use></svg><span>Beautiful<small>Fabrics</small></span></div><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-grid"></use></svg><span>Custom<small>Solutions</small></span></div><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-pencil"></use></svg><span>Thoughtful<small>Design</small></span></div><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-tools"></use></svg><span>End-to-end<small>Service</small></span></div></div>
     <a class="zeya-scroll-cue" href="#solutions"><span class="zeya-circle-arrow">{h.icon('arrow-right')}</span>Scroll to discover</a>

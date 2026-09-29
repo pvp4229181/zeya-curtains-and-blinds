@@ -14,6 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 // scrolled away. The solid modifier stays available for templates without one.
 $zeya_solid = apply_filters( 'zeya_header_solid', false ) ? ' zeya-header--solid' : '';
 $zeya_page  = zeya_current_page();
+
+// The top strip starts from the configured details; main.js re-applies the
+// same values, like the footer rows. The number falls back to WhatsApp.
+$zeya_contact = zeya_contact_details();
+$zeya_call    = $zeya_contact['phone'] ? $zeya_contact['phone'] : $zeya_contact['whatsappLabel'];
+$zeya_studio  = $zeya_contact['addressLine'] ? $zeya_contact['addressLine'] : $zeya_contact['address'];
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -36,6 +42,27 @@ $zeya_page  = zeya_current_page();
 <a class="zeya-skip" href="#zeya-main"><?php esc_html_e( 'Skip to content', 'zeya' ); ?></a>
 
 <?php zeya_icon_sprite(); ?>
+
+<div class="zeya-topbar" data-zeya-topbar>
+	<div class="zeya-container zeya-container--wide zeya-topbar__inner">
+		<div class="zeya-topbar__info">
+			<?php if ( $zeya_contact['hours'] ) : ?>
+				<span class="zeya-topbar__item" data-zeya-contact="hours"><?php zeya_icon( 'clock' ); ?><span data-zeya-contact-value><?php echo esc_html( $zeya_contact['hours'] ); ?></span></span>
+			<?php endif; ?>
+			<?php if ( $zeya_call ) : ?>
+				<a class="zeya-topbar__item" data-zeya-contact="call"><?php zeya_icon( 'phone' ); ?><span data-zeya-contact-value><?php echo esc_html( $zeya_call ); ?></span></a>
+			<?php endif; ?>
+			<?php if ( $zeya_studio ) : ?>
+				<a class="zeya-topbar__item" data-zeya-contact="address"><?php zeya_icon( 'pin' ); ?><span data-zeya-contact-value><?php echo esc_html( $zeya_studio ); ?></span></a>
+			<?php endif; ?>
+		</div>
+		<?php // Franchise and Trade Area have no pages yet, so both lead to the contact page. ?>
+		<nav class="zeya-topbar__links" aria-label="<?php esc_attr_e( 'Trade', 'zeya' ); ?>">
+			<a href="<?php echo esc_url( zeya_link( 'contact' ) ); ?>"><?php esc_html_e( 'Franchise', 'zeya' ); ?></a>
+			<a href="<?php echo esc_url( zeya_link( 'contact' ) ); ?>"><?php esc_html_e( 'Trade Area', 'zeya' ); ?></a>
+		</nav>
+	</div>
+</div>
 
 <header class="zeya-header<?php echo esc_attr( $zeya_solid ); ?>" data-zeya-header>
 	<div class="zeya-container zeya-container--wide zeya-header__inner">

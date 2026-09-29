@@ -25,6 +25,9 @@ define( 'ZEYA_VERSION', '1.0.0' );
 function zeya_contact_details() {
 	$defaults = array(
 		'address'       => 'Dubai, UAE',
+		// Opening hours for the top contact strip.
+		// PLACEHOLDER: replace with ZEYA's real opening hours before launch.
+		'hours'         => 'Monday – Saturday 9:00 – 18:00',
 		'addressLine'   => '', // Optional second line, e.g. a street address.
 		'addressUrl'    => '', // e.g. a Google Maps link.
 		// Set the studio number here or under Appearance -> Customize ->
@@ -46,6 +49,7 @@ function zeya_contact_details() {
 	// Customizer values take precedence over the defaults above.
 	$mods = array(
 		'address'       => 'zeya_address',
+		'hours'         => 'zeya_hours',
 		'addressLine'   => 'zeya_address_line',
 		'addressUrl'    => 'zeya_address_url',
 		'whatsapp'      => 'zeya_whatsapp',
@@ -306,7 +310,7 @@ function zeya_collections() {
 	return apply_filters( 'zeya_collections', array(
 		'curtains' => __( 'Curtains', 'zeya' ),
 		'blinds' => __( 'Blinds', 'zeya' ),
-		'motorized' => __( 'Motorized Window Solutions', 'zeya' ),
+		'motorized' => __( 'Motorized Curtains & Blinds', 'zeya' ),
 		'curtain-accessories' => __( 'Curtain Accessories', 'zeya' ),
 		'residential-commercial' => __( 'Residential & Commercial', 'zeya' ),
 	) );
@@ -375,10 +379,9 @@ function zeya_product_menu_panel() {
 		}
 	}
 	printf(
-		'<div class="zeya-product-menu__foot"><a href="%1$s">%2$s <span aria-hidden="true">&rarr;</span></a><span>%3$s</span></div></div>',
+		'<div class="zeya-product-menu__foot"><a href="%1$s">%2$s <span aria-hidden="true">&rarr;</span></a></div></div>',
 		esc_url( zeya_link( 'products' ) ),
-		esc_html__( 'View all collections', 'zeya' ),
-		esc_html__( 'Made to measure · Installed across Dubai', 'zeya' )
+		esc_html__( 'View all collections', 'zeya' )
 	);
 }
 
@@ -473,6 +476,7 @@ function zeya_customize_register( $wp_customize ) {
 
 	$fields = array(
 		'zeya_address'        => array( __( 'Location label', 'zeya' ), 'Dubai, UAE', 'sanitize_text_field' ),
+		'zeya_hours'          => array( __( 'Opening hours', 'zeya' ), '', 'sanitize_text_field' ),
 		'zeya_address_line'   => array( __( 'Address (second line)', 'zeya' ), '', 'sanitize_text_field' ),
 		'zeya_address_url'    => array( __( 'Map link', 'zeya' ), '', 'esc_url_raw' ),
 		'zeya_whatsapp'       => array( __( 'WhatsApp number (digits only)', 'zeya' ), '', 'sanitize_text_field' ),

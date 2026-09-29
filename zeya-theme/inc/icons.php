@@ -99,6 +99,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     <path d="M20.3 6.2a4.8 4.8 0 0 1-6.3 6.3l-7 7a2.1 2.1 0 0 1-3-3l7-7a4.8 4.8 0 0 1 6.3-6.3l-2.9 2.9.6 3.4 3.4.6Z"/>
   </g></symbol>
 
+  <symbol id="zeya-i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9.2"/>
+    <path d="M12 7.2V12l3.2 2"/>
+  </g></symbol>
+
   <symbol id="zeya-i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 21.4s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/>
     <circle cx="12" cy="10.2" r="2.6"/>

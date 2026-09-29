@@ -134,9 +134,22 @@ def hero(image, alt, title, eyebrow="", sub="", actions="", crumbs="",
     )
 
 
+def contact_methods(rows):
+    """Label/value rows filled from CONTACT by main.js; used by the footer and
+    the contact page. "call" is the phone line, falling back to WhatsApp as in
+    the top strip. Hours is plain text, so it is not a link."""
+    return "".join(
+        '<%s class="zeya-method" data-zeya-contact="%s"><span>%s</span>'
+        '<span data-zeya-contact-value></span></%s>'
+        % ("div" if key == "hours" else "a", key, label,
+           "div" if key == "hours" else "a")
+        for key, label in rows)
+
+
 class H(object):
     """Namespace handed to page_content."""
     img = staticmethod(img)
+    contact_methods = staticmethod(contact_methods)
     icon = staticmethod(icon)
     btn = staticmethod(btn)
     hero = staticmethod(hero)
@@ -208,9 +221,44 @@ def product_menu(page=None):
         '<p class="zeya-product-menu__label">By space</p>'
         + "".join(item(g, wide=True) for g in by_space) +
         '<div class="zeya-product-menu__foot">'
-        '<a href="products.html">View all collections <span aria-hidden="true">&rarr;</span></a>'
-        '<span>Made to measure &middot; Installed across Dubai</span></div>'
+        '<a href="products.html">View all collections <span aria-hidden="true">&rarr;</span></a></div>'
         '</div>')
+
+
+# The top strip's starting text, shown as-is without JS. main.js overwrites it
+# from CONTACT, so the real details are set there (and in functions.php).
+# PLACEHOLDER: the hours are not ZEYA's yet; the number is the test WhatsApp.
+TOPBAR_HOURS = "Monday &ndash; Saturday 9:00 &ndash; 18:00"
+TOPBAR_PHONE = "+971 50 000 0000"
+TOPBAR_ADDRESS = "Dubai, UAE"
+
+# Franchise and Trade Area have no pages yet, so both lead to the contact page.
+TOPBAR_LINKS = (
+    ("Franchise", "contact.html"),
+    ("Trade Area", "contact.html"),
+)
+
+
+def topbar():
+    """The dark contact strip above the navigation: hours, number and studio
+    on the left, the trade links on the right. The details hydrate from the
+    CONTACT settings in main.js like the footer rows do."""
+    def item(key, name, text, tag):
+        return ('<%s class="zeya-topbar__item" data-zeya-contact="%s">%s'
+                '<span data-zeya-contact-value>%s</span></%s>'
+                % (tag, key, icon(name), text, tag))
+
+    return (
+        '\n<div class="zeya-topbar" data-zeya-topbar>'
+        '<div class="zeya-container zeya-container--wide zeya-topbar__inner">'
+        '<div class="zeya-topbar__info">'
+        + item("hours", "clock", TOPBAR_HOURS, "span")
+        + item("call", "phone", TOPBAR_PHONE, "a")
+        + item("address", "pin", TOPBAR_ADDRESS, "a") +
+        '</div>'
+        '<nav class="zeya-topbar__links" aria-label="Trade">'
+        + "".join('<a href="%s">%s</a>' % (href, label) for label, href in TOPBAR_LINKS) +
+        '</nav></div></div>')
 
 
 def header(page, solid):
@@ -232,7 +280,7 @@ def header(page, solid):
             items.append('<li><a class="zeya-nav__link" data-zeya-nav-item="%s" '
                          'href="%s">%s</a></li>' % (key, href, label))
 
-    return u"""
+    return topbar() + u"""
 <header class="zeya-header{solid}" data-zeya-header>
   <div class="zeya-container zeya-container--wide zeya-header__inner">
     {logo}
@@ -255,22 +303,27 @@ def header(page, solid):
 
 
 def footer():
-    """The closing band: an invitation, four columns and a legal line.
+    """The closing band: an invitation, four columns and a copyright line.
 
     The invitation is the page's last call to action (the home page hides it,
     since it closes on one of its own). The columns carry navigation, the
     collections and the contact methods; the methods and social icons ship
     without an href and main.js links them once real details are configured,
     so the footer never points at an invented number or an empty profile.
+    Explore repeats the main navigation with Terms & Conditions beside FAQs.
     """
+    explore = []
+    for item in NAV_ITEMS:
+        explore.append(item)
+        if item[0] == "faq":
+            explore.append(("terms", "Terms &amp; Conditions", "terms.html"))
     links = "".join('<a class="zeya-footer__link" data-zeya-nav-item="%s" href="%s">%s</a>'
-                    % (k, u, l) for k, l, u in NAV_ITEMS)
+                    % (k, u, l) for k, l, u in explore)
     collections = "".join('<a class="zeya-footer__link" href="%s.html">%s</a>' % (g, esc(l))
                           for g, l in catalog.MENU.items())
-    methods = "".join('<a class="zeya-method" data-zeya-contact="%s"><span>%s</span>'
-                      '<span data-zeya-contact-value></span></a>' % (k, l)
-                      for k, l in (("phone", "Phone"), ("whatsapp", "WhatsApp"),
-                                   ("email", "Email"), ("address", "Studio")))
+    methods = contact_methods((("call", "Phone"), ("whatsapp", "WhatsApp"),
+                               ("email", "Email"), ("address", "Studio"),
+                               ("hours", "Hours")))
     socials = "".join(
         '<a class="zeya-social__link" %s aria-label="%s">%s</a>' % (attr, label, icon(name))
         for attr, label, name in (
@@ -294,9 +347,9 @@ def footer():
         '</div></div>'
         '<div class="zeya-container zeya-footer__grid">'
         '<div class="zeya-footer__brand">' + logo(variant="-footer") +
-        '<p class="zeya-footer__line">Measured. Designed. Installed.</p>'
-        '<p class="zeya-footer__note">Bespoke curtains, blinds and motorized window '
-        'solutions for homes and workplaces across Dubai, UAE.</p>'
+        '<p class="zeya-footer__line">Dress Your Windows.<br><em>Define Your Space.</em></p>'
+        '<p class="zeya-footer__note">Bespoke curtains, blinds and automated window '
+        'solutions crafted for exceptional interiors.</p>'
         '<div class="zeya-social">' + socials + '</div></div>'
         + column('Explore', links, tag="nav")
         + column('Collections', collections)
@@ -312,7 +365,6 @@ def footer():
         '<div class="zeya-container zeya-footer__bar">'
         '<p>&copy; <span data-zeya-year>2026</span> ZEYA Curtains &amp; Blinds. '
         'All rights reserved.</p>'
-        '<p class="zeya-footer__legal"><a href="faq.html">FAQs</a><span aria-hidden="true"> &middot; </span><a href="terms.html">Terms &amp; Conditions</a></p>'
         '</div></footer>')
 
 
@@ -362,7 +414,7 @@ SHELL = """<!DOCTYPE html>
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness",
 "name":"ZEYA Curtains & Blinds",
-"description":"Custom-made curtains, blinds and motorized window solutions in Dubai, UAE.",
+"description":"Custom-made and motorized curtains and blinds in Dubai, UAE.",
 "areaServed":{{"@type":"City","name":"Dubai"}},
 "address":{{"@type":"PostalAddress","addressLocality":"Dubai","addressCountry":"AE"}}}}
 </script>
@@ -391,15 +443,15 @@ PAGES = {
     "index.html": dict(
         page="home",
         solid=False,
-        title="ZEYA Curtains & Blinds | Custom Curtains, Blinds & Motorized Window Solutions in Dubai",
-        description="Custom-made curtains, blinds and motorized window solutions in Dubai. "
+        title="ZEYA Curtains & Blinds | Custom & Motorized Curtains and Blinds in Dubai",
+        description="Custom-made and motorized curtains and blinds in Dubai. "
                     "Elegant, functional and made for your space — measured, designed and installed by ZEYA.",
 
     ),
     "about.html": dict(
         page="about", solid=False,
         title="About ZEYA | More Than Just Window Coverings | Dubai",
-        description="ZEYA creates custom-made curtains, blinds and motorized window solutions in Dubai — "
+        description="ZEYA creates custom-made and motorized curtains and blinds in Dubai — "
                     "from fabric and colour selection through measurement to professional installation.",
     ),
     "products.html": dict(

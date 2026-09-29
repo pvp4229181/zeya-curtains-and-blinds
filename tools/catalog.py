@@ -56,29 +56,34 @@ GROUPS={
 'curtain-accessories':[(n,d,None) for n,d in ACCESSORIES]}
 # The chart repeats Motorized Blinds; use its phone-control image.
 GROUPS['blinds'][9]=(*BLINDS[9],(1125,491,1199,682))
-LABELS={'curtains':'Curtains','blinds':'Blinds','motorized':'Motorized Window Solutions','curtain-accessories':'Curtain Accessories'}
+LABELS={'curtains':'Curtains','blinds':'Blinds','motorized':'Motorized Curtains & Blinds','curtain-accessories':'Curtain Accessories'}
 # Everything the Collections menu lists: the product collections, then the
 # sector page, which shows the same range by the spaces it serves.
 MENU={**LABELS,sectors.SLUG:sectors.LABEL}
 # The Collections dropdown: a thumbnail and one line per entry. The thumbnails
 # are the small encodes of each collection's cover, as they render at 64px.
-MENU_NOTES={'curtains':('signature-curtains-640','Sheer, blackout, linen, velvet & wave'),
- 'blinds':('signature-blinds-640','Roller, zebra, Roman, Venetian & wooden'),
- 'motorized':('signature-motorized-640','Smart control for curtains & blinds'),
- 'curtain-accessories':('ai-tracks-640','Poles, tracks, tiebacks & linings'),
+MENU_NOTES={'curtains':('ai-collection-curtains-v2-640','Sheer, blackout, linen, velvet & wave'),
+ 'blinds':('ai-collection-blinds-v2-640','Roller, zebra, Roman, Venetian & wooden'),
+ 'motorized':('ai-collection-motorized-v2-640','Smart control for curtains & blinds'),
+ 'curtain-accessories':('ai-collection-accessories-v2-640','Poles, tracks, tiebacks & linings'),
  sectors.SLUG:('signature-hero-640','Solutions for homes, offices, hotels, cafés & clinics')}
 INTROS={'curtains':'Elegant fabrics for every space. Explore custom-made curtains in a range of textures, styles and finishes.', 'blinds':'Modern, versatile options. Find the balance of light, privacy and style for your home or workplace.', 'motorized':'Smart living. Made simple. Explore powered curtains and blinds for effortless everyday comfort.', 'curtain-accessories':'The details that finish the window. Poles, tracks, linings and fittings chosen to match your curtains.'}
 # The hero photograph that opens each collection page.
 COVERS={'curtains':'curtains-category','blinds':'blinds-category','motorized':'motorized-solutions','curtain-accessories':'accessories-category'}
 
 
+# Products that keep their detail page but no longer get a card in the grids.
+UNLISTED={'Motorized Outdoor / Zip Screens'}
+
+
 def cards(h,group,exclude=None,limit=None):
     """The product grid. Each card is a full-bleed image with the name and the
     one-line description sitting over it, so a row of cards reads as a set of
     photographs rather than a table of boxes."""
-    products=[p for p in GROUPS[group] if p[0]!=exclude]
+    products=[p for p in GROUPS[group] if p[0]!=exclude and p[0] not in UNLISTED]
     if limit: products=products[:limit]
-    return '<div class="zeya-catalog-grid">'+''.join(
+    grid_class = ' zeya-catalog-grid--motorized' if group == 'motorized' else ''
+    return f'<div class="zeya-catalog-grid{grid_class}">'+''.join(
         '<a class="zeya-product" href="product-{slug}.html">'
         '<div class="zeya-product__image">{image}'
         '<span class="zeya-product__veil" aria-hidden="true"></span></div>'
@@ -102,8 +107,14 @@ def motion_section(h):
     view, and never fetches it for reduced-motion visitors unless they press
     play. The toggle is the pause control for a loop that runs past 5s.
     """
-    works=''.join(f'<li>{name}</li>' for name in
-                  ('Amazon Alexa','Google Home','Somfy','Tuya'))
+    # Partner logos, pre-tinted cream for the dark film. Each is sized by eye
+    # rather than to one height, so the four wordmarks read at the same weight.
+    works=''.join(f'<li><img src="assets/images/brand-{slug}.webp" alt="{name}" '
+                  f'width="{w}" height="{hgt}" decoding="async"></li>'
+                  for slug,name,w,hgt in (('alexa','Amazon Alexa',123,18),
+                                          ('google-home','Google Home',94,16),
+                                          ('somfy','Somfy',57,15),
+                                          ('tusato','Tusato',71,15)))
     play='<svg class="zeya-motion__play" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 2.5v11l9.5-5.5z"/></svg>'
     pause='<svg class="zeya-motion__pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>'
     return (f'<section class="zeya-section--chocolate zeya-motion" aria-labelledby="zeya-motion-title">'
@@ -119,10 +130,10 @@ def motion_section(h):
             f' aria-label="Play video" hidden>{play}{pause}</button>'
             f'<div class="zeya-container zeya-motion__inner">'
             f'<div class="zeya-motion__copy">'
-            f'<p class="zeya-eyebrow zeya-motion__eyebrow">Motorized Window Solutions</p>'
+            f'<p class="zeya-eyebrow zeya-motion__eyebrow">Motorized Curtains &amp; Blinds</p>'
             f'<h1 id="zeya-motion-title">Effortless control.<br><em>Intelligent comfort.</em></h1>'
             f'<p class="zeya-motion__lead">We offer motorised curtain solutions that seamlessly '
-            f'integrate with Amazon Alexa, Google Home, Somfy, Tuya and more, bringing effortless '
+            f'integrate with Amazon Alexa, Google Home, Somfy, Tusato and more, bringing effortless '
             f'control and intelligent comfort to your home.</p>'
             f'<div class="zeya-motion__works"><span>Works with</span>'
             f'<ul aria-label="Works with">{works}<li>And more</li></ul></div>'
@@ -134,7 +145,7 @@ def motion_section(h):
 
 def crumbs(title,group=None):
     links='<a href="index.html">Home</a><span aria-hidden="true">/</span><a href="products.html">Products</a>'
-    if group: links+=f'<span aria-hidden="true">/</span><a href="{group}.html">{LABELS[group]}</a>'
+    if group: links+=f'<span aria-hidden="true">/</span><a href="{group}.html">{escape(LABELS[group])}</a>'
     return f'<nav class="zeya-crumbs" aria-label="Breadcrumb">{links}<span aria-hidden="true">/</span><span aria-current="page">{escape(title)}</span></nav>'
 
 
@@ -143,8 +154,8 @@ def render(h):
     for g,label in LABELS.items():
         section=(f'<section class="zeya-section zeya-container zeya-catalog-section" id="{g}">'
                  f'<div class="zeya-section-heading">'
-                 f'<p class="zeya-eyebrow">{len(GROUPS[g]):02d} ways to make it yours</p>'
-                 f'<div><div class="zeya-section-heading__row"><h2>{label}</h2>'
+                 f'<p class="zeya-eyebrow">{len([p for p in GROUPS[g] if p[0] not in UNLISTED]):02d} ways to make it yours</p>'
+                 f'<div><div class="zeya-section-heading__row"><h2>{escape(label)}</h2>'
                  f'{h.btn("Explore collection",g+".html","outline")}</div>'
                  f'<p>{INTROS[g]}</p></div></div>'
                  f'{cards(h,g,limit=3)}</section>')
@@ -153,13 +164,12 @@ def render(h):
         # ---- the collection page -----------------------------------------
         # The motorized page opens on its film instead of the image hero.
         opener=(motion_section(h) if g=='motorized' else
-                h.hero(COVERS[g],label+' in a considered Dubai interior',escape(label),
+                h.hero(COVERS[g],escape(label)+' in a considered Dubai interior',escape(label),
                        eyebrow='The ZEYA collection',sub=INTROS[g],
                        crumbs=crumbs(label)))
         pages[g]=(opener
                   +f'<section class="zeya-section zeya-container zeya-catalog-section" id="range">'
-                   f'<div class="zeya-catalog-toolbar"><h2>Explore the collection</h2>'
-                   f'<span>{len(GROUPS[g])} options &middot; Made to measure</span></div>'
+                   f'<div class="zeya-catalog-toolbar"><h2>Explore the collection</h2></div>'
                    f'{cards(h,g)}</section>')
 
         # ---- one detail page per product ---------------------------------
@@ -173,7 +183,7 @@ def render(h):
                        actions=h.btn('Enquire about this product',
                                      'contact.html?product='+slug(n),'gold'),
                        crumbs=crumbs(n,g),variant='product')
-                +f'<section class="zeya-section zeya-container zeya-product-detail">'
+                +f'<section class="zeya-section zeya-container zeya-product-detail{' zeya-product-detail--motorized' if g == 'motorized' else ''}">'
                  f'<figure class="zeya-product-detail__media">'
                  f'{h.img(key,"Interior inspiration: "+n,sizes="(max-width:700px) 100vw, 50vw")}'
                  f'</figure>'
@@ -196,7 +206,7 @@ def render(h):
                  f'data-zeya-wa-product="{escape(n)}" hidden>'
                  f'<svg aria-hidden="true" focusable="false"><use href="#zeya-i-whatsapp"></use></svg>'
                  f'Chat on WhatsApp</a></div></div>'
-                 f'<a class="zeya-back-link" href="{g}.html">Browse all {label.lower()} &rarr;</a>'
+                 f'<a class="zeya-back-link" href="{g}.html">Browse all {escape(label.lower())} &rarr;</a>'
                  f'</div></section>'
                  f'<section class="zeya-section zeya-section--chocolate">'
                  f'<div class="zeya-container zeya-catalog-section">'

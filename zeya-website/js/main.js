@@ -31,6 +31,9 @@
   --------------------------------------------------------------------- */
   var CONTACT = window.ZEYA_CONTACT || {
     address: "Dubai, UAE",
+    // Opening hours for the top contact strip.
+    // PLACEHOLDER: replace with ZEYA's real opening hours before launch.
+    hours: "Monday – Saturday 9:00 – 18:00",
     addressLine: "",    // optional second line, e.g. a street address
     addressUrl: "",     // e.g. a Google Maps link
     // Every WhatsApp link on the site reads from here: the floating button,
@@ -76,6 +79,24 @@
   (function header() {
     var el = $("[data-zeya-header]");
     if (!el) { return; }
+
+    // The contact strip above the bar scrolls away with the page; the fixed
+    // bar rides down with it and docks at the top once it has gone.
+    var topbar = $("[data-zeya-topbar]");
+    if (topbar) {
+      var lastTop = -1;
+      var placeHeader = function () {
+        var y = window.pageYOffset || root.scrollTop;
+        var top = Math.max(0, topbar.offsetHeight - y);
+        if (top === lastTop) { return; }
+        lastTop = top;
+        el.style.setProperty("--zeya-header-top", top + "px");
+      };
+      window.addEventListener("scroll", placeHeader, { passive: true });
+      window.addEventListener("resize", function () { lastTop = -1; placeHeader(); },
+                              { passive: true });
+      placeHeader();
+    }
 
     // Inner pages render the solid bar from the start; only the transparent
     // variant needs the scroll transition.
@@ -395,6 +416,9 @@
       address: function (value) { return CONTACT.addressUrl || ""; },
       whatsapp: function (value) { return waLink(); },
       phone: function (value) { return "tel:" + digits(value); },
+      // The top strip's number: the phone line, or the WhatsApp number until
+      // one is set. WhatsApp numbers are stored without the leading "+".
+      call: function (value) { return "tel:+" + digits(value).replace(/^\+/, ""); },
       email: function (value) { return "mailto:" + value; }
     };
 
@@ -404,12 +428,13 @@
       address: function () { return CONTACT.addressLine || CONTACT.address || ""; },
       whatsapp: function () { return CONTACT.whatsappLabel || CONTACT.whatsapp; },
       phone: function () { return CONTACT.phone; },
+      call: function () { return CONTACT.phone || CONTACT.whatsappLabel || CONTACT.whatsapp; },
       email: function () { return CONTACT.email; }
     };
 
     $$("[data-zeya-contact]").forEach(function (node) {
       var key = node.getAttribute("data-zeya-contact");
-      var value = CONTACT[key === "address" ? "address" : key];
+      var value = key === "call" ? (CONTACT.phone || CONTACT.whatsapp) : CONTACT[key];
       var valueNode = node.querySelector("[data-zeya-contact-value]");
       var text = displays[key] ? displays[key]() : value;
 

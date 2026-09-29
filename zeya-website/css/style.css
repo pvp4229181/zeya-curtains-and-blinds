@@ -42,6 +42,7 @@
   --zeya-max:1320px;
   --zeya-nav-h:92px;      /* bar height while it rides over the hero */
   --zeya-nav-h-sm:68px;   /* and once it has gone solid */
+  --zeya-topbar-h:40px;   /* the contact strip above the bar */
   --zeya-logo-h:56px;     /* wordmark height, one per bar height */
   --zeya-logo-h-sm:44px;
   --zeya-ease:cubic-bezier(.16,1,.3,1);
@@ -121,6 +122,28 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-back-link:hover{opacity:.65}
 .zeya-section--chocolate .zeya-back-link{color:var(--zeya-gold)}
 
+/* --------------------------------------------------------------- topbar --- */
+/* A dark contact strip in the page flow above the header. It scrolls away with
+   the page; main.js sets --zeya-header-top so the fixed bar follows it up and
+   then docks at the very top. Without JS the bar simply sits beneath it. */
+.zeya-topbar{position:relative;height:var(--zeya-topbar-h);background:var(--zeya-charcoal);
+  color:rgba(248,243,232,.8);font-size:12.5px;letter-spacing:.02em}
+.zeya-topbar__inner{height:100%;display:flex;align-items:center;justify-content:space-between;
+  gap:24px}
+.zeya-topbar__info{display:flex;align-items:center;gap:clamp(18px,2.6vw,40px);min-width:0}
+.zeya-topbar__item{display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
+  transition:color .25s}
+.zeya-topbar__item svg{flex:none;width:15px;height:15px;color:var(--zeya-champagne-gold)}
+a.zeya-topbar__item{min-height:var(--zeya-topbar-h)}
+a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
+.zeya-topbar__links{display:flex;align-items:center;gap:clamp(16px,2.2vw,32px)}
+.zeya-topbar__links a{display:flex;align-items:center;min-height:var(--zeya-topbar-h);
+  font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--zeya-ivory);white-space:nowrap;transition:color .25s}
+.zeya-topbar__links a:hover{color:var(--zeya-champagne-gold)}
+.zeya-topbar+.zeya-header{top:var(--zeya-header-top,var(--zeya-topbar-h))}
+.zeya-topbar+.zeya-header.is-open{top:0}
+
 /* --------------------------------------------------------------- header --- */
 /* Transparent while the hero is on screen, solid once it has scrolled away. */
 .zeya-header{position:fixed;inset:0 0 auto;z-index:100;height:var(--zeya-nav-h);
@@ -129,12 +152,14 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-header::after{content:"";position:absolute;inset:0;z-index:-1;
   background:linear-gradient(to bottom,rgba(43,33,24,.62) 0%,rgba(43,33,24,.44) 58%,rgba(43,33,24,0) 100%);
   opacity:1;transition:opacity .4s var(--zeya-ease)}
-/* Scrolled, the bar compresses and the wordmark compresses with it, so the
-   clearance above and below the logo is the same at either height. */
+/* Scrolled, the bar turns solid but keeps its full height. */
 .zeya-header.is-scrolled,.zeya-header--solid,.zeya-header.is-open{
-  --zeya-logo-h:var(--zeya-logo-h-sm);
-  background:var(--zeya-cream);color:var(--zeya-black);height:var(--zeya-nav-h-sm);
+  background:var(--zeya-cream);color:var(--zeya-black);
   box-shadow:0 1px 0 var(--zeya-cream-line)}
+/* The solid inner-page bar and the open menu are compact, and the wordmark
+   compresses with them, so the clearance around the logo stays the same. */
+.zeya-header--solid,.zeya-header.is-open{
+  --zeya-logo-h:var(--zeya-logo-h-sm);height:var(--zeya-nav-h-sm)}
 /* The frosted bar is kept OFF the open state on purpose: a live
    `backdrop-filter` makes the header a containing block for position:fixed
    descendants, which would collapse the full-screen mobile panel inside it. */
@@ -371,6 +396,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   border-color:var(--zeya-gold)}
 .zeya-product__image{position:relative;overflow:hidden;background:var(--zeya-black)}
 .zeya-product__image img{aspect-ratio:4/5;object-fit:cover;transition:transform .9s var(--zeya-ease)}
+.zeya-catalog-grid--motorized .zeya-product__image img{aspect-ratio:3/2;object-position:center}
 .zeya-product:hover .zeya-product__image img{transform:scale(1.07)}
 .zeya-product__veil{position:absolute;inset:0;opacity:0;transition:opacity .5s var(--zeya-ease);
   background:linear-gradient(to top,rgba(43,33,24,.5),rgba(43,33,24,0) 60%)}
@@ -415,6 +441,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   gap:clamp(28px,5vw,80px);align-items:start}
 .zeya-product-detail__media{position:relative}
 .zeya-product-detail__media img{aspect-ratio:4/5;object-fit:cover;background:var(--zeya-cream-lift)}
+.zeya-product-detail--motorized .zeya-product-detail__media img{aspect-ratio:3/2;object-position:center}
 .zeya-detail-copy{display:grid;gap:22px;justify-items:start}
 .zeya-detail-lead{font-family:var(--zeya-serif);font-size:clamp(20px,2vw,27px);line-height:1.35;
   color:var(--zeya-chocolate)}
@@ -579,8 +606,10 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-footer__brand{display:grid;gap:14px;align-content:start}
 .zeya-footer__brand .zeya-logo{height:clamp(64px,7vw,88px)}
 .zeya-footer__brand .zeya-logo__img{opacity:1}
-.zeya-footer__line{font-family:var(--zeya-serif);font-size:23px;color:var(--zeya-espresso)}
-.zeya-footer__note{max-width:31ch;font-size:13px;line-height:1.7}
+.zeya-footer__line{margin-top:4px;font-family:var(--zeya-serif);font-size:clamp(26px,2.3vw,32px);
+  line-height:1.12;color:var(--zeya-espresso)}
+.zeya-footer__line em{color:var(--zeya-gold-ink)}
+.zeya-footer__note{max-width:36ch;font-size:13px;line-height:1.7}
 
 /* Each column label sits over a hairline, so the four heads read as one row. */
 .zeya-footer__col{display:grid;gap:2px;align-content:start}
@@ -597,7 +626,9 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-footer__location{margin:2px 0 8px;font-size:14px;color:var(--zeya-espresso)}
 .zeya-footer__contact .zeya-method{display:grid;gap:3px;min-height:44px;margin:6px 0;
   padding:0;background:none;border:0}
-.zeya-footer__contact .zeya-method:not([href]){display:none}
+/* Unlinked rows are hidden (the location line already names the studio);
+   hours are plain text by nature, so they always show. */
+.zeya-footer__contact .zeya-method:not([href]):not([data-zeya-contact="hours"]){display:none}
 .zeya-footer__contact .zeya-method>span:first-child{font-size:10px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--zeya-muted)}
 .zeya-footer__contact .zeya-method>span:last-child{position:relative;width:fit-content;
@@ -623,13 +654,9 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   border-color:var(--zeya-gold-ink);color:var(--zeya-ivory)}
 .zeya-social__link:not([href]){display:none}
 
-.zeya-footer__bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;
+.zeya-footer__bar{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 24px;text-align:center;
   padding-block:20px;border-top:1px solid rgba(201,162,77,.28);font-size:11px;
   letter-spacing:.04em;color:var(--zeya-muted)}
-.zeya-footer__legal a{color:inherit;border-bottom:1px solid rgba(128,97,32,.35);
-  transition:color .2s ease,border-color .2s ease}
-.zeya-footer__legal a:hover,.zeya-footer__legal a:focus-visible{color:var(--zeya-gold-ink);
-  border-bottom-color:currentColor}
 
 /* Reference-inspired gold and ivory editorial layout. */
 /* The call to action carries the shared 6px button radius and the same small
@@ -686,7 +713,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-text-link svg{width:18px;height:18px}
 .zeya-solution-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .zeya-solution{position:relative;overflow:hidden;display:block;isolation:isolate;color:var(--zeya-ivory)}
-.zeya-solution>img{aspect-ratio:4/3;object-fit:cover;transition:transform .7s var(--zeya-ease)}
+.zeya-solution>img{aspect-ratio:3/2;width:100%;height:auto;object-fit:cover;transition:transform .7s var(--zeya-ease)}
 .zeya-solution::after{content:'';position:absolute;inset:35% 0 0;z-index:0;background:linear-gradient(transparent,rgba(43,33,24,.84))}
 .zeya-solution:hover>img{transform:scale(1.035)}
 .zeya-solution__caption{position:absolute;inset:auto 24px 21px;z-index:1;display:flex;justify-content:space-between;align-items:end;gap:8px}
@@ -768,7 +795,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
   gap:clamp(28px,4vw,64px);align-items:start}
 .zeya-js .zeya-needs__tabs{position:relative;display:flex;flex-direction:column;
   border-top:1px solid rgba(184,162,141,.4)}
-.zeya-js .zeya-needs__panels{display:block;position:sticky;top:calc(var(--zeya-nav-h-sm) + 24px)}
+.zeya-js .zeya-needs__panels{display:block;position:sticky;top:calc(var(--zeya-nav-h) + 24px)}
 .zeya-needs__tab{display:grid;grid-template-columns:24px 20px minmax(0,1fr) 16px;align-items:center;
   gap:14px;width:100%;min-height:44px;padding:15px 4px 15px 0;border:0;
   border-bottom:1px solid rgba(184,162,141,.4);background:none;font:inherit;text-align:left;
@@ -929,13 +956,21 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-motion h1 em{color:var(--zeya-champagne-gold)}
 .zeya-motion__lead{margin:0;max-width:50ch;font-size:clamp(16px,1.2vw,18px);line-height:1.7;
   color:rgba(248,243,232,.84)}
-.zeya-motion__works{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
-.zeya-motion__works>span{font:500 11px/1 var(--zeya-sans);letter-spacing:.2em;text-transform:uppercase;
+.zeya-motion__works{display:grid;gap:13px;width:min(100%,620px);margin-top:2px}
+.zeya-motion__works>span{display:flex;align-items:center;gap:14px;
+  font:600 10px/1 var(--zeya-sans);letter-spacing:.22em;text-transform:uppercase;
   color:rgba(248,243,232,.62)}
-.zeya-motion__works ul{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.zeya-motion__works li{padding:9px 15px;border:1px solid rgba(248,243,232,.22);border-radius:999px;
-  background:rgba(248,243,232,.07);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
-  font:500 12px/1 var(--zeya-sans);letter-spacing:.04em;color:var(--zeya-cream)}
+.zeya-motion__works>span::after{content:"";flex:1;height:1px;background:rgba(248,243,232,.18)}
+.zeya-motion__works ul{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  margin:0;padding:0;list-style:none;border-block:1px solid rgba(248,243,232,.2);
+  background:rgba(23,20,17,.18);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.zeya-motion__works li{display:flex;align-items:center;justify-content:center;min-width:0;height:58px;padding:0 12px;
+  border-right:1px solid rgba(248,243,232,.16);
+  font:600 9px/1.2 var(--zeya-sans);
+  letter-spacing:.12em;text-align:center;text-transform:uppercase;color:rgba(248,243,232,.58)}
+.zeya-motion__works li:last-child{border-right:0}
+.zeya-motion__works img{display:block;width:auto;max-width:100%;height:auto;max-height:19px;
+  object-fit:contain;filter:drop-shadow(0 1px 6px rgba(0,0,0,.18))}
 .zeya-motion__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
 .zeya-motion__actions .zeya-btn--outline{color:var(--zeya-cream)}
 .zeya-motion__toggle{position:absolute;z-index:1;top:calc(var(--zeya-nav-h) + 16px);right:var(--zeya-gutter);
@@ -950,6 +985,8 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-motion__pause,.zeya-motion__toggle.is-playing .zeya-motion__play{display:none}
 .zeya-motion__toggle.is-playing .zeya-motion__pause{display:block}
 @media (max-width:900px){
+  /* Portrait crops a 16:9 frame to a narrow slice: centre it on the window and curtains. */
+  .zeya-motion__video{object-position:50% 50%}
   .zeya-motion__scrim{background:linear-gradient(180deg,rgba(23,20,17,.72) 0%,
     rgba(23,20,17,.82) 50%,rgba(23,20,17,.95) 100%)}
 }

@@ -13,43 +13,43 @@ INTRO = ('Curtain and blind solutions for homes and for workplaces, chosen for h
 
 # (space, image, description, suggested solutions)
 RESIDENTIAL = [
-    ('Villas & Luxury Homes', 'ai-residential-project',
+    ('Villas & Luxury Homes', 'sector-villa',
      'Full-height glazing and statement rooms, dressed as one considered scheme from room to room.',
      ('Motorised curtains', 'Layered sheers', 'Blackout')),
-    ('Apartments', 'ai-roller',
+    ('Apartments', 'sector-apartment',
      'Clean, space-saving treatments that tame the Dubai sun and keep the city view.',
      ('Roller blinds', 'Sheer curtains', 'Zebra blinds')),
-    ('Living Rooms', 'ai-hero',
+    ('Living Rooms', 'sector-living-room',
      'Soft daylight through the day and privacy by evening, layered for how the room is used.',
      ('Sheer curtains', 'Decorative curtains', 'Motorised')),
-    ('Bedrooms', 'ai-blackout-roller',
+    ('Bedrooms', 'sector-bedroom',
      'Deep blackout for restful sleep, with a softer layer to welcome the morning light.',
      ('Blackout curtains', 'Roman blinds', 'Sheer curtains')),
-    ('Dining Areas', 'ai-faux-wood',
+    ('Dining Areas', 'sector-dining',
      'Glare kept off the table without losing the warmth of natural light.',
      ('Roman blinds', 'Sheer curtains', 'Zebra blinds')),
-    ('Home Offices', 'ai-venetian',
+    ('Home Offices', 'sector-home-office',
      'Screen-friendly light control that cuts glare but keeps the room bright enough to work.',
      ('Roller blinds', 'Zebra blinds', 'Motorised blinds')),
-    ('Majlis & Family Spaces', 'ai-vertical',
+    ('Majlis & Family Spaces', 'sector-majlis',
      'Generous, elegant drapery for gathering rooms, with privacy the moment guests arrive.',
      ('Decorative curtains', 'Blackout curtains', 'Motorised curtains')),
 ]
 
 COMMERCIAL = [
-    ('Offices', 'ai-commercial-project',
+    ('Offices', 'sector-office',
      'Glare-free desks and meeting rooms, with one consistent look across every floor.',
      ('Roller blinds', 'Sunscreen blinds', 'Venetian blinds')),
-    ('Hotels', 'ai-wave',
+    ('Hotels', 'sector-hotel',
      'Blackout for guest rooms and soft sheers for suites and lobbies, made for daily use.',
      ('Blackout curtains', 'Sheer curtains', 'Motorised systems')),
-    ('Restaurants & Cafés', 'ai-linen',
+    ('Restaurants & Cafés', 'sector-restaurant',
      'Set the mood from lunch to late evening while keeping window tables comfortable.',
      ('Roman blinds', 'Sheer curtains', 'Roller blinds')),
-    ('Retail Stores & Showrooms', 'ai-consultation',
+    ('Retail Stores & Showrooms', 'sector-retail',
      'Keep glare off displays and direct sun off stock, with a storefront that still invites people in.',
      ('Roller blinds', 'Sunscreen blinds', 'Motorised blinds')),
-    ('Clinics', 'ai-sunscreen',
+    ('Clinics', 'sector-clinic',
      'Privacy for consultation rooms and calm, practical finishes for reception and waiting areas.',
      ('Vertical blinds', 'Roller blinds', 'Venetian blinds')),
 ]
@@ -133,9 +133,9 @@ def teaser(h):
         f'<span class="zeya-product__action">Explore the spaces'
         f'<span aria-hidden="true">&#8594;</span></span></div></a>'
         for key, image, title, text in [
-            ('residential', 'ai-residential-project', 'Residential',
+            ('residential', 'sector-villa', 'Residential',
              'Villas, apartments, bedrooms, majlis and every room in between.'),
-            ('commercial', 'ai-commercial-project', 'Commercial',
+            ('commercial', 'sector-office', 'Commercial',
              'Offices, hotels, restaurants, showrooms and clinics.'),
         ])
     return (f'<section class="zeya-section zeya-container zeya-catalog-section" id="{SLUG}">'

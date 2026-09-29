@@ -83,7 +83,7 @@ def render(h):
              'Warm linen drapes beside natural stone in a Dubai interior',
              'A considered finish.<br>A more beautiful everyday.',
              eyebrow='The ZEYA story',
-             sub='Custom curtains, blinds and motorized window solutions, thoughtfully '
+             sub='Custom and motorized curtains and blinds, thoughtfully '
                  'designed for homes and workplaces in Dubai.')
         + section('<div class="zeya-container zeya-split zeya-split--reverse">'
                   '<div class="zeya-split__media">{image}</div>'
@@ -145,11 +145,8 @@ def render(h):
     # ----------------------------------------------------------- contact ---
     from home_content import service_areas_section
     form = Path(__file__).with_name('contact-form.html').read_text(encoding='utf8')
-    methods = ''.join(
-        '<a class="zeya-method" data-zeya-contact="%s"><span>%s</span>'
-        '<span data-zeya-contact-value></span></a>' % (key, label)
-        for key, label in [('address', 'Studio'), ('phone', 'Phone'),
-                           ('whatsapp', 'WhatsApp'), ('email', 'Email')])
+    methods = h.contact_methods([('address', 'Studio'), ('hours', 'Hours'), ('call', 'Phone'),
+                               ('whatsapp', 'WhatsApp'), ('email', 'Email')])
     contact = (
         hero('contact-interior', 'Softly lit sheer curtains in a Dubai apartment',
              'Your space.<br>Our next conversation.',
@@ -356,7 +353,7 @@ def render(h):
              'Floor-length curtains filtering soft light in a calm Dubai interior',
              'Questions, answered.<br>Choices made simpler.',
              eyebrow='Curtains &amp; blinds advice',
-             sub='Clear answers about measuring, materials, light control, care and motorised window solutions.',
+             sub='Clear answers about measuring, materials, light control, care and motorized curtains and blinds.',
              variant='product')
         + section('<div class="zeya-container zeya-faq-layout">'
                   '<aside class="zeya-faq-intro">' + eyebrow('Frequently asked questions') +

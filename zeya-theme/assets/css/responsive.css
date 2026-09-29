@@ -65,6 +65,15 @@
   .zeya-hero--product{min-height:clamp(380px,62vh,520px)}
   .zeya-hero__inner{gap:16px}
 
+  /* Product copy can wrap to several lines on phones. Keep the enquiry action
+     and breadcrumb trail in normal flow so they never cover each other. */
+  .zeya-hero--product{display:flex;flex-direction:column;justify-content:flex-start;
+    min-height:0;padding:calc(var(--zeya-nav-h) + 38px) 0 0}
+  .zeya-hero--product .zeya-hero__inner{width:100%;padding-bottom:30px}
+  .zeya-hero--product .zeya-hero__crumbs{position:relative;inset:auto;width:100%;
+    margin-top:0;padding-block:18px}
+  .zeya-hero--product .zeya-crumbs{padding-inline:var(--zeya-gutter);line-height:1.8}
+
   .zeya-collections,.zeya-steps,.zeya-catalog-grid{grid-template-columns:1fr}
   .zeya-collection__image img,.zeya-product__image img{aspect-ratio:3/2}
 
@@ -120,9 +129,12 @@
   .zeya-desktop-break{display:none}
   .zeya-mini-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:22px 16px}
   .zeya-mini-product h3{font-size:14px}
+  /* Three across on a tablet: portrait cards give a three-line title room
+     to sit inside the image. Phones switch back to one landscape card. */
+  .zeya-solution>img{aspect-ratio:4/5}
   .zeya-solution__caption{inset:auto 14px 16px}
   .zeya-solution__caption h3{font-size:25px}
-  .zeya-solution__caption p{font-size:8px;letter-spacing:.1em}
+  .zeya-solution__caption p{font-size:9.5px;letter-spacing:.12em}
   .zeya-solution__caption .zeya-circle-arrow{width:28px;height:28px}
 }
 @media (max-width:700px){
@@ -136,7 +148,9 @@
   .zeya-signature-hero .zeya-hero__sub{font-size:15px;max-width:360px}
   .zeya-signature-hero .zeya-hero__actions{width:auto;flex-direction:row;flex-wrap:wrap;gap:12px}
   .zeya-signature-hero .zeya-hero__actions .zeya-btn{width:auto;padding:12px 17px;font-size:9px}
-  .zeya-hero-promises{margin-top:16px;flex-wrap:wrap;column-gap:20px;row-gap:14px}
+  /* Two by two, so the fourth promise never sits alone on its own row. */
+  .zeya-hero-promises{display:grid;grid-template-columns:repeat(2,max-content);
+    margin-top:16px;column-gap:20px;row-gap:14px}
   .zeya-hero-promises__item span{font-size:12px}
   .zeya-hero-promises__icon{width:32px;height:32px;padding:7px}
   .zeya-hero-promises small{font-size:10px}
@@ -147,7 +161,7 @@
   .zeya-signature-heading{align-items:start}
   .zeya-signature-heading .zeya-text-link{font-size:9px;white-space:normal}
   .zeya-solution-grid{grid-template-columns:1fr;gap:16px}
-  .zeya-solution>img{aspect-ratio:1.45}
+  .zeya-solution>img{aspect-ratio:3/2}
   .zeya-solution__caption{inset:auto 24px 24px}
   .zeya-solution__caption h3{font-size:34px}
   .zeya-solution__caption p{font-size:10px;letter-spacing:.18em}
@@ -165,11 +179,33 @@
   .zeya-service-band__image{min-height:240px}
   .zeya-service-band__features .zeya-signature-feature{padding:0 8px;font-size:11px}
   .zeya-service-band__features small{font-size:9px}
+  .zeya-motion__works ul{grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid rgba(248,243,232,.2)}
+  .zeya-motion__works li{height:56px;padding-inline:16px;border-right:1px solid rgba(248,243,232,.16);
+    border-bottom:1px solid rgba(248,243,232,.16)}
+  .zeya-motion__works li:nth-child(even){border-right:0}
+  .zeya-motion__works li:last-child{grid-column:1/-1;height:40px;border:0}
+}
+
+/* --------------------------------------------------------------- topbar --- */
+/* The strip sheds the address first, then the hours, keeping the number and
+   the two trade links on one line down to the narrowest phones. */
+@media (max-width:1000px){
+  .zeya-topbar [data-zeya-contact="address"]{display:none}
+}
+@media (max-width:700px){
+  :root{--zeya-topbar-h:36px}
+  .zeya-topbar{font-size:12px}
+  .zeya-topbar [data-zeya-contact="hours"]{display:none}
+  .zeya-topbar__links{gap:16px}
+  .zeya-topbar__links a{font-size:10.5px;letter-spacing:.1em}
+}
+@media (max-width:360px){
+  .zeya-topbar__item svg{display:none}
 }
 
 /* --------------------------------------------------------------- print --- */
 @media print{
-  .zeya-header,.zeya-burger,.zeya-footer-cta,.zeya-hero__crumbs,.zeya-skip{display:none}
+  .zeya-topbar,.zeya-header,.zeya-burger,.zeya-footer-cta,.zeya-hero__crumbs,.zeya-skip{display:none}
   body.zeya-body{background:#fff;color:#000}
   .zeya-hero,.zeya-hero--tall{min-height:0;padding-block:24px}
 }
@@ -200,7 +236,7 @@
     padding-block:34px}
   .zeya-footer__contact{grid-column:1/-1;padding-top:24px;
     border-top:1px solid rgba(201,162,77,.28)}
-  .zeya-footer__bar{justify-content:flex-start;padding-bottom:78px}
+  .zeya-footer__bar{padding-bottom:78px}
 }
 
 /* Service summary */
@@ -217,4 +253,84 @@
   .zeya-service-band__features .zeya-signature-feature{font-size:13px}
   .zeya-service-band__features .zeya-signature-feature:nth-child(odd){border-right:0}
   .zeya-service-band__features small{font-size:11px}
+}
+
+/* ------------------------------------------------------ mobile redesign --- */
+@media (max-width:700px){
+  :root{--zeya-gutter:20px;--zeya-nav-h:68px;--zeya-logo-h:38px}
+  html{scroll-padding-top:76px}
+  body.zeya-body{overflow-x:hidden}
+  :where(a,button,summary,input,select,textarea){touch-action:manipulation}
+
+  /* Brand chrome: one calm utility row and a compact navigation bar. */
+  .zeya-topbar__inner{padding-inline:16px}
+  .zeya-topbar__links{gap:12px}
+  .zeya-topbar__links a{min-height:36px;font-size:9px;letter-spacing:.08em}
+  .zeya-header__inner{padding-inline:20px}
+  .zeya-logo{height:38px}
+  .zeya-burger{width:48px;height:48px;justify-content:center;border:1px solid rgba(248,243,232,.22);border-radius:50%}
+  .zeya-header:is(.is-scrolled,.zeya-header--solid) .zeya-burger{border-color:var(--zeya-cream-line)}
+
+  /* Type and spacing form one consistent editorial rhythm across pages. */
+  .zeya-section{padding-block:56px}
+  .zeya-eyebrow{font-size:10px;letter-spacing:.2em}
+  .zeya-section-heading{gap:12px;margin-bottom:28px}
+  .zeya-section-heading h2{font-size:clamp(38px,11vw,52px);line-height:1}
+  .zeya-section-heading>div>p{font-size:15px;line-height:1.65}
+
+  /* Heroes remain cinematic without pushing the first useful content away. */
+  .zeya-hero:not(.zeya-hero--product){min-height:calc(100svh - var(--zeya-topbar-h));
+    padding:calc(var(--zeya-nav-h) + 38px) 0 40px}
+  .zeya-hero__inner{width:100%;gap:14px}
+  .zeya-hero__title{font-size:clamp(44px,13vw,62px);line-height:.98}
+  .zeya-hero__sub{font-size:16px;line-height:1.55}
+  .zeya-hero__actions{display:grid;grid-template-columns:1fr;width:100%;gap:10px;margin-top:8px}
+  .zeya-hero__actions .zeya-btn{width:100%;min-height:50px;padding:13px 18px}
+  .zeya-signature-hero{min-height:calc(100svh - var(--zeya-topbar-h));padding-top:calc(var(--zeya-nav-h) + 38px)}
+  .zeya-signature-hero .zeya-hero__actions{display:grid;grid-template-columns:1fr;width:100%}
+  .zeya-signature-hero .zeya-hero__actions .zeya-btn{width:100%;min-height:48px;font-size:10px}
+  .zeya-hero-promises{grid-template-columns:1fr 1fr;width:100%;column-gap:12px}
+  .zeya-hero-promises__item{min-width:0}
+
+  /* Wide imagery and compact copy make catalogue browsing faster by thumb. */
+  .zeya-catalog-grid{gap:20px}
+  .zeya-product,.zeya-space{border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(43,33,24,.08)}
+  .zeya-product__image img,.zeya-space__image img{aspect-ratio:3/2;object-fit:cover}
+  .zeya-product__copy,.zeya-space__copy{padding:22px 20px;gap:10px}
+  .zeya-product__copy h3,.zeya-space h3{font-size:28px;line-height:1.08}
+  .zeya-product__copy p,.zeya-space__copy p{font-size:15px;line-height:1.6}
+  .zeya-product__action{min-height:44px;margin-top:2px}
+  .zeya-product:hover,.zeya-space:hover{transform:none;box-shadow:0 10px 30px rgba(43,33,24,.08)}
+  .zeya-product:hover img,.zeya-space:hover img{transform:none}
+  .zeya-collection-nav{gap:8px;padding-block:22px}
+  .zeya-collection-nav a{min-height:48px;padding:12px 16px}
+  .zeya-sector__panel{padding:30px 22px;border-radius:10px}
+
+  /* Details and forms: content first, generous controls, no narrow columns. */
+  .zeya-product-detail{gap:28px}
+  .zeya-product-detail__media img{aspect-ratio:3/2}
+  .zeya-product-detail__copy h2{font-size:clamp(36px,10vw,48px)}
+  .zeya-formcard{padding:26px 20px;border-radius:10px}
+  .zeya-form{gap:16px}
+  .zeya-form :is(input,select,textarea){min-height:50px;font-size:16px}
+  .zeya-contact{gap:34px}
+  .zeya-contact__aside img{aspect-ratio:3/2}
+
+  /* Footer becomes a clear reading sequence instead of a squeezed desktop grid. */
+  .zeya-footer__invitation{padding-block:36px}
+  .zeya-footer__invitation h2{font-size:40px}
+  .zeya-footer__grid{grid-template-columns:1fr;gap:28px;padding-block:32px}
+  .zeya-footer__brand,.zeya-footer__contact{grid-column:auto}
+  .zeya-footer__col{padding-top:22px;border-top:1px solid rgba(201,162,77,.24)}
+  .zeya-footer__link{min-height:44px}
+  .zeya-footer__bar{padding:22px 0 84px}
+}
+
+@media (max-width:390px){
+  :root{--zeya-gutter:16px}
+  .zeya-topbar__links a:first-child{display:none}
+  .zeya-hero__title{font-size:42px}
+  .zeya-section-heading h2{font-size:38px}
+  .zeya-hero-promises{grid-template-columns:1fr}
+  .zeya-services__list,.zeya-quality-grid{grid-template-columns:1fr}
 }
