@@ -59,7 +59,7 @@
 
 /* -------------------------------------------------------------- <= 700px --- */
 @media (max-width:700px){
-  :root{--zeya-nav-h:78px;--zeya-nav-h-sm:62px;--zeya-logo-h:42px;--zeya-logo-h-sm:36px}
+  :root{--zeya-nav-h:78px;--zeya-nav-h-sm:62px;--zeya-logo-h:54px;--zeya-logo-h-sm:44px}
   .zeya-hero{min-height:clamp(420px,72vh,620px);padding-block:calc(var(--zeya-nav-h) + 40px) 84px}
   .zeya-hero--tall{min-height:100vh;min-height:100svh}
   .zeya-hero--product{min-height:clamp(380px,62vh,520px)}
