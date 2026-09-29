@@ -81,38 +81,64 @@ def render(h):
     about = (
         hero('about-zeya-curtains',
              'Warm linen drapes beside natural stone in a Dubai interior',
-             'A considered finish.<br>A more beautiful everyday.',
-             eyebrow='The ZEYA story',
-             sub='Custom and motorized curtains and blinds, thoughtfully '
-                 'designed for homes and workplaces in Dubai.')
-        + section('<div class="zeya-container zeya-split zeya-split--reverse">'
+             'The Story Behind<br><em>ZEYA</em>', eyebrow='Est. in Dubai',
+             sub='Beautifully dressed. Effortlessly lived in.', variant='about')
+        + section('<div class="zeya-container zeya-split zeya-split--reverse zeya-about-intro">'
                   '<div class="zeya-split__media">{image}</div>'
-                  '<div class="zeya-split__copy">{eyebrow}'
-                  '<h2>Designed to feel<br>like you.</h2>'
-                  '<p>At ZEYA, we believe a well-designed window can transform the way a '
-                  'room feels. Softness, shade, privacy and proportion all have a part to '
-                  'play.</p>'
-                  '<p>We take time to understand how you use your space before recommending '
-                  'the right fabric, style or operating system. Every decision is made '
-                  'around your needs.</p>'
-                  '<p>From your first fabric sample to the final installation, we keep the '
-                  'process clear, personal and carefully considered.</p>'
-                  '{cta}</div></div>'.format(
+                  '<div class="zeya-split__copy"><span class="zeya-story-chapter" aria-hidden="true">01 &mdash; Origin</span>{eyebrow}'
+                  '<h2>It started with<br>a simple idea.</h2>'
+                  '<p>ZEYA began with a simple belief &mdash; that beautiful spaces should '
+                  'feel as effortless to live in as they are to look at.</p>'
+                  '<p>We wanted to create spaces that feel clean, chic and thoughtfully put '
+                  'together, while making sure the solutions are practical, easy to operate '
+                  'and suited to the way people actually live.</p>'
+                  '<p>That simple idea became ZEYA.</p>'
+                  '<p>Today, we bring together curtains, blinds and motorised window solutions '
+                  'designed to enhance a space both visually and practically.</p>'
+                  '<p>We take the time to understand what each space needs &mdash; whether it is '
+                  'soft natural light, complete blackout, better privacy, reduced glare, heat '
+                  'control or effortless motorised operation.</p></div></div>'.format(
                       image=img('intro-living-room',
                                 'A calm living room framed by floor-length curtains',
                                 sizes='(max-width:700px) 100vw, 50vw'),
-                      eyebrow=eyebrow('More than window coverings'),
-                      cta=btn('Let’s talk about your space', 'contact.html', 'gold')))
-        + section('<div class="zeya-container">'
-                  + heading('Our values', 'Care in every detail.')
-                  + steplist([
-                      ('01', 'Personal guidance',
-                       'Options chosen around your light, privacy and daily life.'),
-                      ('02', 'Considered materials',
-                       'Textures and finishes that bring your interior together.'),
-                      ('03', 'A precise finish',
-                       'Accurate measurement and professional installation.')])
-                  + '</div>', 'zeya-section--chocolate')
+                      eyebrow=eyebrow('How it began')))
+        + section('<div class="zeya-container zeya-story-details">'
+                  '<div><span class="zeya-story-chapter" aria-hidden="true">02 &mdash; Philosophy</span>{eyebrow}<h2>We believe the<br>details matter.</h2>'
+                  '<p>For us, creating the right window solution is about more than choosing '
+                  'a fabric or a blind. It is about getting the details right.</p></div>'
+                  '<ul class="zeya-story-details__list"><li>The right fabric.</li>'
+                  '<li>The right finish.</li><li>The right fall.</li>'
+                  '<li>The right amount of light.</li>'
+                  '<li>The right way for everything to operate.</li></ul>'
+                  '<p class="zeya-story-details__close">Every choice should work together to '
+                  'make the space feel considered, comfortable and easy to live in.</p>'
+                  '</div>'.format(eyebrow=eyebrow('What guides us')),
+                  'zeya-section--chocolate')
+        + section('<div class="zeya-container zeya-section-heading zeya-story-process">'
+                  '<div class="zeya-story-process__label"><span class="zeya-story-chapter" aria-hidden="true">03 &mdash; Experience</span>{eyebrow}</div>'
+                  '<div class="zeya-story-copy"><h2>A clear process<br>from start to finish.</h2>'
+                  '<p>We believe the experience is just as important as the finished result.</p>'
+                  '<p>From the initial consultation and fabric selection to precise measuring, '
+                  'specifications, quotation, production and installation, we keep the process '
+                  'clear and make sure you know what to expect at every stage.</p>'
+                  '<p>We bring fabric samples to your home, take accurate measurements, provide '
+                  'clear quotations and ensure the installation is handled professionally.</p>'
+                  '<p class="zeya-story-copy__emphasis"><strong>No unnecessary surprises. '
+                  'No unclear expectations.</strong></p>'
+                  '<p>Just a straightforward, transparent process, with the right information '
+                  'to help you make confident decisions for your space.</p>'
+                  '</div></div>'.format(eyebrow=eyebrow('The ZEYA experience')))
+        + section('<div class="zeya-container zeya-story-finale">'
+                  '<span class="zeya-story-chapter" aria-hidden="true">04 &mdash; Purpose</span>{eyebrow}'
+                  '<h2>Beautifully dressed.<br><em>Effortlessly lived in.</em></h2>'
+                  '<p>For us, ZEYA isn\'t simply about covering a window.</p>'
+                  '<p>It is about creating spaces that feel calm, beautiful and easy to live '
+                  'with &mdash; while making the entire experience simple, transparent and '
+                  'thoughtfully managed.</p><p>That\'s where it all started.<br>And that\'s what '
+                  'continues to guide us today.</p>{cta}</div>'.format(
+                      eyebrow=eyebrow('Our purpose'),
+                      cta=btn('Let’s talk about your space', 'contact.html', 'ivory')),
+                  'zeya-section--black')
     )
 
     # ----------------------------------------------------------- process ---
