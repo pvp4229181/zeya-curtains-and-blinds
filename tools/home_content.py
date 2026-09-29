@@ -54,7 +54,7 @@ NEEDS = [
      'product-blackout-curtains', False,
      'ai-blackout', 'Dark blackout curtains drawn beside a sunlit window'),
     ('drop', 'Reduce Heat', 'Room becomes hot due to the Dubai sun',
-     'Thermal Solutions + Solar Blinds', 'Reduces heat, improves energy efficiency, protects interiors',
+     'Blackout Curtains | Sheer Curtains | Screen Blinds | Two-&#8288;Layer Curtains', 'Reduces heat, softens glare, protects interiors',
      'product-sunscreen-blinds', True,
      'ai-sunscreen', 'Sunscreen roller blind softening the view of the Dubai skyline'),
     ('eye', 'Increase Privacy', 'Need privacy without making the room dark',
@@ -74,8 +74,8 @@ NEEDS = [
      'motorized', False,
      'ai-smart', 'Motorised roller shades in a living room'),
     ('moon', 'Better Sleep', 'Light affects sleep quality',
-     'Complete Light Blocking Solutions', 'Darker sleeping environment, quieter nights',
-     'product-double-layered-curtains', False,
+     'Blinds with Side Channels', 'Darker sleeping environment, less light leaking around the edges',
+     'blinds', False,
      'ai-blackout-roller', 'Blackout roller blind lowered in a bedroom'),
     ('sparkle', 'Enhance Home D&eacute;cor', 'Want a premium interior look',
      'Designer Window Styling', 'Adds elegance, improves room aesthetics',
@@ -298,8 +298,8 @@ def render(h):
   <div class="zeya-hero__scrim" aria-hidden="true"></div>
   <div class="zeya-container zeya-hero__inner">
     <p class="zeya-hero__eyebrow">Windows that inspire</p>
-    <h1 class="zeya-hero__title"><span>Dress Your<br>Windows.</span><br>Define Your Space.</h1>
-    <p class="zeya-hero__sub">Bespoke curtains, blinds and automated window<br class="zeya-desktop-break"> solutions crafted for exceptional interiors.</p>
+    <h1 class="zeya-hero__title zeya-hero__title--steps"><span class="zeya-hero__step"><span class="zeya-hero__word">Measured<span class="zeya-hero__dot">.</span></span></span> <span class="zeya-hero__step"><span class="zeya-hero__word">Designed<span class="zeya-hero__dot">.</span></span></span> <span class="zeya-hero__step"><em class="zeya-hero__word">Installed.</em></span></h1>
+    <p class="zeya-hero__sub">Bespoke curtains, blinds and motorized window<br class="zeya-desktop-break"> solutions for homes and workplaces across Dubai, UAE.</p>
     <div class="zeya-hero__actions">{h.btn('Explore collection', '#solutions', 'gold')}{h.btn('Book consultation', 'contact.html', 'outline')}</div>
     <div class="zeya-hero-promises"><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-swatch"></use></svg><span>Beautiful<small>Fabrics</small></span></div><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-grid"></use></svg><span>Custom<small>Solutions</small></span></div><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-pencil"></use></svg><span>Thoughtful<small>Design</small></span></div><div class="zeya-hero-promises__item"><svg class="zeya-hero-promises__icon" aria-hidden="true" focusable="false"><use href="#zeya-i-tools"></use></svg><span>End-to-end<small>Service</small></span></div></div>
     <a class="zeya-scroll-cue" href="#solutions"><span class="zeya-circle-arrow">{h.icon('arrow-right')}</span>Scroll to discover</a>

@@ -103,6 +103,7 @@
   .zeya-signature-heading{flex-wrap:wrap;gap:8px 24px}
   .zeya-solutions .zeya-signature-heading>p{order:3;max-width:none;flex-basis:100%;margin:0}
   .zeya-signature-hero .zeya-hero__title{font-size:68px}
+  .zeya-signature-hero .zeya-hero__title--steps{font-size:60px}
   .zeya-art__copy{padding:32px}
   .zeya-quality-grid{gap:14px;grid-template-columns:repeat(2,1fr)}
   .zeya-service-band__features{padding:30px 18px}
@@ -115,6 +116,7 @@
   .zeya-nav__cta{padding:14px 24px}
   .zeya-signature-hero{min-height:100svh;padding-top:110px}
   .zeya-signature-hero .zeya-hero__title{font-size:64px}
+  .zeya-signature-hero .zeya-hero__title--steps{font-size:58px}
   .zeya-hero-aside{right:6%;top:30%}
   .zeya-art__copy{padding:28px}
   .zeya-desktop-break{display:none}
@@ -131,6 +133,10 @@
   .zeya-signature-hero .zeya-hero__media img{object-position:62% center}
   .zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(43,33,24,.82),rgba(43,33,24,.34)),linear-gradient(0deg,rgba(43,33,24,.55),transparent)}
   .zeya-signature-hero .zeya-hero__title{font-size:clamp(46px,9vw,66px);line-height:1}
+  .zeya-signature-hero .zeya-hero__title--steps{font-size:clamp(42px,11.5vw,56px);line-height:1.04}
+  .zeya-hero__step:nth-child(2){margin-left:.4em}
+  .zeya-hero__step:nth-child(3){margin-left:.8em}
+  .zeya-signature-hero .zeya-hero__title--steps + .zeya-hero__sub{padding-left:14px}
   .zeya-signature-hero .zeya-hero__eyebrow{font-size:10px}
   .zeya-signature-hero .zeya-hero__sub{font-size:15px;max-width:360px}
   .zeya-signature-hero .zeya-hero__actions{width:auto;flex-direction:row;flex-wrap:wrap;gap:12px}
@@ -177,6 +183,7 @@
   .zeya-signature-hero{padding-top:calc(var(--zeya-nav-h) + 16px);padding-bottom:16px}
   .zeya-signature-hero .zeya-hero__inner{gap:12px}
   .zeya-signature-hero .zeya-hero__title{font-size:clamp(38px,8svh,66px)}
+  .zeya-signature-hero .zeya-hero__title--steps{font-size:clamp(38px,7svh,60px)}
   .zeya-signature-hero .zeya-hero__sub{font-size:15px}
   .zeya-signature-hero .zeya-hero__actions{margin-top:4px}
   .zeya-hero-promises{margin-top:8px}
