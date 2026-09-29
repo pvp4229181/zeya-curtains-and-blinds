@@ -5,3 +5,6 @@ node_modules/
 Thumbs.db
 
 .vercel
+
+# Headless browser profiles from local mobile checks
+.edge-mobile-check*/
