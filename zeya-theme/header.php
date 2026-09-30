@@ -78,7 +78,7 @@ $zeya_studio  = $zeya_contact['addressLine'] ? $zeya_contact['addressLine'] : $z
 					     esc_url( zeya_asset( 'images/zeya-logo-footer-360.webp' ) ) . ' 360w, ' .
 					     esc_url( zeya_asset( 'images/zeya-logo-footer.webp' ) ) . ' 720w'
 				     ); ?>"
-				     sizes="(max-width: 640px) 180px, 260px" width="720" height="240"
+				     sizes="(max-width: 640px) 180px, 260px" width="720" height="341"
 				     loading="eager" fetchpriority="high" decoding="async"
 				     alt="<?php esc_attr_e( 'ZEYA Curtains &amp; Blinds', 'zeya' ); ?>">
 			</a>

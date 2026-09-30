@@ -186,7 +186,7 @@ def logo(cls="", tag="a", href="index.html", eager=False, variant=""):
             '<img class="zeya-logo__img" src="assets/images/zeya-logo%(v)s.webp" '
             'srcset="assets/images/zeya-logo%(v)s-360.webp 360w, '
             'assets/images/zeya-logo%(v)s.webp 720w" '
-            'sizes="(max-width: 640px) 180px, 260px" width="720" height="240" '
+            'sizes="(max-width: 640px) 180px, 260px" width="720" height="341" '
             'alt="ZEYA Curtains &amp; Blinds" %(l)s decoding="async">'
             % {"v": variant, "l": loading} +
             close_tag)
