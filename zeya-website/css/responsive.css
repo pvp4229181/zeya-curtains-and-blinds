@@ -65,7 +65,7 @@
 
 /* -------------------------------------------------------------- <= 700px --- */
 @media (max-width:700px){
-  :root{--zeya-nav-h:78px;--zeya-nav-h-sm:62px;--zeya-logo-h:60px;--zeya-logo-h-sm:50px}
+  :root{--zeya-nav-h:78px;--zeya-nav-h-sm:62px;--zeya-logo-h:54px;--zeya-logo-h-sm:46px}
   .zeya-hero{min-height:clamp(420px,72vh,620px);padding-block:calc(var(--zeya-nav-h) + 40px) 84px}
   .zeya-hero--tall{min-height:100vh;min-height:100svh}
   .zeya-hero--product{min-height:clamp(380px,62vh,520px)}
@@ -111,7 +111,7 @@
 
 /* --------------------------------------------------------------- print --- */
 @media (min-width:901px) and (max-width:1150px){
-  :root{--zeya-logo-h:66px;--zeya-logo-h-sm:52px}
+  :root{--zeya-logo-h:56px;--zeya-logo-h-sm:46px}
   .zeya-header__inner{gap:20px}
   .zeya-nav{gap:20px}
   .zeya-nav__list{gap:14px}
@@ -289,7 +289,7 @@
 
 /* ------------------------------------------------------ mobile redesign --- */
 @media (max-width:700px){
-  :root{--zeya-gutter:20px;--zeya-nav-h:68px;--zeya-logo-h:58px}
+  :root{--zeya-gutter:20px;--zeya-nav-h:66px;--zeya-logo-h:44px}
   html{scroll-padding-top:76px}
   body.zeya-body{overflow-x:hidden}
   :where(a,button,summary,input,select,textarea){touch-action:manipulation}
@@ -314,7 +314,7 @@
     width:4px;height:4px;border-radius:50%;background:var(--zeya-champagne-gold)}
   .zeya-topbar__item svg{width:13px;height:13px}
   .zeya-header__inner{width:100%;max-width:none;padding-inline:20px}
-  .zeya-logo{height:52px}
+  .zeya-logo{height:42px}
   .zeya-burger{display:flex;width:46px;height:46px;justify-content:center;border:1px solid rgba(248,243,232,.22);border-radius:50%}
   .zeya-header:is(.is-scrolled,.zeya-header--solid) .zeya-burger{border-color:var(--zeya-cream-line)}
 
@@ -399,7 +399,7 @@
     padding-block:26px 18px;border-top:0}
   .zeya-footer__brand{grid-column:1/-1;gap:8px;margin-bottom:0;padding-bottom:18px;
     border-bottom:1px solid rgba(201,162,77,.24)}
-  .zeya-footer__brand .zeya-logo{height:84px}
+  .zeya-footer__brand .zeya-logo{height:60px}
   .zeya-footer__line{font-size:26px}
   .zeya-footer__col{padding-top:16px;border-top:0}
   .zeya-footer__col>.zeya-eyebrow{margin-bottom:8px;padding-bottom:10px;font-size:10px;

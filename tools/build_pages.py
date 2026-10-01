@@ -184,9 +184,9 @@ def logo(cls="", tag="a", href="index.html", eager=False, variant=""):
     loading = ('loading="eager" fetchpriority="high"' if eager else 'loading="lazy"')
     return (open_tag +
             '<img class="zeya-logo__img" src="assets/images/zeya-logo%(v)s.webp" '
-            'srcset="assets/images/zeya-logo%(v)s-360.webp 360w, '
-            'assets/images/zeya-logo%(v)s.webp 720w" '
-            'sizes="(max-width: 640px) 180px, 260px" width="720" height="341" '
+            'srcset="assets/images/zeya-logo%(v)s-360.webp 450w, '
+            'assets/images/zeya-logo%(v)s.webp 900w" '
+            'sizes="(max-width: 640px) 200px, 330px" width="900" height="252" '
             'alt="ZEYA Curtains &amp; Blinds" %(l)s decoding="async">'
             % {"v": variant, "l": loading} +
             close_tag)
