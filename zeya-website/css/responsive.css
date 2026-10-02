@@ -152,7 +152,7 @@
   .zeya-signature-hero{min-height:100svh;padding:104px 0 24px;align-items:center}
   .zeya-signature-hero .zeya-hero__inner{gap:18px}
   .zeya-signature-hero .zeya-hero__media img{object-position:62% center}
-  .zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(43,33,24,.82),rgba(43,33,24,.34)),linear-gradient(0deg,rgba(43,33,24,.55),transparent)}
+  .zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(43,33,24,.82),rgba(43,33,24,.34))}
   .zeya-signature-hero .zeya-hero__title{font-size:clamp(46px,9vw,66px);line-height:1}
   .zeya-signature-hero .zeya-hero__title--steps{font-size:clamp(26px,6.5vw,46px);line-height:1.05}
   .zeya-signature-hero .zeya-hero__eyebrow{font-size:10px}

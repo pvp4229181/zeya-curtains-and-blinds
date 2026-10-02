@@ -152,6 +152,7 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
 .zeya-header::after{content:"";position:absolute;inset:0;z-index:-1;
   background:linear-gradient(to bottom,rgba(43,33,24,.62) 0%,rgba(43,33,24,.44) 58%,rgba(43,33,24,0) 100%);
   opacity:1;transition:opacity .4s var(--zeya-ease)}
+.zeya-page--home .zeya-header::after{background:none}
 /* Scrolled, the bar turns solid but keeps its full height. */
 .zeya-header.is-scrolled,.zeya-header--solid,.zeya-header.is-open{
   background:var(--zeya-cream);color:var(--zeya-black);
@@ -181,6 +182,21 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
    knocked out — only lifted a little while the bar rides over the hero. */
 .zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo__img{
   filter:brightness(1.08)}
+
+/* A readable tagline over the hero replaces the tiny lettering in the artwork. */
+.zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo{
+  position:relative}
+.zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo__img{
+  clip-path:polygon(0 0,100% 0,100% 83%,28% 83%,28% 100%,0 100%)}
+.zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo::after{
+  content:"Curtains & Blinds";position:absolute;left:28%;right:0;bottom:0;
+  color:var(--zeya-ivory);font:600 11px/1 var(--zeya-sans);letter-spacing:.15em;
+  text-align:center;text-transform:uppercase;white-space:nowrap;
+  text-shadow:0 1px 4px rgba(0,0,0,.6);pointer-events:none}
+@media(max-width:700px){
+  .zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo::after{
+    font-size:8px;letter-spacing:.08em}
+}
 
 .zeya-nav{display:flex;align-items:center;gap:clamp(20px,2.6vw,40px)}
 .zeya-nav__list{display:flex;align-items:center;gap:clamp(14px,1.9vw,30px)}
@@ -757,7 +773,7 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
 .zeya-signature-hero{min-height:100vh;min-height:100svh;text-align:left;
   padding:calc(var(--zeya-nav-h) + 32px) 0 28px;place-items:stretch;align-items:center}
 .zeya-signature-hero .zeya-hero__inner{max-width:var(--zeya-max);justify-items:start;gap:18px}
-.zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(43,33,24,.78),rgba(43,33,24,.35) 45%,rgba(43,33,24,.04) 75%),linear-gradient(0deg,rgba(43,33,24,.35),transparent 45%)}
+.zeya-signature-hero .zeya-hero__scrim{background:linear-gradient(90deg,rgba(43,33,24,.78),rgba(43,33,24,.35) 45%,rgba(43,33,24,.04) 75%)}
 .zeya-signature-hero .zeya-hero__media img,.zeya-signature-hero .zeya-hero__media video{object-position:center 58%}
 .zeya-signature-hero .zeya-hero__eyebrow{color:var(--zeya-champagne-gold);font-size:12px;letter-spacing:.25em;text-shadow:none}
 .zeya-signature-hero .zeya-hero__title{font-size:clamp(56px,5.8vw,88px);line-height:.94;
