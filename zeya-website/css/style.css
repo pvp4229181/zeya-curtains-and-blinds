@@ -178,24 +178,25 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
   transition:height .4s var(--zeya-ease)}
 .zeya-logo__img{width:auto;height:100%;object-fit:contain;
   transition:filter .4s var(--zeya-ease)}
-/* The header carries the same gold wordmark as the footer, so it is never
-   knocked out — only lifted a little while the bar rides over the hero. */
-.zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo__img{
-  filter:brightness(1.08)}
+/* Frame the supplied PNG's transparent margins without changing its artwork. */
+.zeya-logo{position:relative;aspect-ratio:1298/364;overflow:hidden}
+.zeya-logo__img{position:absolute;max-width:none;width:auto;height:219.78022%;
+  top:-56.31868%;left:-11.40216%;object-fit:contain}
 
-/* A readable tagline over the hero replaces the tiny lettering in the artwork. */
-.zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo{
-  position:relative}
+/* Render the hero tagline at screen resolution, preserving the supplied wordmark. */
 .zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo__img{
-  clip-path:polygon(0 0,100% 0,100% 83%,28% 83%,28% 100%,0 100%)}
+  clip-path:polygon(0 0,100% 0,100% 65.5%,32.5% 65.5%,32.5% 100%,0 100%)}
 .zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo::after{
-  content:"Curtains & Blinds";position:absolute;left:28%;right:0;bottom:0;
-  color:var(--zeya-champagne-gold);font:600 11px/1 var(--zeya-sans);letter-spacing:.15em;
+  content:"Curtains & Blinds";position:absolute;left:32.5%;right:0;bottom:0;
+  padding-inline:20px;pointer-events:none;
+  background:linear-gradient(currentColor,currentColor) left center/16px 1px no-repeat,
+    linear-gradient(currentColor,currentColor) right center/16px 1px no-repeat;
+  color:#b58a49;font:600 8.5px/1 var(--zeya-sans);letter-spacing:.2em;
   text-align:center;text-transform:uppercase;white-space:nowrap;
-  text-shadow:0 1px 4px rgba(0,0,0,.6);pointer-events:none}
+  text-shadow:0 1px 1px rgba(0,0,0,.4)}
 @media(max-width:700px){
   .zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo::after{
-    font-size:8px;letter-spacing:.08em}
+    padding-inline:10px;background-size:7px 1px;font-size:6px;letter-spacing:.12em}
 }
 
 .zeya-nav{display:flex;align-items:center;gap:clamp(20px,2.6vw,40px)}

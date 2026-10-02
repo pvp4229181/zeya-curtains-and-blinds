@@ -183,13 +183,10 @@ def logo(cls="", tag="a", href="index.html", eager=False, variant=""):
     close_tag = "</a>" if tag == "a" else "</span>"
     loading = ('loading="eager" fetchpriority="high"' if eager else 'loading="lazy"')
     return (open_tag +
-            '<img class="zeya-logo__img" src="assets/images/zeya-logo%(v)s.webp" '
-            'srcset="assets/images/zeya-logo%(v)s-360.webp 450w, '
-            'assets/images/zeya-logo%(v)s.webp 900w" '
-            'sizes="(max-width: 640px) 200px, 330px" width="900" height="252" '
-            'alt="ZEYA Curtains &amp; Blinds" %(l)s decoding="async">'
-            % {"v": variant, "l": loading} +
-            close_tag)
+            '<img class="zeya-logo__img" src="assets/images/zeya.png" '
+            'width="1600" height="800" alt="ZEYA Curtains &amp; Blinds" '
+            '%(l)s decoding="async">' % {"l": loading} + close_tag)
+
 
 
 def product_menu(page=None):

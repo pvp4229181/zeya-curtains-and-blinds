@@ -73,12 +73,8 @@ $zeya_studio  = $zeya_contact['addressLine'] ? $zeya_contact['addressLine'] : $z
 			<a class="zeya-logo " href="<?php echo esc_url( home_url( '/' ) ); ?>"
 			   aria-label="<?php esc_attr_e( 'ZEYA Curtains and Blinds — home', 'zeya' ); ?>">
 				<img class="zeya-logo__img"
-				     src="<?php echo esc_url( zeya_asset( 'images/zeya-logo-footer.webp' ) ); ?>"
-				     srcset="<?php echo esc_attr(
-					     esc_url( zeya_asset( 'images/zeya-logo-footer-360.webp' ) ) . ' 360w, ' .
-					     esc_url( zeya_asset( 'images/zeya-logo-footer.webp' ) ) . ' 720w'
-				     ); ?>"
-				     sizes="(max-width: 640px) 180px, 260px" width="720" height="341"
+				     src="<?php echo esc_url( zeya_asset( 'images/zeya.png' ) ); ?>"
+				     sizes="(max-width: 640px) 180px, 260px" width="1600" height="800"
 				     loading="eager" fetchpriority="high" decoding="async"
 				     alt="<?php esc_attr_e( 'ZEYA Curtains &amp; Blinds', 'zeya' ); ?>">
 			</a>
