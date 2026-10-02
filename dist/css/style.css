@@ -190,7 +190,7 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
   clip-path:polygon(0 0,100% 0,100% 83%,28% 83%,28% 100%,0 100%)}
 .zeya-header:not(.is-scrolled):not(.zeya-header--solid):not(.is-open) .zeya-logo::after{
   content:"Curtains & Blinds";position:absolute;left:28%;right:0;bottom:0;
-  color:var(--zeya-ivory);font:600 11px/1 var(--zeya-sans);letter-spacing:.15em;
+  color:var(--zeya-champagne-gold);font:600 11px/1 var(--zeya-sans);letter-spacing:.15em;
   text-align:center;text-transform:uppercase;white-space:nowrap;
   text-shadow:0 1px 4px rgba(0,0,0,.6);pointer-events:none}
 @media(max-width:700px){
