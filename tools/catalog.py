@@ -7,7 +7,7 @@ import re
 def slug(s): return re.sub('[^a-z0-9]+','-',s.lower()).strip('-')
 CURTAINS=[
 ('Sheer Curtains','Soft, light-filtering curtains that create a bright and airy atmosphere.'),
-('Blackout Curtains','Maximum light control for better sleep and complete privacy.'),
+('Blackout Curtains','Maximum light control, privacy and comfort.'),
 ('Linen Curtains','Natural texture and effortless elegance for modern interiors.'),
 ('Velvet Curtains','A luxurious feel with rich texture and superior drape.'),
 ('Wave Curtains','A sleek, modern look with smooth, continuous folds.'),

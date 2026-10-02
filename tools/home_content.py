@@ -167,7 +167,7 @@ def service_areas_section(h):
         </button>
       </div>
     </div>
-    <div class="zeya-areas__directory"><p>Choose your community to enquire</p><span aria-hidden="true"></span></div>
+    <div class="zeya-areas__directory"><p>Select your area to enquire</p><span aria-hidden="true"></span></div>
     <ul class="zeya-areas__list">{chips}</ul>
   </div>
 </section>'''

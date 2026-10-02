@@ -8,3 +8,6 @@ Thumbs.db
 
 # Headless browser profiles from local mobile checks
 .edge-mobile-check*/
+
+# Local WordPress credentials
+.env.wordpress
