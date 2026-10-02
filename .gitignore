@@ -11,3 +11,8 @@ Thumbs.db
 
 # Local WordPress credentials
 .env.wordpress
+
+# Local WordPress deployment backups and generated archives
+wordpress-deployment/*.zip
+wordpress-deployment/wordpress-before-reupload.json
+wordpress-deployment/*header*.png

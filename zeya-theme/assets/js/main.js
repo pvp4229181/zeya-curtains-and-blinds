@@ -34,11 +34,11 @@
     // Opening hours for the top contact strip.
     // PLACEHOLDER: replace with ZEYA's real opening hours before launch.
     hours: "Monday – Saturday 9:00 – 18:00",
-    addressLine: "",    // optional second line, e.g. a street address
-    addressUrl: "",     // e.g. a Google Maps link
+    addressLine: "M-08, ARZOO Building, M-Floor, 116 St, Al Qusais 2, Dubai, United Arab Emirates",
+    addressUrl: "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent("M-08, ARZOO Building, M-Floor, 116 St, Al Qusais 2, Dubai, United Arab Emirates"),
     // Every WhatsApp link on the site reads from here: the floating button,
     // the product CTAs and the footer row all stay hidden until it is set.
-    // Until then the floating "Book a consultation" pill holds that corner.
+    // Until then the floating "Book a free consultation" pill holds that corner.
     // TEST NUMBER: replace both values with ZEYA's real WhatsApp number before launch.
     whatsapp: "971500000000",       // digits only, country code first
     whatsappLabel: "+971 50 000 0000",  // display form
@@ -86,8 +86,10 @@
     if (topbar) {
       var lastTop = -1;
       var placeHeader = function () {
-        var y = window.pageYOffset || root.scrollTop;
-        var top = Math.max(0, topbar.offsetHeight - y);
+        var adminbar = doc.getElementById("wpadminbar");
+        var adminBottom = adminbar ? Math.max(0, adminbar.getBoundingClientRect().bottom) : 0;
+        el.style.setProperty("--zeya-adminbar-h", adminBottom + "px");
+        var top = Math.max(adminBottom, topbar.getBoundingClientRect().bottom, 0);
         if (top === lastTop) { return; }
         lastTop = top;
         el.style.setProperty("--zeya-header-top", top + "px");
@@ -206,6 +208,22 @@
     var wrap = $(".zeya-nav-products");
     var menu = wrap && $(".zeya-product-menu", wrap);
     if (!menu) { return; }
+
+    var categories = $$("[data-zeya-menu-category]", menu);
+    var productPanels = $$(".zeya-menu-products", menu);
+    function selectCategory(button) {
+      categories.forEach(function (category) {
+        category.setAttribute("aria-expanded", String(category === button));
+      });
+      productPanels.forEach(function (panel) {
+        panel.hidden = panel.id !== button.getAttribute("aria-controls");
+      });
+    }
+    categories.forEach(function (button) {
+      ["mouseenter", "focus", "click"].forEach(function (event) {
+        button.addEventListener(event, function () { selectCategory(button); });
+      });
+    });
 
     var mq = window.matchMedia("(min-width: 901px) and (hover: hover)");
     var closeTimer = null;
@@ -374,7 +392,7 @@
     var number = waNumber();
     if (!number) { return ""; }
     var message = area
-      ? "Hello ZEYA, I am in " + area + " and would like a free measurement visit."
+      ? "Hi ZEYA, I'm based in " + area + " and would like to enquire about curtains, blinds or motorized solutions."
       : product
       ? "Hello ZEYA, I would like to enquire about " + product + "."
       : "Hello ZEYA, I would like to enquire about your curtains and blinds.";
@@ -423,9 +441,10 @@
     };
 
     var displays = {
-      // The address label already reads "Dubai, UAE", so the secondary line
-      // stays empty until a fuller address is configured.
-      address: function () { return CONTACT.addressLine || CONTACT.address || ""; },
+      address: function (node) {
+        return node.classList.contains("zeya-topbar__item")
+          ? CONTACT.address : (CONTACT.addressLine || CONTACT.address || "");
+      },
       whatsapp: function () { return CONTACT.whatsappLabel || CONTACT.whatsapp; },
       phone: function () { return CONTACT.phone; },
       call: function () { return CONTACT.phone || CONTACT.whatsappLabel || CONTACT.whatsapp; },
@@ -436,7 +455,7 @@
       var key = node.getAttribute("data-zeya-contact");
       var value = key === "call" ? (CONTACT.phone || CONTACT.whatsapp) : CONTACT[key];
       var valueNode = node.querySelector("[data-zeya-contact-value]");
-      var text = displays[key] ? displays[key]() : value;
+      var text = displays[key] ? displays[key](node) : value;
 
       if (valueNode) {
         valueNode.textContent = text || "";

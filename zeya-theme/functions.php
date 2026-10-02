@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ZEYA_VERSION', '1.0.0' );
+define( 'ZEYA_VERSION', '1.0.1' );
 
 /**
  * ---------------------------------------------------------------------------
@@ -28,8 +28,8 @@ function zeya_contact_details() {
 		// Opening hours for the top contact strip.
 		// PLACEHOLDER: replace with ZEYA's real opening hours before launch.
 		'hours'         => 'Monday – Saturday 9:00 – 18:00',
-		'addressLine'   => '', // Optional second line, e.g. a street address.
-		'addressUrl'    => '', // e.g. a Google Maps link.
+		'addressLine'   => 'M-08, ARZOO Building, M-Floor, 116 St, Al Qusais 2, Dubai, United Arab Emirates',
+		'addressUrl'    => 'https://www.google.com/maps/search/?api=1&query=M-08%2C%20ARZOO%20Building%2C%20M-Floor%2C%20116%20St%2C%20Al%20Qusais%202%2C%20Dubai%2C%20United%20Arab%20Emirates',
 		// Set the studio number here or under Appearance -> Customize ->
 		// ZEYA Contact Details; every WhatsApp link stays hidden until it is.
 		// TEST NUMBER: replace with ZEYA's real WhatsApp number before launch.
@@ -133,7 +133,7 @@ function zeya_enqueue_assets() {
 		'zeya-fonts',
 		$uri . '/assets/fonts/fonts.css',
 		array(),
-		null
+		ZEYA_VERSION
 	);
 
 	$sheets = array(
@@ -148,7 +148,7 @@ function zeya_enqueue_assets() {
 			$handle,
 			$uri . '/' . $path,
 			array( $previous ),
-			file_exists( $dir . '/' . $path ) ? filemtime( $dir . '/' . $path ) : ZEYA_VERSION
+			ZEYA_VERSION . ( file_exists( $dir . '/' . $path ) ? '.' . filemtime( $dir . '/' . $path ) : '' )
 		);
 		$previous = $handle;
 	}
@@ -166,7 +166,7 @@ function zeya_enqueue_assets() {
 			$handle,
 			$uri . '/' . $path,
 			array(),
-			file_exists( $dir . '/' . $path ) ? filemtime( $dir . '/' . $path ) : ZEYA_VERSION,
+			ZEYA_VERSION . ( file_exists( $dir . '/' . $path ) ? '.' . filemtime( $dir . '/' . $path ) : '' ),
 			array( 'strategy' => 'defer', 'in_footer' => true )
 		);
 	}

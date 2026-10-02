@@ -15,7 +15,7 @@
 @media (max-width:900px){
   .zeya-burger{display:flex}
 
-  .zeya-nav{position:fixed;inset:0;z-index:-1;display:grid;align-content:center;
+  .zeya-nav{position:fixed;inset:var(--zeya-adminbar-h,0px) 0 0;z-index:-1;display:grid;align-content:center;
     justify-items:center;gap:32px;padding:96px 24px 48px;
     background:var(--zeya-cream);color:var(--zeya-black);
     opacity:0;visibility:hidden;transform:translateY(-12px);overflow-y:auto;

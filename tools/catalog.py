@@ -153,11 +153,10 @@ def render(h):
     pages={}; sections=[]
     for g,label in LABELS.items():
         section=(f'<section class="zeya-section zeya-container zeya-catalog-section" id="{g}">'
-                 f'<div class="zeya-section-heading">'
-                 f'<p class="zeya-eyebrow">{len([p for p in GROUPS[g] if p[0] not in UNLISTED]):02d} ways to make it yours</p>'
-                 f'<div><div class="zeya-section-heading__row"><h2>{escape(label)}</h2>'
+                 f'<div class="zeya-collection-heading">'
+                 f'<div class="zeya-collection-heading__copy"><h2>{escape(label)}</h2>'
+                 f'<p>{INTROS[g]}</p></div>'
                  f'{h.btn("Explore collection",g+".html","outline")}</div>'
-                 f'<p>{INTROS[g]}</p></div></div>'
                  f'{cards(h,g,limit=3)}</section>')
         sections.append(section)
 

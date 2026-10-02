@@ -86,8 +86,10 @@
     if (topbar) {
       var lastTop = -1;
       var placeHeader = function () {
-        var y = window.pageYOffset || root.scrollTop;
-        var top = Math.max(0, topbar.offsetHeight - y);
+        var adminbar = doc.getElementById("wpadminbar");
+        var adminBottom = adminbar ? Math.max(0, adminbar.getBoundingClientRect().bottom) : 0;
+        el.style.setProperty("--zeya-adminbar-h", adminBottom + "px");
+        var top = Math.max(adminBottom, topbar.getBoundingClientRect().bottom, 0);
         if (top === lastTop) { return; }
         lastTop = top;
         el.style.setProperty("--zeya-header-top", top + "px");

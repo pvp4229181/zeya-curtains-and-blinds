@@ -80,6 +80,7 @@ body.zeya-body{margin:0;background:var(--zeya-cream);color:var(--zeya-body);
 .zeya-container{width:min(100% - var(--zeya-gutter)*2,var(--zeya-max));margin-inline:auto}
 .zeya-container--wide{max-width:1560px}
 .zeya-section{padding-block:clamp(72px,9vw,140px)}
+#zeya-main{overflow-x:clip}
 .zeya-section--chocolate{background:var(--zeya-chocolate);color:var(--zeya-cream)}
 .zeya-section--chocolate :is(h1,h2,h3,h4){color:var(--zeya-cream)}
 .zeya-section--chocolate .zeya-eyebrow{color:var(--zeya-gold)}
@@ -142,17 +143,16 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
   color:var(--zeya-ivory);white-space:nowrap;transition:color .25s}
 .zeya-topbar__links a:hover{color:var(--zeya-champagne-gold)}
 .zeya-topbar+.zeya-header{top:var(--zeya-header-top,var(--zeya-topbar-h))}
-.zeya-topbar+.zeya-header.is-open{top:0}
+.zeya-header.is-open,.zeya-topbar+.zeya-header.is-open{top:var(--zeya-adminbar-h,0px)}
 
 /* --------------------------------------------------------------- header --- */
 /* Transparent while the hero is on screen, solid once it has scrolled away. */
-.zeya-header{position:fixed;inset:0 0 auto;z-index:100;height:var(--zeya-nav-h);
+.zeya-header{position:fixed;inset:var(--zeya-header-top,var(--zeya-topbar-h)) 0 auto;z-index:100;height:var(--zeya-nav-h);
   color:var(--zeya-cream);transition:background .4s var(--zeya-ease),
   color .4s var(--zeya-ease),box-shadow .4s var(--zeya-ease),height .4s var(--zeya-ease)}
 .zeya-header::after{content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(to bottom,rgba(43,33,24,.62) 0%,rgba(43,33,24,.44) 58%,rgba(43,33,24,0) 100%);
+  background:linear-gradient(to bottom,rgba(23,20,17,.78) 0%,rgba(23,20,17,.68) 58%,rgba(23,20,17,.50) 100%);
   opacity:1;transition:opacity .4s var(--zeya-ease)}
-.zeya-page--home .zeya-header::after{background:none}
 /* Scrolled, the bar turns solid but keeps its full height. */
 .zeya-header.is-scrolled,.zeya-header--solid,.zeya-header.is-open{
   background:var(--zeya-cream);color:var(--zeya-black);
@@ -469,6 +469,18 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
   width:6px;height:6px;background:var(--zeya-gold);transform:rotate(45deg)}
 
 /* ------------------------------------------------------- catalog / cards --- */
+.zeya-collection-heading{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;gap:24px 48px;margin-bottom:36px;padding-bottom:28px;
+  border-bottom:1px solid var(--zeya-cream-line)}
+.zeya-collection-heading__copy{max-width:66ch}
+.zeya-collection-heading h2{font-size:clamp(42px,5vw,66px);margin-bottom:14px}
+.zeya-collection-heading p{max-width:60ch;color:var(--zeya-muted);line-height:1.7}
+.zeya-collection-heading .zeya-btn{justify-self:end;white-space:nowrap}
+@media(max-width:700px){
+  .zeya-collection-heading{grid-template-columns:minmax(0,1fr);gap:22px;
+    margin-bottom:24px;padding-bottom:24px}
+  .zeya-collection-heading .zeya-btn{justify-self:start}
+}
 .zeya-catalog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,30px)}
 .zeya-product{display:grid;gap:0;background:var(--zeya-cream-lift);
   border:1px solid var(--zeya-cream-line);transition:transform .5s var(--zeya-ease),
@@ -832,13 +844,13 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
 .zeya-mini-product:hover img{filter:brightness(1.15)}
 .zeya-mini-product h3{font:400 14px/1.5 var(--zeya-sans);color:var(--zeya-ivory);letter-spacing:0;margin-top:9px}
 .zeya-mini-product p{font-size:11px;color:var(--zeya-champagne-gold);line-height:1.5}
-.zeya-art{display:grid;grid-template-columns:54% 46%;background:var(--zeya-cream);
+.zeya-art{display:grid;grid-template-columns:minmax(0,54fr) minmax(0,46fr);overflow:clip;background:var(--zeya-cream);
   border-bottom:1px solid rgba(184,162,141,.45)}
 .zeya-art__media{position:relative;min-height:380px;overflow:hidden}
 .zeya-art__media>img{position:absolute;width:100%;height:100%;object-fit:cover}
 .zeya-art__media>p{position:absolute;top:35%;left:10%;font:italic 39px/1.2 var(--zeya-serif);color:var(--zeya-champagne-gold);text-shadow:0 1px 15px var(--zeya-espresso)}
 .zeya-art__media>p span{margin-left:24px}
-.zeya-art__copy{padding:36px clamp(25px,4vw,65px);display:grid;gap:14px;align-content:center;justify-items:start}
+.zeya-art__copy{min-width:0;padding:36px clamp(25px,4vw,65px);display:grid;gap:14px;align-content:center;justify-items:start}
 .zeya-art__copy h2{font-size:clamp(42px,4.6vw,68px);line-height:1}
 .zeya-art__copy>p:not(.zeya-eyebrow){font-size:14px;line-height:1.75;color:var(--zeya-black)}
 .zeya-art__copy .zeya-eyebrow{color:var(--zeya-black);font-size:10px}

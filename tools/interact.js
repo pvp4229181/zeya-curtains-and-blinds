@@ -154,10 +154,8 @@ function check(label, actual, expected) {
   console.log("\nContact form (1440px)");
   await go("contact", 1440);
 
-  check("no phone number invented", await cdp.eval(
-    `document.querySelector('[data-zeya-contact="phone"]').hasAttribute('href')`), false);
-  check("disabled link marked", await cdp.eval(
-    `document.querySelector('[data-zeya-contact="phone"]').getAttribute('aria-disabled')`), "true");
+  check("configured phone link is callable", await cdp.eval(
+    `document.querySelector('[data-zeya-contact="call"]').getAttribute('href')`), "tel:+971500000000");
 
   await cdp.eval(`document.querySelector('[data-zeya-form] [type=submit]').click()`);
   await sleep(400);
@@ -191,16 +189,18 @@ function check(label, actual, expected) {
   await go("products", 390);
   await cdp.eval(`document.querySelector('[data-zeya-burger]').click(); document.querySelector('.zeya-product-menu summary').click()`);
   check("category submenu opens", await cdp.eval(`document.querySelector('.zeya-product-menu').open`), true);
-  // No literal count: the submenu has to offer exactly the collections the
-  // page itself links to, so adding a collection cannot leave this behind.
-  check("submenu lists every collection", await cdp.eval(
+  check("menu categories have matching collection links", await cdp.eval(
     `(function () {
-       var nav = Array.from(document.querySelectorAll('.zeya-collection-nav a'))
-         .map(function (a) { return a.getAttribute('href').replace('#', ''); }).sort();
-       var menu = Array.from(document.querySelectorAll('.zeya-product-menu__item'))
-         .map(function (a) { return a.getAttribute('href').replace('.html', ''); }).sort();
-       return nav.length > 0 && JSON.stringify(nav) === JSON.stringify(menu);
+       var categories = Array.from(document.querySelectorAll('[data-zeya-menu-category]'));
+       return categories.length > 0 && categories.every(function (button) {
+         var panel = document.getElementById(button.getAttribute('aria-controls'));
+         return panel && panel.querySelector('.zeya-menu-all').getAttribute('href') ===
+           button.getAttribute('data-zeya-menu-category') + '.html';
+       });
      }())`), true);
+  await cdp.eval(`document.querySelector('[data-zeya-menu-category="blinds"]').click()`);
+  check("selecting Blinds reveals its products", await cdp.eval(
+    `!document.getElementById('zeya-menu-blinds').hidden && document.getElementById('zeya-menu-curtains').hidden`), true);
   await go("product-sheer-curtains", 1440);
   await cdp.eval(`document.querySelector('.zeya-detail-copy .zeya-btn').click()`);
   await sleep(1200);
@@ -321,7 +321,7 @@ function check(label, actual, expected) {
        return getComputedStyle(el).opacity === '1';
      })`), true);
   check("hero remains still", await cdp.eval(
-    `getComputedStyle(document.querySelector('.zeya-hero__media img')).animationName`), "none");
+    `getComputedStyle(document.querySelector('.zeya-hero__media video')).animationName`), "none");
   check("no hero parallax", await cdp.eval(
     `getComputedStyle(document.querySelector('.zeya-hero__media')).transform`), "none");
   check("no progress rule injected", await cdp.eval(
