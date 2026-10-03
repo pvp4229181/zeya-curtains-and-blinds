@@ -16,6 +16,8 @@ def main():
             key, value = line.split('=', 1)
             config[key.strip()] = value.strip().strip('\"').strip("'")
     base = config['WP_SITE_URL'].rstrip('/')
+    if base.endswith('/wp-admin'):
+        base = base[:-len('/wp-admin')]
     auth = base64.b64encode((config['WP_USERNAME'] + ':' + config['WP_APPLICATION_PASSWORD']).encode()).decode()
 
     def api(route, payload=None):

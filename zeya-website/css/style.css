@@ -429,7 +429,7 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
   align-items:center;gap:clamp(32px,6vw,96px);text-align:left;padding-block:clamp(24px,4vw,56px)}
 .zeya-story-finale__statement{padding-right:clamp(24px,4vw,60px);border-right:1px solid rgba(201,165,88,.45)}
 .zeya-story-finale h2{max-width:15ch;font-size:clamp(40px,4.4vw,68px);line-height:1.08;letter-spacing:-.025em;text-wrap:balance}
-.zeya-story-finale h2 br{display:none}
+.zeya-story-finale h2 br{display:inline-block;width:.25em;content:""}
 .zeya-story-finale__body{display:grid;gap:24px;justify-items:start}
 .zeya-story-finale p{max-width:48ch;color:rgba(248,243,232,.8);font-size:clamp(16px,1.25vw,18px);line-height:1.8;margin:0}
 .zeya-story-finale .zeya-btn{margin-top:8px;max-width:100%;white-space:normal;text-align:left}
@@ -655,6 +655,7 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
 .zeya-method>span:last-child{font-size:15px;color:var(--zeya-black);text-align:right}
 .zeya-method[aria-disabled="true"]{cursor:default}
 .zeya-method[hidden],.zeya-methods[hidden]{display:none}
+.zeya-method[data-zeya-contact="whatsapp"]{display:none}
 
 .zeya-formcard{display:grid;gap:16px;padding:clamp(24px,3vw,48px);
   background:var(--zeya-cream-lift);border:1px solid var(--zeya-cream-line)}
@@ -740,6 +741,7 @@ a.zeya-topbar__item[href]:hover{color:var(--zeya-champagne-gold)}
 /* Unlinked rows are hidden (the location line already names the studio);
    hours are plain text by nature, so they always show. */
 .zeya-footer__contact .zeya-method:not([href]):not([data-zeya-contact="hours"]){display:none}
+.zeya-footer__contact .zeya-method[data-zeya-contact="whatsapp"]{display:none}
 .zeya-footer__contact .zeya-method>span:first-child{font-size:10px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--zeya-muted)}
 .zeya-footer__contact .zeya-method>span:last-child{position:relative;width:fit-content;
