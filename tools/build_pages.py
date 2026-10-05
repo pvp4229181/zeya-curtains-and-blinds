@@ -224,9 +224,8 @@ def product_menu(page=None):
 
 # The top strip's starting text, shown as-is without JS. main.js overwrites it
 # from CONTACT, so the real details are set there (and in functions.php).
-# PLACEHOLDER: the hours are not ZEYA's yet; the number is the test WhatsApp.
+# PLACEHOLDER: the hours are not ZEYA's yet. No phone number is shown.
 TOPBAR_HOURS = "Monday &ndash; Saturday 9:00 &ndash; 18:00"
-TOPBAR_PHONE = "+971 50 000 0000"
 TOPBAR_ADDRESS = "Dubai, UAE"
 
 # Franchise and Trade Area have no pages yet, so both lead to the contact page.
@@ -237,7 +236,7 @@ TOPBAR_LINKS = (
 
 
 def topbar():
-    """The dark contact strip above the navigation: hours, number and studio
+    """The dark contact strip above the navigation: hours and studio
     on the left, the trade links on the right. The details hydrate from the
     CONTACT settings in main.js like the footer rows do."""
     def item(key, name, text, tag):
@@ -250,7 +249,6 @@ def topbar():
         '<div class="zeya-container zeya-container--wide zeya-topbar__inner">'
         '<div class="zeya-topbar__info">'
         + item("hours", "clock", TOPBAR_HOURS, "span")
-        + item("call", "phone", TOPBAR_PHONE, "a")
         + item("address", "pin", TOPBAR_ADDRESS, "a") +
         '</div>'
         '<nav class="zeya-topbar__links" aria-label="Trade">'
@@ -318,8 +316,7 @@ def footer():
                     % (k, u, l) for k, l, u in explore)
     collections = "".join('<a class="zeya-footer__link" href="%s.html">%s</a>' % (g, esc(l))
                           for g, l in catalog.MENU.items())
-    methods = contact_methods((("call", "Phone"), ("whatsapp", "WhatsApp"),
-                               ("email", "Email"), ("address", "Studio"),
+    methods = contact_methods((("email", "Email"), ("address", "Studio"),
                                ("hours", "Hours")))
     socials = "".join(
         '<a class="zeya-social__link" %s aria-label="%s">%s</a>' % (attr, label, icon(name))

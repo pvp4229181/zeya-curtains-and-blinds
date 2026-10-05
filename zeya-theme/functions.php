@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'ZEYA_VERSION', '1.0.1' );
+define( 'ZEYA_VERSION', '1.0.2' );
 
 /**
  * ---------------------------------------------------------------------------
@@ -32,17 +32,17 @@ function zeya_contact_details() {
 		'addressUrl'    => 'https://www.google.com/maps/search/?api=1&query=M-08%2C%20ARZOO%20Building%2C%20M-Floor%2C%20116%20St%2C%20Al%20Qusais%202%2C%20Dubai%2C%20United%20Arab%20Emirates',
 		// Set the studio number here or under Appearance -> Customize ->
 		// ZEYA Contact Details; every WhatsApp link stays hidden until it is.
-		// TEST NUMBER: replace with ZEYA's real WhatsApp number before launch.
-		'whatsapp'      => '971500000000', // Digits only, country code first.
-		'whatsappLabel' => '+971 50 000 0000', // Display form.
+		// Removed at ZEYA's request: no phone or WhatsApp number is shown.
+		'whatsapp'      => '', // Digits only, country code first.
+		'whatsappLabel' => '', // Display form.
 		'phone'         => '',
 		'email'         => '',
 		'instagram'     => '', // Full profile URL.
 		'facebook'      => '', // Full profile URL.
 		// Google Business Profile -> "Ask for reviews" link, or the bare Place ID.
 		// The review buttons and the home page reviews band stay hidden until set.
-		// PLACEHOLDER: replace with ZEYA's real review link before sharing it.
-		'googleReview'  => 'ZEYA_GOOGLE_PLACE_ID',
+		// Removed at ZEYA's request: the review band and buttons stay hidden.
+		'googleReview'  => '',
 		'formEndpoint'  => '', // POST target; leave empty until a handler exists.
 	);
 

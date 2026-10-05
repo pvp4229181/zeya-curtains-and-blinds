@@ -39,9 +39,9 @@
     // Every WhatsApp link on the site reads from here: the floating button,
     // the product CTAs and the footer row all stay hidden until it is set.
     // Until then the floating "Book a free consultation" pill holds that corner.
-    // TEST NUMBER: replace both values with ZEYA's real WhatsApp number before launch.
-    whatsapp: "971500000000",       // digits only, country code first
-    whatsappLabel: "+971 50 000 0000",  // display form
+    // Removed at ZEYA's request: no phone or WhatsApp number is shown.
+    whatsapp: "",       // digits only, country code first
+    whatsappLabel: "",  // display form
     phone: "",          // e.g. "+971 4 000 0000"
     email: "",          // e.g. "hello@example.com"
     instagram: "",      // full profile URL
@@ -50,9 +50,8 @@
     // hidden until this is set. Paste either the share link from Google
     // Business Profile -> "Ask for reviews" (https://g.page/r/.../review)
     // or the bare Place ID (ChIJ...), which is turned into a review link.
-    // PLACEHOLDER: shows the review band and buttons, but the link does not
-    // open a real review form. Replace with ZEYA's real link before sharing it.
-    googleReview: "ZEYA_GOOGLE_PLACE_ID",
+    // Removed at ZEYA's request: the Google review band and buttons stay hidden.
+    googleReview: "",
     formEndpoint: ""    // POST target; leave empty until a handler is connected
   };
 

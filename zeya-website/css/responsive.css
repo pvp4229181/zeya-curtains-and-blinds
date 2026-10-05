@@ -214,8 +214,8 @@
 }
 
 /* --------------------------------------------------------------- topbar --- */
-/* The strip sheds the address first, then the hours, keeping the number and
-   the two trade links on one line down to the narrowest phones. */
+/* The strip sheds the address first, then the hours, keeping the two trade
+   links on one line down to the narrowest phones. */
 @media (max-width:1000px){
   .zeya-topbar [data-zeya-contact="address"]{display:none}
 }
@@ -414,7 +414,7 @@
 
 @media (prefers-reduced-motion:reduce) and (max-width:700px){
   .zeya-topbar__info{width:100%;justify-content:center;animation:none}
-  .zeya-topbar__info>:not([data-zeya-contact="call"]){display:none}
+  .zeya-topbar__info>:not([data-zeya-contact="hours"]){display:none}
 }
 
 @media (max-width:390px){

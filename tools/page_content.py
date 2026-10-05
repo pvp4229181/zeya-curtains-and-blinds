@@ -171,8 +171,7 @@ def render(h):
     # ----------------------------------------------------------- contact ---
     from home_content import service_areas_section
     form = Path(__file__).with_name('contact-form.html').read_text(encoding='utf8')
-    methods = h.contact_methods([('address', 'Studio'), ('hours', 'Hours'), ('call', 'Phone'),
-                               ('whatsapp', 'WhatsApp'), ('email', 'Email')])
+    methods = h.contact_methods([('address', 'Studio'), ('hours', 'Hours'), ('email', 'Email')])
     contact = (
         hero('contact-interior', 'Softly lit sheer curtains in a Dubai apartment',
              'Your space.<br>Our next conversation.',

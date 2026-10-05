@@ -327,5 +327,4 @@ def render(h):
 {service_areas_section(h)}
 {services_section(h)}
 {why_band(h)}
-{reviews_section(h)}
 '''
